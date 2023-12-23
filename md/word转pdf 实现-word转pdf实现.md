@@ -1,0 +1,66 @@
+---
+title: word转pdf 实现
+date: 2020-10-17 00:05:16.292
+updated: 2020-10-17 00:09:24.841
+url: https://p00q.cn/?p=228
+categories: 
+- 瞎折腾
+tags: 
+- libreoffice
+---
+
+# 需求
+需要在生成word后同时生成一份word文档,由于考虑环境是linux和无外网环境.需本地生成.
+
+# 实现
+找到以下两种库(都差不多好像libreoffice更兼容微软的office):
+- OpenOffice
+- libreoffice
+- 还有几种远程调用的 不适用就pass掉了
+
+## 安装libreoffice
+最终经过测试选择了libreoffice这个库
+[下载地址](https://mirrors.cloud.tencent.com/libreoffice/libreoffice/stable/7.0.2/rpm/x86_64/)
+需要(版本自定)
+LibreOffice_7.0.2_Linux_x86-64_rpm_sdk.tar.gz
+LibreOffice_7.0.2_Linux_x86-64_rpm.tar.gz
+俩包和字体文件,同时需要安装java环境.
+下载下来后解压两个压缩包,然后进到目录有个`RPMS`文件夹进去执行 `yum localinstall *.rpm ` 俩文件夹都需要去安装
+
+添加环境变量
+`vim /etc/profile `
+在最后加入
+```
+export LibreOffice_PATH=/opt/libreoffice7.0/program
+export PATH=\$LibreOffice_PATH:$PATH
+```
+然后保存,执行生效命令
+`source /etc/profile`
+
+## 添加字体
+
+把字体复制到 `/usr/share/fonts/Fonts`
+
+## dockerfile
+```
+FROM adoptopenjdk/openjdk11:jdk-11.0.8_10-centos-slim
+#添加libreoffice包
+RUN echo "Asia/Shanghai" > /etc/timezone
+ADD /LibreOffice /usr/libreoffice
+ADD /LibreOfficeSdk /usr/libreoffice/sdk
+WORKDIR /usr/libreoffice/RPMS
+#安装依赖和libreoffice
+RUN yum localinstall *.rpm -y
+WORKDIR /usr/libreoffice/sdk/RPMS
+RUN yum localinstall *.rpm -y
+ENV LibreOffice_PATH=/opt/libreoffice7.0/program
+ENV PATH=$LibreOffice_PATH:$PATH
+RUN yum update -y
+RUN yum install ibus -y 
+#安装字体
+ADD ./Fonts /usr/share/fonts/Fonts
+WORKDIR /usr/libreoffice
+```
+## 转换命令
+把当前目录的1.docx转换成pdf
+`soffice --headless --convert-to pdf 1.docx`

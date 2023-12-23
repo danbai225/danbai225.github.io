@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="danbai,DanBai,记录所见所想,淡白の记忆,淡白日常记录,淡白学习分析,技术博客,开源分享"/>
+    <meta name="description" content="这里是淡白の记忆，在这里我记录自己的所见所想。世界那么大，期待遇到你。" />
+    <!-- ZUI 标准版压缩后的 CSS 文件 -->
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    <!-- 本站CSS -->
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    <!-- ZUI Javascript 依赖 jQuery -->
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <!-- ZUI 标准版压缩后的 JavaScript 文件 -->
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <!-- 本站JS -->
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>{{.Name}}</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <!-- 导航头部 -->
+        <div class="navbar-header">
+            淡白
+        </div>
+        <!-- 导航项目 -->
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            <!-- 右侧的导航项目 -->
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        <!-- END .navbar-collapse -->
+    </div>
+</nav>
+
+<div class="container">
+    <h1 class="text-center">{{.Name}}</h1>
+    <p class="text-center">记录所见所想</p>
+</div>
+<div class="container">
+    <div class="list list-condensed container">
+        <div class="items items-hover">
+            <h1>文章列表</h1>
+            {{range .Posts}}
+            <div class="item">
+                <div class="item-heading">
+                    <div class="pull-right">
+                        <span class="text-muted">{{.Date}}</span></div>
+                    <h4><a href="/posts/{{.Id}}.html">{{.Title}}</a></h4>
+                </div>
+                <div class="item-content">
+                    <div class="media pull-right">
+                    </div>
+                    <div class="text post-list-text">{{.Summary}}</div>
+                </div>
+            </div>
+            {{end}}
+        </div>
+    </div>
+</div>
+
+<script>
+    // 获取当前页面的 URL 对象
+    var url = new URL(window.location.href);
+    // 获取 URL 查询参数中的路径部分
+    var path = url.searchParams.get('p');
+    if (path) {
+        // 如果路径参数不为空，则重定向到指定的 URL
+        window.location.href = '/posts/' + path + '.html';
+    }
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">{{.Name}}</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        <!-- 请尊重作者，请务必保留版权 -->
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

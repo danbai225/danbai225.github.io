@@ -1,0 +1,130 @@
+---
+title: 让数据脱离环境(GoLang)
+date: 2020-07-22 10:13:04.799
+updated: 2021-06-10 15:24:20.977
+url: https://p00q.cn/?p=132
+categories: 
+- Go
+tags: 
+- Go
+- A_Toolset
+---
+
+# 命令行工具集
+
+&nbsp;&nbsp;&nbsp;&nbsp;最近我在写一个[命令行工具集](https://github.com/danbai225/A_Toolset),想把一些常用的小工具集合在一起以便使用.希望工具本身是脱离环境的不会有这样那样的配置文件就单独一个执行文件,拖到那都能运行出一样的效果.于是我就在想要把一些配置数据放在哪里?或者说不需要配置文件?但在运行过程中有些数据需要缓存也得要个位置空间吧.
+
+# 解决之道
+&nbsp;&nbsp;&nbsp;&nbsp;我想我能不能把数据放在程序自身,但程序在运行过程中是无法修改自身的.在这里我联想到程序自我更新的例子.程序更新往往将新的版本与旧版本进行重命名的方式更替.
+
+主要变量:程序路径 程序大小 数据长度 数据Map
+
+在程序的最后8个字节(int64)用来记录数据的长度(包含8个字节)
+程序每次初始化读取数据,每次写入数据即更新程序.在第一次编译完成后初始化一下程序在程序后面写入一个int64的8(因为没有数据)
+下面是实现代码
+```Go
+package itself
+
+import (
+	"bytes"
+	"encoding/json"
+	"github.com/gogf/gf/os/gfile"
+	"io/ioutil"
+	"os"
+	"os/exec"
+	"p00q.cn/A_Toolset/utils"
+	"path/filepath"
+)
+
+var (
+	appPath           = ""
+	appFileSize int64 = 0
+	DataLength  int64 = 0
+	mapData     map[string]string
+)
+
+func Get(key string) string {
+	str := mapData[key]
+	if !utils.IsNil(str) {
+		return str
+	}
+	return ""
+}
+func Put(key string, val string) {
+	mapData[key] = val
+	marshalMap()
+}
+func getDataLength() int64 {
+	path := gfile.GetBytesByTwoOffsetsByPath(execPath(), execFileSize()-8, execFileSize())
+	DataLength = utils.BytesToInt64(path)
+	return DataLength
+}
+func Init() {
+	loadMapData()
+}
+func marshalMap() {
+	if utils.IsNil(mapData) {
+		loadMapData()
+	}
+	data, err := json.Marshal(mapData)
+	utils.Check(err)
+	//新的数据长度
+	oldLength := DataLength
+	DataLength = int64(len(data) + 8)
+	data = bytesCombine(data, utils.Int64ToBytes(DataLength))
+	//读取当前文件全部数据
+	readFile, err := ioutil.ReadFile(execPath())
+	utils.Check(err)
+	//追加新的数据
+	readFile = bytesCombine(readFile[:appFileSize-oldLength], data)
+	//替换文件
+	_ = gfile.Rename(execPath(), execPath()+"-old")
+	_ = gfile.PutBytesAppend(execPath()+"-new", readFile)
+	_ = gfile.Rename(execPath()+"-new", execPath())
+}
+
+//BytesCombine 多个[]byte数组合并成一个[]byte
+func bytesCombine(pBytes ...[]byte) []byte {
+	return bytes.Join(pBytes, []byte(""))
+}
+
+//加载map数据
+func loadMapData() {
+	if gfile.IsFile(execPath() + "-old") {
+		_ = gfile.Remove(execPath() + "-old")
+	}
+	if getDataLength()>8 {
+		mapDataBytes := gfile.GetBytesByTwoOffsetsByPath(execPath(), execFileSize()-getDataLength(), execFileSize()-8)
+		err := json.Unmarshal(mapDataBytes, &mapData)
+		utils.Check(err)
+	}else {
+		mapData = make(map[string]string)
+	}
+}
+
+/**
+程序路径
+*/
+func execPath() string {
+	if appPath == "" {
+		file, err := exec.LookPath(os.Args[0])
+		utils.Check(err)
+		appPath, _ = filepath.Abs(file)
+	}
+	return appPath
+}
+
+func execFileSize() int64 {
+	if appFileSize == 0 {
+		fileInfo, err := os.Stat(execPath())
+		utils.Check(err)
+		appFileSize = fileInfo.Size()
+	}
+	return appFileSize
+}
+func Remove(key string) {
+	delete(mapData, key)
+}
+
+
+```

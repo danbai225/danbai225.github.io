@@ -1,0 +1,131 @@
+---
+title: Lintcode记录
+date: 2020-05-13 18:39:01.534
+updated: 2020-06-30 20:13:43.728
+url: https://p00q.cn/?p=99
+categories: 
+- Lintcode
+tags: 
+- lintcode
+---
+
+[Lintcode](https://www.lintcode.com)
+[我的Lintcode](https://www.lintcode.com/user/w2671641895)
+
+<details>
+<summary>39-恢复旋转排序数组</summary>
+<pre><code>
+public static void recoverRotatedSortedArray(List<Integer> nums) {
+		if(nums!=null&&nums.size()>1){
+			//长度2直接调换
+			if(nums.size()==2){
+				if(nums.get(0)>nums.get(1)){
+					nums.add(0,nums.get(0)+nums.get(1));
+					nums.add(1,nums.get(0)-nums.get(1));
+					nums.add(0,nums.get(0)-nums.get(1));
+				}
+				return;
+			}
+			int f=nums.get(0);
+			int l=nums.get(nums.size()-1);
+			int m=nums.get(nums.size()/2);
+			int min=nums.get(0);
+			int index=0;
+			int size=nums.size();
+			//判断循环起点
+			if(f>l){
+				if(f<m){
+					for (int i=0;i<nums.size();i++){
+						if(nums.get(i)<min){
+							min=nums.get(i);
+							index=i;
+						}
+					}
+				}else {
+					for (int i=nums.size()/2;i<nums.size();i++){
+						if(nums.get(i)<min){
+							min=nums.get(i);
+							index=i;
+						}
+					}
+				}
+
+			}else {
+				if(l<m){
+					for (int i=nums.size()/2;i<nums.size();i++){
+						if(nums.get(i)<min){
+							min=nums.get(i);
+							index=i;
+						}
+					}
+				}else {
+					for (int i=nums.size()-1;i>=0;i--){
+						if(nums.get(i)<min){
+							min=nums.get(i);
+							index=i;
+						}
+					}
+				}
+			}
+			//从最小位置开始
+			List temp=new ArrayList<Integer>();
+			for (int i=index;i<size;i++){
+				temp.add(nums.get(i));
+			}
+			for (int i=0;i<index;i++){
+				temp.add(nums.get(i));
+			}
+			nums.clear();
+			nums.addAll(temp);
+		}
+	}
+  </code></pre>
+</details>
+<details>
+<summary>2-尾部的零</summary>
+<pre><code>
+//这题我原来是算出递归,却发现在遇到非常大的数时通过不了,后来看了解答,才知道可以通过分解因子来实现
+//可以将每个数拆分成其素因子的乘积，可以发现，0是由2*5产生的，而5的数量一定小于2的数量，因此5的个数决定了结尾0的个数。
+//只要计算n的阶乘中，5这个素因子出现多少次即可。
+public static long trailingZeros(long n) {
+        long sum = 0;
+        while (n != 0) {
+            sum += n / 5;
+            n /= 5;
+        }
+        return sum;
+    }
+  </code></pre>
+</details>
+<details>
+<summary>44. 最小子数组</summary>
+<pre>
+<code>
+
+    public static int minSubArray(final List<Integer> nums) {
+        // 空判断
+        if (nums == null || nums.size() == 0) {
+            return 0;
+        }
+        // 初始值
+        int sum = nums.get(0);
+        int min = nums.get(0);
+        // 循环list
+        for (int i = 1; i < nums.size(); i++) {
+            // 为啥是大于0 因为本函数取值是最小连续数组以0为分界线
+            if (sum > 0) {
+                sum = nums.get(i);
+            } else {
+                sum += nums.get(i);
+            }
+            // 当前子数组和是否小于最小值
+            if (sum < min) {
+                min = sum;
+            }
+        }
+        return min;
+    }
+  </code>
+
+</pre>
+</details>

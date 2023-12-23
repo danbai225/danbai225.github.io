@@ -1,0 +1,65 @@
+---
+title: 学习rust之实现协程通信
+date: 2023-03-09 18:35:56.191
+updated: 2023-03-09 18:35:56.191
+url: https://p00q.cn/?p=837
+categories: 
+- 学习
+- rust
+tags: 
+- rust
+---
+
+`main.rs`:
+```
+use std::sync::mpsc; // 引入 mpsc 库，用于实现通道通信
+use std::thread; // 引入 thread 库，用于模拟耗时操作
+use std::time::Duration; // 引入 Duration 类型，用于模拟耗时操作的时间
+
+async fn producer(tx: mpsc::Sender<i32>) {
+    // 定义生产者函数，它接受一个通道发送器
+    for i in 0..10 {
+        // 生产者循环发送 0 到 9 的数字
+        thread::sleep(Duration::from_millis(500)); // 模拟耗时操作
+        tx.send(i).unwrap(); // 将数字发送到通道中
+    }
+}
+
+async fn consumer(rx: mpsc::Receiver<i32>) {
+    // 定义消费者函数，它接受一个通道接收器
+    loop {
+        match rx.recv() {
+            // 消费者循环接收通道中的数据
+            Ok(i) => println!("Received {}", i), // 如果接收成功，打印接收到的数字
+            Err(_) => break, // 如果接收失败，跳出循环
+        }
+    }
+}
+
+#[tokio::main]
+async fn main() {
+    // 定义主函数
+    let (tx, rx) = mpsc::channel(); // 创建一个通道，返回一个发送器和接收器
+    let producer_task = tokio::spawn(async move {
+        // 创建一个生产者任务，它接受一个异步闭包
+        producer(tx).await; // 在异步闭包中调用生产者函数
+    });
+    let consumer_task = tokio::spawn(async move {
+        // 创建一个消费者任务，它接受一个异步闭包
+        consumer(rx).await; // 在异步闭包中调用消费者函数
+    });
+    producer_task.await.unwrap(); // 等待生产者任务完成，并检查是否出现错误
+    consumer_task.await.unwrap(); // 等待消费者任务完成，并检查是否出现错误
+}
+
+```
+`Cargo.toml`:
+```
+[package]
+name = "myrust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.26.0", features = ["full"] }
+```

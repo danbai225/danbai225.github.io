@@ -1,0 +1,111 @@
+---
+title: MongoDB分页查询
+date: 2020-07-02 12:01:30.807
+updated: 2020-07-04 20:20:09.949
+url: https://p00q.cn/?p=105
+categories: 
+- Java
+tags: 
+- MongoDB
+---
+
+# 分页
+
+写个table分页,数据在mogodb找了个[现有](https://github.com/Ryan-Miao/mongo-page-helper)分页改了下.
+
+## PageResult
+```
+public class PageResult<T> {
+
+    /**
+     * 页码，从1开始
+     */
+    private Integer pageNum;
+
+    /**
+     * 页面大小
+     */
+    private Integer pageSize;
+
+
+    /**
+     * 总数
+     */
+    private Long total;
+
+    /**
+     * 总页数
+     */
+    private Integer pages;
+
+    /**
+     * 数据
+     */
+    private List<T> list;
+
+}
+```
+## 分页服务
+```
+public class DmServiceImpl implements DmService {
+    private static final int FIRST_PAGE_NUM = 1;
+    private static final String ID = "_id";
+    @Autowired
+    MongoTemplate mongoTemplate;
+
+
+    @Override
+    public PageResult<Dan> getDmList(Integer pageSize, Integer pageNum) {
+        return pageQuery(new Query(), pageSize, pageNum, null);
+    }
+
+    @Override
+    public PageResult<Dan> getDmListById(String id, Integer pageSize, Integer pageNum) {
+        return pageQuery(new Query(Criteria.where("_id").is(id)), pageSize, pageNum, null);
+    }
+
+    @Override
+    public PageResult<Dan> getDmListByYsJi(String ysJi, Integer pageSize, Integer pageNum) {
+        Query query = new Query(Criteria.where("player").is(ysJi));
+        return pageQuery(query, pageSize, pageNum, null);
+    }
+
+    @Override
+    public PageResult<Dan> getDmListByYsUsername(String username, Integer pageSize, Integer pageNum) {
+        Query query = new Query(Criteria.where("author").is(username));
+        return pageQuery(query, pageSize, pageNum, null);
+    }
+
+    @Override
+    public PageResult<Dan> pageQuery(Query query, Integer pageSize, Integer pageNum, String lastId) {
+        //条件查询总条数
+        long total = mongoTemplate.count(query, Dan.class);
+        //算页数
+        final Integer pages = (int) Math.ceil(total / (double) pageSize);
+        if (pageNum <= 0 || pageNum > pages) {
+            pageNum = FIRST_PAGE_NUM;
+        }
+        final Criteria criteria = new Criteria();
+        if (!StringUtils.isEmpty(lastId)) {
+            //有lastId的分页
+            if (pageNum != FIRST_PAGE_NUM) {
+                criteria.and(ID).gt(new ObjectId(lastId));
+            }
+            query.limit(pageSize);
+        } else {
+            //分页
+            int skip = pageSize * (pageNum - 1);
+            query.skip(skip).limit(pageSize);
+        }
+        final List<Dan> entityList = mongoTemplate
+                .find(query.addCriteria(criteria), Dan.class);
+        final PageResult<Dan> pageResult = new PageResult<>();
+        pageResult.setTotal(total);
+        pageResult.setPages(pages);
+        pageResult.setPageSize(pageSize);
+        pageResult.setPageNum(pageNum);
+        pageResult.setList(entityList);
+        return pageResult;
+    }
+}
+```

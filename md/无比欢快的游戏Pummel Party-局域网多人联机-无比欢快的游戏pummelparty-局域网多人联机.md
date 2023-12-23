@@ -1,0 +1,31 @@
+---
+title: 无比欢快的游戏Pummel Party-局域网多人联机
+date: 2020-09-05 20:04:18.189
+updated: 2020-09-06 10:30:19.027
+url: https://p00q.cn/?p=163
+categories: 
+- 游戏娱乐
+tags: 
+- 联机游戏
+- 欢乐游戏
+---
+
+# 找游戏
+在玩腻了铁锈战争(也是一款很好玩的RTS游戏)后,想继续找个多人联机的局域网联机游戏,愉快的和室友们玩耍。最后在网上找到了这款游戏-Pummel Party 是steam上的一款多人游戏,售价66RMB左右。但我们都是贫困户是买不起的(老佛爷也已经替俺们付过钱了)。
+
+# 游戏玩法
+
+类似大富翁那种桌游,游戏采用回合制。每回合玩家都会扔骰子走指定步数。游戏中每回合见会有几十种(超多超好玩)小游戏,由小游戏的获胜排名来决定下一个回合的先后顺序。在游戏种以收集钥匙开启宝箱获胜.游戏中可以使用很多道具以及出发许多机关,极大的增加了游戏的趣味性。
+
+
+# 游戏截图、视频
+
+<video id="video" controls="" preload="none"><source id="mp4" src="https://cdn.cloudflare.steamstatic.com/steam/apps/256729701/movie480.webm" type="video/mp4"></video>
+
+![https://cdn.cloudflare.steamstatic.com/steam/apps/880940/ss_b51e213e314bdbd953d190b18b119c679ba64922.600x338.jpg?t=1585242250](https://cdn.cloudflare.steamstatic.com/steam/apps/880940/ss_b51e213e314bdbd953d190b18b119c679ba64922.600x338.jpg?t=1585242250)
+![](https://cdn.cloudflare.steamstatic.com/steam/apps/880940/ss_790b659aa31131822d0eae36e5c446b31342fd69.600x338.jpg?t=1585242250)
+
+![小游戏之一](https://media.st.dl.pinyuncloud.com/steam/apps/880940/extras/TemporalTrails.png?t=1585242250)
+# 多人联机
+
+游戏支持多人联机,该游戏支持最大8人游戏.非付费玩家只能局域网联机.可以和小伙伴试试!

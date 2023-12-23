@@ -1,0 +1,54 @@
+@font-face {
+    font-family: "Zpix";
+    src: url("/res/fonts/zpix.woff2")
+}
+
+html,
+body,
+td,
+th,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+kbd,
+samp,
+* {
+    font-family: 'Zpix', Arial, Helvetica, sans-serif;
+}
+
+.post-list-text {
+    word-wrap: break-word
+}
+
+.device-mobile .container {
+    width: 98%;
+    max-width: 98%;
+    font-size: 3rem;
+}
+
+.device-mobile a {
+    max-width: 98%;
+    font-size: 3rem;
+}
+
+.device-mobile .search-input {
+    height: 5rem;
+    font-size: 3rem;
+}
+
+.device-mobile h1 {
+    font-size: 5rem;
+}
+
+.device-mobile .nav li a {
+    line-height: 3rem;
+}
+
+.device-mobile * {
+    font-size: 3rem;
+}

@@ -1,0 +1,275 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Flutter,video_player"/>
+    <meta name="description" content="在切换播放源时，有可能出现后台播放的问题。为了解决这个问题，我们可以在切换新的`VideoPlayerController`之前先将其保存到一个变量上，在初始化完成后再销毁。切换播放源的代码如下：
+
+```dart
+if (_videoPlayerController == null) {
+  _initController(url); // 初始化一个新的控制器
+} else {
+  final oldController = _videoPlayerController; // 将当前控制器保存到oldController变量中
+  WidgetsBinding.instance.addPostFrameCallback((_) async {
+    await oldController.dispose(); // 在下一次刷新时销毁旧的控制器
+  });
+  setState(() {
+    _videoPlayerController = null;
+    _initController(url); // 初始化一个新的控制器
+  });
+}
+```
+
+控制器初始化的代码如下：
+
+```dart
+_initController(String link) {
+  _videoPlayerController = VideoPlayerController.network(link)
+    ..initialize().then((_) {
+      _chewieController = ChewieController(
+          customControls: CustomControls(),
+          allowedScreenSleep: false,
+          videoPlayerController: _videoPlayerController,
+          aspectRatio: _videoPlayerController.value.aspectRatio,
+          autoPlay: true,
+          looping: true,
+          startAt: startTime);
+      setState(() {});
+    });
+}
+```
+
+还需要在页面销毁时先销毁播放器，以避免内存泄漏：
+
+```dart
+@override
+dispose() {
+  super.dispose();
+  if (_videoPlayerController != null) {
+    _videoPlayerController.pause();
+    _videoPlayerController.dispose();
+    _videoPlayerController = null;
+    _chewieController = null;
+  }
+}
+```
+
+可以查看该[链接](https://www.thetopsites.net/article/58955831.shtml)获取完整的解决方案。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>Flutter Video_Flutter&#43;Chewie切换播放源泄漏问题解决 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">Flutter Video_Flutter&#43;Chewie切换播放源泄漏问题解决</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-09-24 16:09:34</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Flutter</span>
+                    
+                    <span class="label label-success label-outline">video_player</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>在切换播放源时，有可能出现后台播放的问题。为了解决这个问题，我们可以在切换新的`VideoPlayerController`之前先将其保存到一个变量上，在初始化完成后再销毁。切换播放源的代码如下：
+
+```dart
+if (_videoPlayerController == null) {
+  _initController(url); // 初始化一个新的控制器
+} else {
+  final oldController = _videoPlayerController; // 将当前控制器保存到oldController变量中
+  WidgetsBinding.instance.addPostFrameCallback((_) async {
+    await oldController.dispose(); // 在下一次刷新时销毁旧的控制器
+  });
+  setState(() {
+    _videoPlayerController = null;
+    _initController(url); // 初始化一个新的控制器
+  });
+}
+```
+
+控制器初始化的代码如下：
+
+```dart
+_initController(String link) {
+  _videoPlayerController = VideoPlayerController.network(link)
+    ..initialize().then((_) {
+      _chewieController = ChewieController(
+          customControls: CustomControls(),
+          allowedScreenSleep: false,
+          videoPlayerController: _videoPlayerController,
+          aspectRatio: _videoPlayerController.value.aspectRatio,
+          autoPlay: true,
+          looping: true,
+          startAt: startTime);
+      setState(() {});
+    });
+}
+```
+
+还需要在页面销毁时先销毁播放器，以避免内存泄漏：
+
+```dart
+@override
+dispose() {
+  super.dispose();
+  if (_videoPlayerController != null) {
+    _videoPlayerController.pause();
+    _videoPlayerController.dispose();
+    _videoPlayerController = null;
+    _chewieController = null;
+  }
+}
+```
+
+可以查看该[链接](https://www.thetopsites.net/article/58955831.shtml)获取完整的解决方案。</p>
+            </section>
+        </header>
+            <h1 id="切换播放">切换播放</h1>
+
+<p>如果在上<code>VideoPlayerController</code>初始化完成之前初始化一个新的<code>VideoPlayerController</code>而上一个没有完成初始化无法销毁,则可能造成后台播放的问题.</p>
+
+<h1 id="解决方案">解决方案</h1>
+
+<p>在切换一个新的<code>VideoPlayerController</code>之前先将其保存放到一个变量上,待初始化完成后销毁.
+切换播放源:</p>
+
+<pre><code>if (_videoPlayerController == null) {
+     //初始化一个控制器
+      _initController(url);
+    } else {
+      //如果当前控制器不为空则把当前控制器保留到old变量在下一次刷新时销毁
+      final oldController = _videoPlayerController;
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await oldController.dispose();
+      });
+      setState(() {
+        _videoPlayerController = null;
+        _initController(url);
+      });
+    }
+</code></pre>
+
+<p>控制器初始化:</p>
+
+<pre><code>_initController(String link) {
+    _videoPlayerController = VideoPlayerController.network(link)
+      ..initialize().then((_) {
+        _chewieController = ChewieController(
+            customControls: CustomControls(),
+            allowedScreenSleep: false,
+            videoPlayerController: _videoPlayerController,
+            aspectRatio: _videoPlayerController.value.aspectRatio,
+            autoPlay: true,
+            looping: true,
+            startAt: startTime);
+        setState(() {});
+      });
+  }
+</code></pre>
+
+<p>记得在页面销毁时先销毁播放否则也会造成泄漏</p>
+
+<pre><code>@override
+  dispose() {
+    super.dispose();
+    if(_videoPlayerController!=null){
+      _videoPlayerController.pause();
+      _videoPlayerController.dispose();
+      _videoPlayerController = null;
+      _chewieController = null;
+    }
+  }
+</code></pre>
+
+<p>完整解决:<a href="https://www.thetopsites.net/article/58955831.shtml" target="_blank">https://www.thetopsites.net/article/58955831.shtml</a></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2020-10-17 00:14:35</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>
