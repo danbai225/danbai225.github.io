@@ -18,7 +18,7 @@ tags:
 - 节点多、各国IP,基于Node数。
 # 2020年8月18日
 今日U2PS已经上线了.
-https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1597765419752.png?x-oss-process=style/blog![](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1597765419752.png?x-oss-process=style/blog)
+![](../res/img/137-1.png)
 # 2020年8月14日-8月17日
 
 - 完成了web端对节点、客户端、隧道的增删改查.

@@ -11,4 +11,4 @@ tags:
 ---
 
 [教程原文](https://justyy.com/archives/45744)
-通过[railway](railway.app)提供的无服务器部署服务，每月有免费5$免费额度。![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1631947084622.png?x-oss-process=style/blog)
+通过[railway](railway.app)提供的无服务器部署服务，每月有免费5$免费额度。![image.png](../res/img/483-1.png)

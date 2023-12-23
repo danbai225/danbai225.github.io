@@ -21,10 +21,10 @@ tags:
 
 很简单，在你的位置设置里找到Nginx配置文件选项
 
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1647057652981.png?x-oss-process=style/blog)
+![image.png](../res/img/546-1.png)
 
 在引用反向代理配置前一行添加
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1647057738457.png?x-oss-process=style/blog)
+![image.png](../res/img/546-2.png)
 其中请将`/www/wwwlogs/p00q.cn`替换成你的网站根目录
 ```
     location /.well-known{

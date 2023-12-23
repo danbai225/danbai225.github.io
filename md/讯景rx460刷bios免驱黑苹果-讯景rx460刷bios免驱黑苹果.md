@@ -35,7 +35,7 @@ gpu核心频率差距不大、内存颗粒一致功耗等等
 ## 备份
 
 GPU-Z除了查看以外还能备份BIOS
-![gpz05.gif](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/gpz05_1631885970208.gif)
+![gpz05.gif](../res/img/482-1.png)
 顺便在这保存一下我的备份
 [备份rx460 bios](https://danbai-cloud.oss-cn-chengdu.aliyuncs.com/uploads%2F2021%2F09%2F17%2FUD8d1JeO_Baffin.rom?Expires=1631886043)
 
@@ -60,15 +60,15 @@ amdvbflash -f -p 0 XXXX.rom
 
 没有err的话重启电脑再用GPU-Z看看是不是已经刷上了。
 重启后再看
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1631886178781.png?x-oss-process=style/blog)
+![image.png](../res/img/482-2.png)
 下面是之前的：
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1631886235656.png?x-oss-process=style/blog)
+![image.png](../res/img/482-3.png)
 
 由于没有找到更合适的bios这张卡频率降了处理单元也少了。
 
 # 启动mac
 成功启动，害我搞了半天efi，显卡识别成功。60fps的流畅👌
-![截屏20210917 下午9.13.49的副本.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/%E6%88%AA%E5%B1%8F2021-09-17%20%E4%B8%8B%E5%8D%889.13.49%E7%9A%84%E5%89%AF%E6%9C%AC_1631886103388.png?x-oss-process=style/blog)
+![截屏20210917 下午9.13.49的副本.png](../res/img/482-4.png)
 
 参考：
 [1](https://www.ichaotv.com/archives/184)

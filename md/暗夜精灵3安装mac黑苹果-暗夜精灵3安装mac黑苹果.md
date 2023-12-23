@@ -31,44 +31,44 @@ EFI引导：[下载](https://danbai-cloud.oss-cn-chengdu.aliyuncs.com/uploads%2F
 ## 制作Mac启动盘
 1.初始化u盘 记得备份数据
  插入U盘打开DiskGenius
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1622983877347.png?x-oss-process=style/blog)
-选择u盘设备右键，删除所有分区保存更改。然后新建一个分区，完成后关闭软件。![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1622983995259.png?x-oss-process=style/blog)
+![image.png](../res/img/322-1.png)
+选择u盘设备右键，删除所有分区保存更改。然后新建一个分区，完成后关闭软件。![image.png](../res/img/322-2.png)
 
 2.写入mac镜像
  打开TransMac.exe软件
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1622984122096.png?x-oss-process=style/blog)
-同样会有对应的U盘设备鼠标移动到设备上右键选择![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1622984208074.png?x-oss-process=style/blog)
+![image.png](../res/img/322-3.png)
+同样会有对应的U盘设备鼠标移动到设备上右键选择![image.png](../res/img/322-4.png)
 提示框选择Yes、OK无需其余修改。
-操作完成后再鼠标右键选择![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1622984387791.png?x-oss-process=style/blog)
+操作完成后再鼠标右键选择![image.png](../res/img/322-5.png)
 弹出提示框选择文件，选我们下号的mac镜像文件
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1622984421758.png?x-oss-process=style/blog)
-点击yes、OK后继续等待进度条完成大概十几分钟（取决u盘写入速度）关闭软件。![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1622985579821.png?x-oss-process=style/blog)完成
+![image.png](../res/img/322-6.png)
+点击yes、OK后继续等待进度条完成大概十几分钟（取决u盘写入速度）关闭软件。![image.png](../res/img/322-7.png)完成
 3. 替换EFI
 再打开DiskGenius
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1622985648295.png?x-oss-process=style/blog)
+![image.png](../res/img/322-8.png)
 找到这个位置选择全部文件右键强力删除
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1622985690859.png?x-oss-process=style/blog)
-然后再吧我们下载的EFI文件给放进去![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1622985730598.png?x-oss-process=style/blog)
+![image.png](../res/img/322-9.png)
+然后再吧我们下载的EFI文件给放进去![image.png](../res/img/322-10.png)
 之后可以关闭软件拔出U盘开始安装系统了。
 
 ## 安装Mac系统
 将启动盘插入笔记本,通电开机笔记本然后点按ESC进入启动菜单
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1622987060153.png?x-oss-process=style/blog)
+![image.png](../res/img/322-11.png)
 F9进入引导菜单
 选择第一个你u盘名字的启动项回车。
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1622987087382.png?x-oss-process=style/blog)
+![image.png](../res/img/322-12.png)
 进入这个界面选择Insstall mac Catalina
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1622987212726.png?x-oss-process=style/blog)
+![image.png](../res/img/322-13.png)
 等等加载完成，进入mac安装界面。
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1622987357254.png?x-oss-process=style/blog)
+![image.png](../res/img/322-14.png)
 选择磁盘工具
 然后对你原来的windows盘或者一个你需要安装mac的盘进行抹除格式改为Mac OS扩展（日志式）
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1622987496861.png?x-oss-process=style/blog)
+![image.png](../res/img/322-15.png)
 分区后再关闭磁盘工具窗口回到首界面选择安装macOS，期间大约30分钟左右。
 安装完成后通过U盘启动选择界面选择MAC完成安装。
 引导修复，安装完成mac后不需要再用u盘启动，需要最后用u盘进入winpe系统也就是在前面引导菜单那里出现的两个同名u盘名的启动项的第二个。
 进入PE使用BOOTICE软件。找到UEFI-修改启动序列-添加 ，再挂载的EFI分区里面，找到OC文件夹下面的OpenCore.efi文件，选择并打开:
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1622988032087.png?x-oss-process=style/blog)
+![image.png](../res/img/322-16.png)
 添加完后关机拔掉u盘能顺利启动mac就成功了。
 
 参考文章：https://www.sqlsec.com/2018/08/clover.html

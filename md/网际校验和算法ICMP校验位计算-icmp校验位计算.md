@@ -12,7 +12,7 @@ tags:
 ---
 
 面试时聊到了一些网络知识。其中ping这个东西，是我经常用到的但似乎对它又不是很了解，于是去看了下相关协议的介绍。它使用了一种协议叫[ICMP（Internet Control Message Protocol）Internet控制报文协议](https://baike.baidu.com/item/ICMP)。
-报文结构：![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1623306380164.png?x-oss-process=style/blog)
+报文结构：![image.png](../res/img/326-1.png)
 其中校验和计算：
 1. 将校验和字段置为0。
 2. 将每两个字节（16位）相加（二进制求和）直到最后得出结果，若出现最后还剩一个字节继续与前面结果相加。

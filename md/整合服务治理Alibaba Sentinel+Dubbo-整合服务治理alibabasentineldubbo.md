@@ -38,7 +38,7 @@ http://IP:8091
 ## 新建一个POM项目
 sentinel
 
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1591601299053.png?image/auto-orient,1/quality,q_50)
+![image.png](../res/img/104-1.png)
 
 pom
 ```
@@ -90,4 +90,4 @@ spring:
 ## 控制台
 访问http://127.0.0.1:8001/demo
 然后看控制台
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1591608896558.png?image/auto-orient,1/quality,q_50)
+![image.png](../res/img/104-2.png)

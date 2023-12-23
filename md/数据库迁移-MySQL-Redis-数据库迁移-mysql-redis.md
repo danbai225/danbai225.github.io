@@ -22,20 +22,20 @@ tags:
 这次我两边服务器都安装了宝塔控制面板所以我试试宝塔的数据迁移api。需要在源服务器上安装插件。
 
 源数据服务器是window 目标是linux
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1594259189250.png?x-oss-process=style/blog)
+![image.png](../res/img/108-1.png)
 
 在目标机器控制面板打开API
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1594259274045.png?x-oss-process=style/blog)
+![image.png](../res/img/108-2.png)
 
 并且设置IP白名单和获取API密钥
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1594259374603.png?x-oss-process=style/blog)
+![image.png](../res/img/108-3.png)
 
 遇到了这样一个问题
 
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1594259443535.png?x-oss-process=style/blog)
+![image.png](../res/img/108-4.png)
 
 在安装完PHP7.3后继续
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1594259612094.png?x-oss-process=style/blog)
+![image.png](../res/img/108-5.png)
 
 原来并不能从window服务器迁移至linux服务器只能手动了。
 
@@ -69,4 +69,4 @@ window
 redis-shake -type=restore -conf=redis-shake.conf
 ```
 复制完成
-![image.png](https://danbai.oss-cn-chengdu.aliyuncs.com/bk/image_1594262995724.png?x-oss-process=style/blog)
+![image.png](../res/img/108-6.png)
