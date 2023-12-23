@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Go"/>
+    <meta name="description" content="DownTip是一个摸鱼小工具，作者最近在给状态栏小工具添加一些功能模块，其中包括了一个自启动的功能。实现原理是通过在LaunchAgents目录下写入一个启动配置文件，在Mac上实现自启动。在Windows上，作者是在用户启动目录下写入一个bat文件来启动当前二进制。具体实现的代码可以参考上述代码段。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>golang实现mac、windows开机自启动 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">golang实现mac、windows开机自启动</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2022-07-25 19:17:05</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Go</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>DownTip是一个摸鱼小工具，作者最近在给状态栏小工具添加一些功能模块，其中包括了一个自启动的功能。实现原理是通过在LaunchAgents目录下写入一个启动配置文件，在Mac上实现自启动。在Windows上，作者是在用户启动目录下写入一个bat文件来启动当前二进制。具体实现的代码可以参考上述代码段。</p>
+            </section>
+        </header>
+            <h1 id="downtip-https-github-com-danbai225-down-tip"><a href="https://github.com/danbai225/down_tip" target="_blank">DownTip</a></h1>
+
+<h1 align="center">
+  <img src="https://github.com/danbai225/tipbar/raw/main/core/ico.png" width="224px"/><br/>
+  DownTip一个摸鱼小工具
+</h1>
+
+<p>我最近在给我的状态栏小工具做一些功能模块，其中我加入了一个自启动的功能在这里分享下。</p>
+
+<h2 id="现状">现状</h2>
+
+<p><img src="../res/img/707.jpeg" alt="image" /></p>
+
+<h1 id="实现">实现</h1>
+
+<p>实现原理是在LaunchAgents目录下写入启动配置文件<a href="https://www.fythonfang.com/blog/2021/4/19/mac-launchd-daemons-and-agents-tutorial" target="_blank">配置说明</a>。
+win则是在用户启动目录下写入一个bat来启动当前二进制。</p>
+
+<pre><code class="language-golang">const (
+	macListFile = `
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
+&lt;plist version=&quot;1.0&quot;&gt;
+&lt;dict&gt;
+	&lt;key&gt;Label&lt;/key&gt;
+	&lt;string&gt;cn.p00q.tipbar&lt;/string&gt;
+	&lt;key&gt;ProgramArguments&lt;/key&gt;
+        &lt;array&gt;
+        	&lt;string&gt;/Applications/DownTip.app/Contents/MacOS/down_tip&lt;/string&gt;
+        &lt;/array&gt;
+	&lt;key&gt;RunAtLoad&lt;/key&gt;
+	&lt;true/&gt;
+	&lt;key&gt;WorkingDirectory&lt;/key&gt;
+	&lt;string&gt;/Applications/DownTip.app/Contents/MacOS&lt;/string&gt;
+	&lt;key&gt;StandardErrorPath&lt;/key&gt;
+	&lt;string&gt;/tmp/down_tip.err&lt;/string&gt;
+	&lt;key&gt;StandardOutPath&lt;/key&gt;
+	&lt;string&gt;/tmp/down_tip.out&lt;/string&gt;
+&lt;/dict&gt;
+&lt;/plist&gt;
+`
+	winBat = `start %s`
+)
+
+func start(on bool) error {
+	var err error
+	var path, content string
+	current, err := user.Current()
+	if err != nil {
+		return err
+	}
+	switch runtime.GOOS {
+	case &quot;darwin&quot;:
+		path = fmt.Sprintf(&quot;%s/Library/LaunchAgents/cn.p00q.tipbar.plist&quot;, current.HomeDir)
+		content = macListFile
+	//case &quot;linux&quot;:
+	case &quot;windows&quot;:
+		path = fmt.Sprintf(&quot;%s\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\down_tip.bat&quot;, current.HomeDir)
+		abs, _ := filepath.Abs(os.Args[0])
+		content = fmt.Sprintf(winBat, abs)
+	default:
+		return errors.New(&quot;不支持的系统&quot;)
+	}
+	return writer(on, path, content)
+}
+func writer(on bool, path, content string) error {
+	var err error
+	if on {
+		stat, _ := os.Stat(path)
+		if stat == nil {
+			err = ioutil.WriteFile(path, []byte(content), os.ModePerm)
+		}
+	} else {
+		err = os.Remove(path)
+	}
+	return err
+}
+
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-07-25 23:10:02</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

@@ -1,15 +1,22 @@
 ---
 title: 整合服务治理Alibaba Sentinel+Dubbo
-date: 2020-06-08 15:35:07.546
-updated: 2020-07-04 20:20:29.602
+date: "2020-06-08 15:35:07"
+updated: "2020-07-04 20:20:29"
 url: https://p00q.cn/?p=104
-categories: 
-- Java
-tags: 
-- Spring Cloud Alibaba
-- nacos
-- dubbo
-- Sentinel
+categories:
+    - Java
+tags:
+    - Spring Cloud Alibaba
+    - nacos
+    - dubbo
+    - Sentinel
+summary: |-
+    Sentinel是一个面向分布式服务架构的流量控制组件，可以帮助保障微服务的稳定性。它提供了流量控制、熔断降级、系统自适应保护等多个功能。安装Sentinel可以通过在GitHub下载相应版本的jar包，并将其放入一个新建的sentinel目录，然后通过运行启动文件run.sh来启动Sentinel。登录Sentinel控制台可以通过访问http://IP:8091，并使用默认的用户名和密码sentinel进行登录。
+
+    接下来，可以将Sentinel整合到Dubbo服务中。首先，在一个新建的POM项目中添加相关依赖，包括spring-cloud-starter-alibaba-sentinel和sentinel-apache-dubbo-adapter。消费者和提供者都需要依赖sentinel项目。然后，在配置中心中添加相关配置，包括设置服务器端口号、是否饥饿加载以及Sentinel控制台地址。最后，访问http://127.0.0.1:8001/demo，并查看Sentinel控制台上的相关信息。
+
+    整合Sentinel可以帮助保障微服务的稳定性，提供流量控制和熔断降级等功能，通过上述步骤可以完成Sentinel的安装和配置。
+id: "104"
 ---
 
 # Sentinel 

@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="ctf,反汇编,二进制"/>
+    <meta name="description" content="这是作者第一次参加CTF比赛，参加了Hackergame 2022赛事，并分享了自己解决的一道二进制题目。题目是一个自动点击的程序，但按钮位置在鼠标移动过程中会随机改变位置。作者通过分析程序代码，找到了代码中使用的Win32API函数SetWindowPos，并修改了其中的参数，使按钮位置不再随机变动。接着，作者继续查找相关代码，找到了弹出消息框的部分，并在汇编代码中修改了跳转条件，以实现反转跳转的效果。最终，作者成功得到了Flag。在解题过程中，作者借助了静态分析工具Ghidra以及自己对Windows编程的一些基础知识。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>解密第一道二进制程序题 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">解密第一道二进制程序题</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2022-11-02 16:00:21</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">ctf</span>
+                    
+                    <span class="label label-success label-outline">反汇编</span>
+                    
+                    <span class="label label-success label-outline">二进制</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>这是作者第一次参加CTF比赛，参加了Hackergame 2022赛事，并分享了自己解决的一道二进制题目。题目是一个自动点击的程序，但按钮位置在鼠标移动过程中会随机改变位置。作者通过分析程序代码，找到了代码中使用的Win32API函数SetWindowPos，并修改了其中的参数，使按钮位置不再随机变动。接着，作者继续查找相关代码，找到了弹出消息框的部分，并在汇编代码中修改了跳转条件，以实现反转跳转的效果。最终，作者成功得到了Flag。在解题过程中，作者借助了静态分析工具Ghidra以及自己对Windows编程的一些基础知识。</p>
+            </section>
+        </header>
+            <h1 id="第一次参加ctf">第一次参加ctf</h1>
+
+<p>在摸鱼之余发现了<a href="https://hack.lug.ustc.edu.cn/" target="_blank">Hackergame 2022</a>
+抽空玩了一下只做出来一道二进制题目和一些web题目以及0道数学题。
+<img src="../res/img/806-1.png" alt="image-1667375212202" />
+还是挺有意思的。</p>
+
+<h1 id="flag-自动机">Flag 自动机</h1>
+
+<p>下载题目解压得到 <code>flag_machine.exe</code> 之前我使用od调试，由于对od不是很熟就没解出来。</p>
+
+<p>后面我用静态分析工具 <code>ghidra</code> 做出来的。</p>
+
+<p>运行<code>flag_machine.exe</code>出现如下窗口应该是要点击按钮<code>狠心夺取</code>，但是在鼠标移动到按钮边缘就会随机移动一个位置。</p>
+
+<p><img src="../res/img/806-2.png" alt="image-1667375500666" />
+<img src="../res/img/806-3.png" alt="image-1667375596764" /></p>
+
+<p>这随机移动位置应该是调用了win32api中的<code>SetWindowPos</code>通过查找引用找到相关代码如下：<img src="../res/img/806-4.png" alt="image-1667375780292" /></p>
+
+<p>查询了下这个api的参数:</p>
+
+<pre><code>//声明:
+SetWindowPos(
+  hWnd: HWND;            {窗口句柄}
+  hWndInsertAfter: HWND; {窗口的 Z 顺序}
+  X, Y: Integer;         {位置}
+  cx, cy: Integer;       {大小}
+  uFlags: UINT           {选项}
+): BOOL;
+
+//hWndInsertAfter 参数可选值:
+HWND_TOP       = 0;        {在前面}
+HWND_BOTTOM    = 1;        {在后面}
+HWND_TOPMOST   = HWND(-1); {在前面, 位于任何顶部窗口的前面}
+HWND_NOTOPMOST = HWND(-2); {在前面, 位于其他顶部窗口的后面}
+
+//uFlags 参数可选值:
+SWP_NOSIZE         = 1;    {忽略 cx、cy, 保持大小}
+SWP_NOMOVE         = 2;    {忽略 X、Y, 不改变位置}
+SWP_NOZORDER       = 4;    {忽略 hWndInsertAfter, 保持 Z 顺序}
+SWP_NOREDRAW       = 8;    {不重绘}
+SWP_NOACTIVATE     = $10;  {不激活}
+SWP_FRAMECHANGED   = $20;  {强制发送 WM_NCCALCSIZE 消息, 一般只是在改变大小时才发送此消息}
+SWP_SHOWWINDOW     = $40;  {显示窗口}
+SWP_HIDEWINDOW     = $80;  {隐藏窗口}
+SWP_NOCOPYBITS     = $100; {丢弃客户区}
+SWP_NOOWNERZORDER  = $200; {忽略 hWndInsertAfter, 不改变 Z 序列的所有者}
+SWP_NOSENDCHANGING = $400; {不发出 WM_WINDOWPOSCHANGING 消息}
+SWP_DRAWFRAME      = SWP_FRAMECHANGED; {画边框}
+SWP_NOREPOSITION   = SWP_NOOWNERZORDER;{}
+SWP_DEFERERASE     = $2000;            {防止产生 WM_SYNCPAINT 消息}
+SWP_ASYNCWINDOWPOS = $4000;            {若调用进程不拥有窗口, 系统会向拥有窗口的线程发出需求}
+
+</code></pre>
+
+<p>发现 <code>uFlags</code> 有个值可以忽略xy，
+现在程序中 <code>SetWindowPos(DAT_0040b020,(HWND)0x2,iVar1 % 0x96,iVar2 % 0x96,0x50,0x19,0);</code>  <code>uFlags</code>是0只需要把它改成2就好了</p>
+
+<p>在汇编中找到代码位置</p>
+
+<p><img src="../res/img/806-5.png" alt="image-1667376108153" />
+修改为<code>0x2</code> 后导出运行程序。
+<img src="../res/img/806-6.png" alt="image-1667376366593" />
+虽然成功点击了按钮但是确弹出了一个新的消息框。
+消息框的api是<code>MessageBoxW</code>继续查找相关引用
+找到如下相关代码：</p>
+
+<pre><code>void UndefinedFunction_00401510(HWND param_1,UINT param_2,WPARAM param_3,int param_4)
+
+{
+  uint uVar1;
+  HFONT wParam;
+  char *_Str;
+  FILE *_File;
+  size_t _Count;
+  
+  if (param_2 == 2) {
+    PostQuitMessage(0);
+  }
+  else if (param_2 == 0x111) {
+    if ((short)param_3 == 2) {
+      PostQuitMessage(0);
+    }
+    if ((short)param_3 == 3) {
+      if (param_4 == 0x1bf52) {
+        _Str = FUN_00401f8a();
+        MessageBoxW(param_1,
+                    L&quot;恭喜你获得 flag！flag 将保存到当前文件夹下的 flag_machine.txt 文件中！&quot;
+                    ,L&quot;Congratulations&quot;,0);
+        _File = fopen(&quot;flag_machine.txt&quot;,&quot;w&quot;);
+        if (_File == (FILE *)0x0) {
+          MessageBoxW(param_1,L&quot;文件打开错误！&quot;,L&quot;Error&quot;,0);
+          free(_Str);
+                    /* WARNING: Subroutine does not return */
+          exit(-1);
+        }
+        _Count = strlen(_Str);
+        fwrite(_Str,1,_Count,_File);
+        fclose(_File);
+        free(_Str);
+      }
+      else {
+        MessageBoxW(param_1,L&quot;获取 flag 失败！您不是本机的 “超级管理员” ！&quot;,
+                    L&quot;Error&quot;,0);
+      }
+    }
+  }
+  else if (param_2 == 1) {
+    DAT_0040b020 = CreateWindowExW(0,L&quot;Button&quot;,L&quot;狠心夺取&quot;,0x50000000,0x55,0x96,0x50,0x19,
+                                   param_1,(HMENU)0x3,(HINSTANCE)0x0,(LPVOID)0x0);
+    DAT_0040b024 = CreateWindowExW(0,L&quot;Button&quot;,L&quot;放手离开&quot;,0x50000000,0xb9,0x96,0x50,0x19,
+                                   param_1,(HMENU)0x2,(HINSTANCE)0x0,(LPVOID)0x0);
+    DAT_0040b028 = CreateWindowExW(0,L&quot;Static&quot;,(LPCWSTR)PTR_DAT_00409004,0x50000000,0x55,100,300,
+                                   0x14,param_1,(HMENU)0x1,(HINSTANCE)0x0,(LPVOID)0x0);
+    uVar1 = GetWindowLongA(param_1,-0x10);
+    SetWindowLongA(param_1,-0x10,uVar1 &amp; 0xfffeffff);
+    wParam = CreateFontW(0xc,0,0,0,400,0,0,0,0x86,0,0,2,0x12,L&quot;宋体&quot;);
+    SendMessageA(param_1,0x30,(WPARAM)wParam,1);
+    SendMessageA(DAT_0040b020,0x30,(WPARAM)wParam,1);
+    SendMessageA(DAT_0040b024,0x30,(WPARAM)wParam,1);
+    SendMessageA(DAT_0040b028,0x30,(WPARAM)wParam,1);
+  }
+  DefWindowProcW(param_1,param_2,param_3,param_4);
+  return;
+}
+
+</code></pre>
+
+<p>看来目前是进到了 <code>if ((short)param_3 == 3)</code>的if中但是<code>(param_4 != 0x1bf52)</code>所以弹出了这个消息框。
+找到相关汇编判断代码：</p>
+
+<pre><code>        0040180a 81 7d 14        CMP        dword ptr [EBP + 0x14],0x1bf52
+                 52 bf 01 00
+        00401811 74 2d           JZ         LAB_00401840
+</code></pre>
+
+<p><a href="https://blog.csdn.net/zmmycsdn/article/details/78511948" target="_blank">汇编跳转相关代码介绍</a></p>
+
+<p>这里用的跳转是 <code>JZ</code> 为零则跳转 那么可以改为 <code>JNZ</code> 不为零则跳转。实现了取反的效果。</p>
+
+<p>再次导出运行：
+<img src="../res/img/806-7.png" alt="image-1667376843978" />
+成功得到flag</p>
+
+<p>之前对汇编不是很熟所以做的过程中也不是很顺利。借助了<code>ghidra</code> 这款好用的静态分析工具才完成。还好之前写过一些windows程序对win32还有点印象。</p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-11-02 16:18:20</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

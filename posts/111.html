@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="video_player"/>
+    <meta name="description" content="文章讲述了作者在使用Flutter开发应用过程中的一个问题，即如何实现倍速播放。作者首先介绍了Flutter支持倍速播放的两种播放器，并选择了官方的Video_Player进行开发。接着，作者通过查看Video_Player的源码发现其封装了Exoplayer播放器，并且Exoplayer支持倍速播放。因此，作者通过Flutter与原生的通信，调用Exoplayer的方法来实现倍速播放。最后，作者展示了实现效果，并给出了相关项目的地址。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>基于Flutter Video_Player实现倍速播放 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">基于Flutter Video_Player实现倍速播放</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-07-11 00:12:17</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">video_player</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>文章讲述了作者在使用Flutter开发应用过程中的一个问题，即如何实现倍速播放。作者首先介绍了Flutter支持倍速播放的两种播放器，并选择了官方的Video_Player进行开发。接着，作者通过查看Video_Player的源码发现其封装了Exoplayer播放器，并且Exoplayer支持倍速播放。因此，作者通过Flutter与原生的通信，调用Exoplayer的方法来实现倍速播放。最后，作者展示了实现效果，并给出了相关项目的地址。</p>
+            </section>
+        </header>
+            <h1 id="为啥要在-flutter-实现">为啥要在 Flutter 实现</h1>
+
+<p>&amp;emsp;&amp;emsp;在前面我用 Flutter 完成了影视 APP 的开发。在各电视剧拖拖拉拉的剧情节奏有时就需要快进，但怕错过一些重要剧情内容。所以倍速播放一直让我头疼。在安卓那边有许多播放器直接就支持倍速播放。但我在前期开发 Flutter的应用的时候并没有去仔细寻找支持倍速播放的播放器就选择了官方的 Video_Player 进行开发。</p>
+
+<p>flutter支持倍速播放的播放器：</p>
+
+<ul>
+<li><a href="https://fijkplayer.befovy.com/" target="_blank">fijkplayer</a></li>
+<li><a href="https://github.com/RandyWei/flt_video_player/blob/master/README_CN.md" target="_blank">flt_video_player</a></li>
+</ul>
+
+<h1 id="实现倍速">实现倍速</h1>
+
+<p>&amp;emsp;&amp;emsp;在看了Video_Player的源码后知道Video_Player在安卓这边是封装的 <a href="https://exoplayer.dev/" target="_blank">Exoplayer</a> 播放器 查看官方文档发现Exoplayer是支持倍速播放的。现在我只需要实现 Flutter 与原生的通信就行了。
+这个类的 <code>Speed</code> 参数控制的就是播放倍速
+<img src="../res/img/111-1.jpeg" alt="image.png" />
+通过 <code>SimpleExoPlayer.SetPlaybackParameters</code> 方法来修改</p>
+
+<pre><code>void setSpeed(double value) {
+      float bracketedValue = (float) value;
+      PlaybackParameters existingParam = exoPlayer.getPlaybackParameters();
+      PlaybackParameters newParameter =
+          new PlaybackParameters(bracketedValue, existingParam.pitch, existingParam.skipSilence);
+      exoPlayer.setPlaybackParameters(newParameter);
+    }
+</code></pre>
+
+<h1 id="效果展示">效果展示</h1>
+
+<p>通过 <code>VideoPlayerController</code> 下 <code>setSpeed（）</code> 方法修改播放速度。
+<video src="https://danbai.oss-cn-chengdu.aliyuncs.com/bk/Record_2020-07-11-18-26-55_f802aed858f448d1131af0_1594463673230.mp4" controls="controls" width="480" height="640">
+Your browser does not support the video tag.
+</video></p>
+
+<p><a href="https://github.com/danbai225/plugins/tree/master/packages/video_player" target="_blank">项目地址</a>仅实现了安卓</p>
+
+<p><a href="https://github.com/flutter/plugins/pull/1400" target="_blank">受此启发</a></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2020-07-11 18:45:53</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

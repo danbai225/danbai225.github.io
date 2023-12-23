@@ -1,0 +1,419 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Go,加速器"/>
+    <meta name="description" content="通过提供socks转发来实现加速的原理是利用中转游戏数据传输使用加速器的优质线路和传输算法，以达到快速传输、减少延迟和丢包的目的。具体步骤如下：
+
+1. 首先在加速器客户端选择合适的加速模式，例如通过劫持游戏进程的流量来加速。可以让自己的程序改成游戏进程的名称，让程序的流量通过加速器来加速。
+2. 准备一个服务器或者公网IP，在局域网中能够相互连接的两台电脑（A和B）。
+3. 在服务器上搭建提供socks服务的服务端，可以使用sing-box库来实现。
+4. 在客户端上也使用sing-box库来实现，创建一个虚拟网卡来劫持游戏的流量。
+5. 在客户端配置中指定服务端的IP和端口，设置加速器客户端的参数和加速模式。
+6. 客户端通过socks转发将游戏数据传输给服务端，服务端再将数据传输给加速器进行加速处理。
+
+这样就可以利用socks转发实现游戏加速的效果。以上是基于sing-box库的实现方法，也可以使用其他支持UDP的转发协议或工具来实现。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>共享你的游戏加速器 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">共享你的游戏加速器</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2023-11-09 17:11:23</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Go</span>
+                    
+                    <span class="label label-success label-outline">加速器</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>通过提供socks转发来实现加速的原理是利用中转游戏数据传输使用加速器的优质线路和传输算法，以达到快速传输、减少延迟和丢包的目的。具体步骤如下：
+
+1. 首先在加速器客户端选择合适的加速模式，例如通过劫持游戏进程的流量来加速。可以让自己的程序改成游戏进程的名称，让程序的流量通过加速器来加速。
+2. 准备一个服务器或者公网IP，在局域网中能够相互连接的两台电脑（A和B）。
+3. 在服务器上搭建提供socks服务的服务端，可以使用sing-box库来实现。
+4. 在客户端上也使用sing-box库来实现，创建一个虚拟网卡来劫持游戏的流量。
+5. 在客户端配置中指定服务端的IP和端口，设置加速器客户端的参数和加速模式。
+6. 客户端通过socks转发将游戏数据传输给服务端，服务端再将数据传输给加速器进行加速处理。
+
+这样就可以利用socks转发实现游戏加速的效果。以上是基于sing-box库的实现方法，也可以使用其他支持UDP的转发协议或工具来实现。</p>
+            </section>
+        </header>
+            <h1 id="通过提供sockt转发实现加速">通过提供sockt转发实现加速</h1>
+
+<p>游戏加速原理就是通过中转你的游戏数据传输使用加速器的优质线路和传输算法达到更快的传输目的减少延迟和丢包。</p>
+
+<p>先贴上开源地址<a href="https://github.com/danbai225/gpp" target="_blank">gpp</a></p>
+
+<p>在加速器客户端（也就是我们下载的加速器）有几种加速模式，来劫持我们游戏的数据传输，现在我们利用加速器的进程加速模式来实现我们想要的效果。例如我们现在需要加速 pubg，那么可能加速器就会把名叫 pubg.exe 的进程的流量劫持来加速。我们让自己的程序改成叫 pubg.exe 就可以让我们自己的程序的流量通过加速器来加速。</p>
+
+<ul>
+<li>服务器 or 公网ip or ab两台电脑在局域网能互相连接</li>
+<li>电脑a</li>
+<li>电脑b</li>
+<li>某款加速器</li>
+</ul>
+
+<p>这里我是使用<a href="https://sing-box.sagernet.org/zh/" target="_blank">sing-box</a>来搭建提供socks服务的服务端。</p>
+
+<p>方法有很多</p>
+
+<ul>
+<li>自己实现socks5等支持udp的转发协议</li>
+<li>能够支持这些协议的服务端</li>
+<li>很多xx工具也可以</li>
+</ul>
+
+<p>我是直接使用singbox库导入到go中实现的这个服务端。</p>
+
+<pre><code>package main
+
+import (
+	&quot;context&quot;
+	box &quot;github.com/sagernet/sing-box&quot;
+	&quot;github.com/sagernet/sing-box/option&quot;
+	&quot;net/netip&quot;
+	&quot;time&quot;
+)
+
+func Server() error {
+	var instance, err = box.New(box.Options{
+		Context: context.Background(),
+		Options: option.Options{
+			Log: &amp;option.LogOptions{
+				Disabled:     false,
+				Level:        &quot;info&quot;,
+				Output:       &quot;run.log&quot;,
+				Timestamp:    true,
+				DisableColor: true,
+			},
+			DNS: &amp;option.DNSOptions{
+				Servers: []option.DNSServerOptions{
+					{
+						Tag:     &quot;ali&quot;,
+						Address: &quot;223.5.5.5&quot;,
+					},
+				},
+				Rules:          []option.DNSRule{},
+				Final:          &quot;&quot;,
+				ReverseMapping: false,
+				FakeIP:         nil,
+				DNSClientOptions: option.DNSClientOptions{
+					DisableCache:     false,
+					DisableExpire:    false,
+					IndependentCache: false,
+				},
+			},
+			Inbounds: []option.Inbound{
+				{
+					Type: &quot;vless&quot;,
+					Tag:  &quot;vless-in&quot;,
+					VLESSOptions: option.VLESSInboundOptions{
+						ListenOptions: option.ListenOptions{
+							Listen:     option.NewListenAddress(netip.AddrFrom4([4]byte([]byte{0, 0, 0, 0}))),
+							ListenPort: 5123,
+						},
+						Users: []option.VLESSUser{
+							{
+								Name: &quot;danbai&quot;,
+								UUID: &quot;xxxx-xxxx-xxx-xxx-xxx&quot;,
+							},
+						},
+						TLS: nil,
+						Transport: &amp;option.V2RayTransportOptions{
+							Type: &quot;ws&quot;,
+							WebsocketOptions: option.V2RayWebsocketOptions{
+								Path:                &quot;/test&quot;,
+								Headers:             nil,
+								MaxEarlyData:        2048,
+								EarlyDataHeaderName: &quot;Sec-WebSocket-Protocol&quot;,
+							},
+						},
+					},
+				},
+			},
+			Outbounds: []option.Outbound{
+				{
+					Type: &quot;direct&quot;,
+					Tag:  &quot;direct-out&quot;,
+				},
+			},
+		},
+	})
+	if err != nil {
+		return err
+	}
+	err = instance.Start()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+</code></pre>
+
+<p>客户端这边也是基于<code>sing-box</code>来实现的 github上有两个开源的加速器<code>https://github.com/netchx/netch</code>和<code>https://github.com/githello123/sstap</code></p>
+
+<p>客户端首先需要和加速器一样实现劫持游戏的流量的功能才能加速游戏。
+我们使用tun创建虚拟网卡来实现劫持</p>
+
+<pre><code>package main
+
+import (
+	&quot;context&quot;
+	&quot;fmt&quot;
+	box &quot;github.com/sagernet/sing-box&quot;
+	&quot;github.com/sagernet/sing-box/option&quot;
+	&quot;github.com/sagernet/sing/common/auth&quot;
+	&quot;net/netip&quot;
+	&quot;os&quot;
+)
+
+func Client() (*box.Box, error) {
+	home, _ := os.UserHomeDir()
+	var instance, err = box.New(box.Options{
+		Context: context.Background(),
+		Options: option.Options{
+			Log: &amp;option.LogOptions{
+				Disabled:     true,
+				Level:        &quot;info&quot;,
+				Output:       &quot;run.log&quot;,
+				Timestamp:    true,
+				DisableColor: true,
+			},
+			DNS: &amp;option.DNSOptions{
+				Servers: []option.DNSServerOptions{
+					{
+						Tag:     &quot;ali&quot;,
+						Address: &quot;223.5.5.5&quot;,
+					},
+				},
+				Rules:          []option.DNSRule{},
+				Final:          &quot;ali&quot;,
+				ReverseMapping: false,
+				FakeIP:         nil,
+				DNSClientOptions: option.DNSClientOptions{
+					DisableCache:     false,
+					DisableExpire:    false,
+					IndependentCache: false,
+				},
+			},
+			Inbounds: []option.Inbound{
+				{
+					Type: &quot;tun&quot;,
+					Tag:  &quot;tun-in&quot;,
+					TunOptions: option.TunInboundOptions{
+						InterfaceName: &quot;utun225&quot;,
+						MTU:           1200,
+						Inet4Address: option.Listable[netip.Prefix]{
+							netip.MustParsePrefix(&quot;172.19.0.1/30&quot;),
+						},
+						AutoRoute:              true,
+						StrictRoute:            false,
+						EndpointIndependentNat: true,
+						UDPTimeout:             300,
+						Stack:                  &quot;system&quot;,
+						InboundOptions: option.InboundOptions{
+							SniffEnabled: true,
+						},
+					},
+				},
+				{
+					Type: &quot;socks&quot;,
+					Tag:  &quot;socks-in&quot;,
+					SocksOptions: option.SocksInboundOptions{
+						ListenOptions: option.ListenOptions{
+							Listen:     option.NewListenAddress(netip.AddrFrom4([4]byte([]byte{0, 0, 0, 0}))),
+							ListenPort: 5123,
+						},
+						Users: []auth.User{
+							{
+								Username: &quot;admin&quot;,
+								Password: &quot;admin&quot;,
+							},
+						},
+					},
+				},
+			},
+			Route: &amp;option.RouteOptions{
+				AutoDetectInterface: true,
+				GeoIP: &amp;option.GeoIPOptions{
+					Path:        fmt.Sprintf(&quot;%s%c%s%c%s&quot;, home, os.PathSeparator, &quot;.gpp&quot;, os.PathSeparator, &quot;data-a&quot;),
+					DownloadURL: &quot;https://ghps.cc/https://github.com/SagerNet/sing-geoip/releases/latest/download/geoip.db&quot;,
+				},
+				Geosite: &amp;option.GeositeOptions{
+					Path:        fmt.Sprintf(&quot;%s%c%s%c%s&quot;, home, os.PathSeparator, &quot;.gpp&quot;, os.PathSeparator, &quot;data-b&quot;),
+					DownloadURL: &quot;https://ghps.cc/https://github.com/SagerNet/sing-geosite/releases/latest/download/geosite.db&quot;,
+				},
+				Rules: []option.Rule{
+					{
+						Type: &quot;default&quot;,
+						DefaultOptions: option.DefaultRule{
+							Protocol: option.Listable[string]{&quot;dns&quot;},
+							Outbound: &quot;dns_out&quot;,
+						},
+					},
+					{
+						Type: &quot;default&quot;,
+						DefaultOptions: option.DefaultRule{
+							Inbound:  option.Listable[string]{&quot;dns_in&quot;},
+							Outbound: &quot;dns_out&quot;,
+						},
+					},
+					{
+						Type: &quot;default&quot;,
+						DefaultOptions: option.DefaultRule{
+							Geosite:  option.Listable[string]{&quot;cn&quot;},
+							Outbound: &quot;direct&quot;,
+						},
+					}, {
+						Type: &quot;default&quot;,
+						DefaultOptions: option.DefaultRule{
+							GeoIP:    option.Listable[string]{&quot;cn&quot;, &quot;private&quot;},
+							Outbound: &quot;direct&quot;,
+						},
+					},
+				},
+			},
+			Outbounds: []option.Outbound{
+				{
+					Type: &quot;vless&quot;,
+					Tag:  &quot;vless-out&quot;,
+					VLESSOptions: option.VLESSOutboundOptions{
+						ServerOptions: option.ServerOptions{
+							Server:     &quot;x.x.x.x&quot;,
+							ServerPort: 5123,
+						},
+						UUID: &quot;xxxx-xxx-xxxx-xxx-xxxx&quot;,
+						Multiplex: &amp;option.MultiplexOptions{
+							Enabled:        true,
+							Protocol:       &quot;smux&quot;,
+							MaxConnections: 5,
+							MinStreams:     1,
+							MaxStreams:     10,
+							Padding:        false,
+						},
+						Transport: &amp;option.V2RayTransportOptions{
+							Type: &quot;ws&quot;,
+							WebsocketOptions: option.V2RayWebsocketOptions{
+								Path:                &quot;/test&quot;,
+								MaxEarlyData:        2048,
+								EarlyDataHeaderName: &quot;Sec-WebSocket-Protocol&quot;,
+							},
+						},
+					},
+				},
+				{
+					Type: &quot;block&quot;,
+					Tag:  &quot;block&quot;,
+				},
+				{
+					Type: &quot;direct&quot;,
+					Tag:  &quot;direct&quot;,
+				}, {
+					Type: &quot;dns&quot;,
+					Tag:  &quot;dns_out&quot;,
+				},
+			},
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+	return instance, nil
+}
+
+</code></pre>
+
+<p>基于<code>sing-box</code>的强大可以实现全平台使用。</p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2023-11-09 17:19:59</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

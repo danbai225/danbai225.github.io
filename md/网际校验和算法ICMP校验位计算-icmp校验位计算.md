@@ -1,14 +1,16 @@
 ---
 title: 网际校验和算法ICMP校验位计算
-date: 2021-06-10 14:19:34.62
-updated: 2021-06-10 15:06:06.516
+date: "2021-06-10 14:19:34"
+updated: "2021-06-10 15:06:06"
 url: https://p00q.cn/?p=326
-categories: 
-- 编码协议
-tags: 
-- ICMP
-- 协议
-- IP
+categories:
+    - 编码协议
+tags:
+    - ICMP
+    - 协议
+    - IP
+summary: 本文主要介绍了关于网络知识中的ping命令和其中的ICMP协议。ping命令使用ICMP协议来进行网络连接测试，在ping命令中，发送的数据包中包含了校验和字段。校验和的计算过程是将每两个字节相加，直到最后得出结果，并与前面的结果相加，然后取结果的反码作为最终的校验和。文章还给出了一个Go语言代码示例，展示了如何计算校验和。
+id: "326"
 ---
 
 面试时聊到了一些网络知识。其中ping这个东西，是我经常用到的但似乎对它又不是很了解，于是去看了下相关协议的介绍。它使用了一种协议叫[ICMP（Internet Control Message Protocol）Internet控制报文协议](https://baike.baidu.com/item/ICMP)。

@@ -1,12 +1,14 @@
 ---
 title: 制作生成漂亮的代码截图
-date: 2021-08-23 11:05:16.887
-updated: 2021-08-23 11:05:40.285
+date: "2021-08-23 11:05:16"
+updated: "2021-08-23 11:05:40"
 url: https://p00q.cn/?p=387
-categories: 
-- 开发
-tags: 
-- Go
+categories:
+    - 开发
+tags:
+    - Go
+summary: 这篇文章介绍了使用Go语言调用carbon的原理和代码。作者首先介绍了carbon的使用方法和制作代码截图的工具。然后作者通过使用谷歌无头浏览器来实现调用carbon生成代码截图的功能。作者使用了Go语言中的两个开源库，分别是chromedp和rod。最后，作者展示了使用Go代码调用carbon进行代码截图的示例代码，并详细解释了代码的运行原理。通过模拟输入方式输入代码，并通过获取dom的宽高来确定截图的大小。最终，作者成功生成了代码截图并返回了相关的图片数据。
+id: "387"
 ---
 
 # 使用[carbon](https://carbon.now.sh/)制作
@@ -139,4 +141,5 @@ var element=document.getElementById('export-container')
   })
   return img, nil
 ```
+
 

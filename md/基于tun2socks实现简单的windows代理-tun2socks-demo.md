@@ -1,16 +1,18 @@
 ---
 title: 基于tun2socks实现简单的windows代理
-date: 2023-04-03 18:22:40.456
-updated: 2023-04-03 18:29:16.68
+date: "2023-04-03 18:22:40"
+updated: "2023-04-03 18:29:16"
 url: https://p00q.cn/?p=838
-categories: 
-- Go
-- 奇技淫巧
-tags: 
-- socks5
-- tun
-- tun2socks
-- proxy
+categories:
+    - Go
+    - 奇技淫巧
+tags:
+    - socks5
+    - tun
+    - tun2socks
+    - proxy
+summary: tun2socks是一个基于tun设备的部分TCP/UDP流量代理工具。通过抓取本地IP流量并识别需要代理的流量，再将识别出的流量通过tun设备处理后发送至socks代理服务器。使用tun2socks可以实现多个应用程序共享代理服务，而无需修改各个应用程序的代理设置。该工具常被用于科学上网等用途。以上是tun2socks的一个实现代码，其中使用了tun2socks库和fyne库来构建一个具有连接和断开功能的窗口界面。
+id: "838"
 ---
 
 tun2socks是一个基于tun设备的部分TCP/UDP流量代理工具。在使用过程中，通过抓取本地IP流量，识别需要代理的流量，再通过tun设备将识别出的流量处理后发送至socks代理服务器。使用tun2socks可以实现多个应用程序共享代理服务，而无需修改各个应用程序的代理设置。这个工具可用于安全地访问因政策原因在本地网络限制的国外互联网资源，常常被用于科学上网等用途。

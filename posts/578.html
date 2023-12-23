@@ -1,0 +1,423 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Go,c"/>
+    <meta name="description" content="该代码是一个简单的贪吃蛇游戏的实现。主要包含以下几个部分：
+
+1. 声明了一些需要使用的常量和变量，如蛇的类型、速度等。
+2. 实现了清空终端、获取终端宽高的函数。
+3. 初始化蛇的位置和身体。
+4. 随机食物位置的函数。
+5. 按键监听的函数，根据按键设置蛇的移动方向和加速开关。
+6. 计算下一次移动位置和判断蛇是否撞到边界或自己的函数。
+7. 绘制地图的函数。
+
+以上就是该代码的主要内容。完整的代码可以查看作者的GitHub仓库。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>golang实现跨平台单文件无依赖贪吃蛇游戏 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">golang实现跨平台单文件无依赖贪吃蛇游戏</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2022-03-29 20:30:54</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Go</span>
+                    
+                    <span class="label label-success label-outline">c</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>该代码是一个简单的贪吃蛇游戏的实现。主要包含以下几个部分：
+
+1. 声明了一些需要使用的常量和变量，如蛇的类型、速度等。
+2. 实现了清空终端、获取终端宽高的函数。
+3. 初始化蛇的位置和身体。
+4. 随机食物位置的函数。
+5. 按键监听的函数，根据按键设置蛇的移动方向和加速开关。
+6. 计算下一次移动位置和判断蛇是否撞到边界或自己的函数。
+7. 绘制地图的函数。
+
+以上就是该代码的主要内容。完整的代码可以查看作者的GitHub仓库。</p>
+            </section>
+        </header>
+            <h1 id="定义声明需要的数据和结构">定义声明需要的数据和结构</h1>
+
+<pre><code>const (
+	food      = 3
+	head      = 2
+	body      = 1
+	baseSpeed = 100
+)
+
+var bodyArray []point   //蛇点位记录数组
+var integral = 0        //积分
+var vector = int64(6)   //方向 根据小数字键盘 2下 4左 6右 8上 方向来
+var speed = 400         //附加间隔时间
+var speedUp = uint32(0) //是否加速
+
+type point struct {
+	x    int
+	y    int
+	Type int
+}
+
+var foodP point
+</code></pre>
+
+<h1 id="终端的操作">终端的操作</h1>
+
+<p>每一次的画面实现更新需要清除原来的输出再输出新的。
+通过使用命令来清空控制台。
+unix通过<code>clear</code>命令windows通过<code>cls</code>命令</p>
+
+<pre><code class="language-GO">//清空终端
+func clear() {
+	switch runtime.GOOS {
+	case &quot;linux&quot;, &quot;darwin&quot;:
+		cmd := exec.Command(&quot;clear&quot;)
+		cmd.Stdout = os.Stdout
+		_ = cmd.Run()
+	case &quot;windows&quot;:
+		cmd := exec.Command(&quot;cmd&quot;, &quot;/c&quot;, &quot;cls&quot;)
+		cmd.Stdout = os.Stdout
+		_ = cmd.Run()
+	}
+}
+</code></pre>
+
+<p>直接使用终端的宽高来限定地图边界。
+windows和unix系统都有<code>stty</code>这个命令</p>
+
+<pre><code>//获取终端宽高
+func getWSZ() (int, int, error) {
+	cmd := exec.Command(&quot;stty&quot;, &quot;size&quot;)
+	cmd.Stdin = os.Stdin
+	out, err := cmd.Output()
+	if err != nil {
+		return 0, 0, err
+	}
+	a := strings.ReplaceAll(strings.ReplaceAll(string(out), &quot;\r&quot;, &quot;&quot;), &quot;\n&quot;, &quot;&quot;)
+	split := strings.Split(a, &quot; &quot;)
+	h, _ := strconv.Atoi(split[0])
+	w, _ := strconv.Atoi(split[1])
+	return h, w, err
+}
+</code></pre>
+
+<h1 id="初始化工作">初始化工作</h1>
+
+<h2 id="初始化蛇的位置和身体">初始化蛇的位置和身体</h2>
+
+<p>默认出生在左上角向右移动</p>
+
+<pre><code class="language-Go">func iniBody() {
+	var err error
+	h, w, err = getWSZ()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	h -= 2 //减去两行用来输出额外信息
+	bodyArray = []point{
+		{
+			x:    2,
+			y:    0,
+			Type: head,
+		},
+		{
+			x:    1,
+			y:    0,
+			Type: body,
+		},
+		{
+			x:    0,
+			y:    0,
+			Type: body,
+		},
+	}
+}
+</code></pre>
+
+<h2 id="随机食物位置">随机食物位置</h2>
+
+<pre><code class="language-Go">func randFood() {
+	x := rand.Int63n(int64(w))
+	y := rand.Int63n(int64(h))
+	flg := false
+    //确保不会刷新到身体上
+	for _, p := range bodyArray {
+		if int64(p.x) == x &amp;&amp; int64(p.y) == y {
+			flg = true
+		}
+	}
+	if flg {
+		randFood()
+		speed -= 10
+	} else {
+		foodP.x = int(x)
+		foodP.y = int(y)
+		foodP.Type = food
+	}
+}
+</code></pre>
+
+<h2 id="按键监听">按键监听</h2>
+
+<h3 id="监听实现">监听实现</h3>
+
+<p>原本我是直接使用的<code>github.com/robotn/gohook</code>库，但后来为了去掉依赖，使用cgo重新实现了下简单的监听。</p>
+
+<pre><code class="language-Go">/*
+#cgo windows CFLAGS: -D CGO_OS_WINDOWS=1
+#cgo darwin  CFLAGS: -D CGO_OS_DRWIN=1
+#cgo linux   CFLAGS: -D CGO_OS_LINUX=1
+#if defined(CGO_OS_DRWIN)
+	#include &lt;termios.h&gt;
+#elif defined(CGO_OS_LINUX)
+	#include &lt;termio.h&gt;
+#endif
+
+#if defined(CGO_OS_WINDOWS)
+	#include &lt;conio.h&gt;
+	char getcharGo(){
+		return getch();
+	}
+#else
+	#include &lt;stdio.h&gt;
+	char getcharGo()
+	{
+	int in;
+	struct termios new_settings;
+	struct termios stored_settings;
+	tcgetattr(0,&amp;stored_settings);
+	new_settings = stored_settings;
+	new_settings.c_lflag &amp;= (~ICANON);
+	new_settings.c_cc[VTIME] = 0;
+	tcgetattr(0,&amp;stored_settings);
+	new_settings.c_cc[VMIN] = 1;
+	tcsetattr(0,TCSANOW,&amp;new_settings);
+	in = getchar();
+	tcsetattr(0,TCSANOW,&amp;stored_settings);
+	return in;
+	}
+#endif
+
+*/
+import &quot;C&quot;
+</code></pre>
+
+<h3 id="按键处理">按键处理</h3>
+
+<p>需要携程调用该方法，根据<code>C.getcharGo()</code>返回的按键来设置蛇的下一步移动方向
+以及空格键的开关加速</p>
+
+<pre><code>func listeningInput() {
+	for {
+		result := C.getcharGo()
+		if result == 32 {
+			loadUint32 := atomic.LoadUint32(&amp;speedUp)
+			if loadUint32 == 0 {
+				atomic.StoreUint32(&amp;speedUp, uint32(1))
+			} else {
+				atomic.StoreUint32(&amp;speedUp, uint32(0))
+			}
+		}
+		switch result {
+		case 119, 72, 65:
+			if atomic.LoadInt64(&amp;vector) != 2 {
+				atomic.StoreInt64(&amp;vector, 8)
+			}
+		case 97, 75, 68:
+			if atomic.LoadInt64(&amp;vector) != 6 {
+				atomic.StoreInt64(&amp;vector, 4)
+			}
+		case 115, 80, 66:
+			if atomic.LoadInt64(&amp;vector) != 8 {
+				atomic.StoreInt64(&amp;vector, 2)
+			}
+		case 100, 77, 67:
+			if atomic.LoadInt64(&amp;vector) != 4 {
+				atomic.StoreInt64(&amp;vector, 6)
+			}
+
+		}
+	}
+}
+</code></pre>
+
+<h1 id="计算下一次移动位置和判断">计算下一次移动位置和判断</h1>
+
+<pre><code class="language-Go">func next() bool {
+	//蛇的移动是去掉最后一个点位 把头部点位移到新的点位
+	newP := point{
+		x:    bodyArray[0].x,
+		y:    bodyArray[0].y,
+		Type: bodyArray[0].Type,
+	}
+	//根据方向移动
+	switch atomic.LoadInt64(&amp;vector) {
+	case 8:
+		newP.y -= 1
+	case 2:
+		newP.y += 1
+	case 4:
+		newP.x -= 1
+	case 6:
+		newP.x += 1
+	}
+	//添加到头部
+	bodyArray = append([]point{newP}, bodyArray...)
+	//如果没有吃到食物就去掉尾巴
+	if !(newP.x == foodP.x &amp;&amp; newP.y == foodP.y) {
+		bodyArray = bodyArray[:len(bodyArray)-1]
+	} else {
+		//吃到食物就添加积分 随机新的食物
+		randFood()
+		integral++
+	}
+	//改变原来头部类型为身体
+	bodyArray[1].Type = body
+	//超过边界 结束
+	if newP.y &gt;= h || newP.y &lt; 0 {
+		return false
+	}
+	if newP.x &gt;= w || newP.x &lt; 0 {
+		return false
+	}
+	//撞到自己
+	for _, p := range bodyArray[1:] {
+		if bodyArray[0].x == p.x &amp;&amp; bodyArray[0].y == p.y {
+			return false
+		}
+	}
+	return true
+}
+</code></pre>
+
+<h1 id="绘制地图">绘制地图</h1>
+
+<pre><code class="language-Go">func drawMap() {
+	clear()
+	drawBar()
+	m := make(map[string]int)
+	m[fmt.Sprintf(&quot;%d-%d&quot;, foodP.x, foodP.y)] = food
+	for _, p := range bodyArray {
+		m[fmt.Sprintf(&quot;%d-%d&quot;, p.x, p.y)] = p.Type
+	}
+	for i := 0; i &lt; h; i++ {
+		for j := 0; j &lt; w; j++ {
+			k := fmt.Sprintf(&quot;%d-%d&quot;, j, i)
+			out := &quot; &quot;
+			if v, ok := m[k]; ok {
+				switch v {
+				case body:
+					out = &quot;*&quot;
+				case head:
+					out = &quot;@&quot;
+				case food:
+					out = &quot;A&quot;
+				}
+			}
+			print(out)
+		}
+	}
+	drawBottom()
+}
+</code></pre>
+
+<h1 id="完整源码">完整源码</h1>
+
+<p><a href="https://github.com/danbai225/snake" target="_blank">github</a></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-03-29 20:59:43</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

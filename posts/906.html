@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Go,proxy,http"/>
+    <meta name="description" content="这是一篇使用Clash作为HTTP客户端代理的Go语言教程。在爬取网站时，经常会遇到一些反爬虫的网站，这些网站会检测你的IP地址，如果被检测到是爬虫，就会拒绝访问。为了解决这个问题，可以使用代理来隐藏真实IP地址。代理的原理是将请求发送到代理服务器，代理服务器再发送给目标服务器并返回数据。这样目标服务器无法知道真实IP地址。本文介绍了使用Clash作为HTTP客户端代理的方法。
+
+首先，需要获取HTTP代理。可以通过免费获取或者付费购买的方式来获取。作者选择了使用机场提供的v2或SSR协议的代理。
+
+接下来，将Clash代码引入Go程序中，并设置代理的配置信息。代码中使用了Clash的Start()方法来启动代理，并通过调用Proxies()方法获取代理列表。
+
+然后，使用代理URL并创建http.Transport和http.Client对象。在创建http.Transport对象时，将代理URL传入Proxy字段。最后，通过调用http.Client对象的Get方法来发送请求。
+
+以上就是使用Clash作为HTTP客户端代理的具体实现方法。通过这种方式，可以在Go程序中轻松地使用Clash作为HTTP客户端代理来访问需要隐藏真实IP地址的网站。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>在golang中使用clash作为http客户端的代理 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">在golang中使用clash作为http客户端的代理</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2023-07-28 14:23:57</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Go</span>
+                    
+                    <span class="label label-success label-outline">proxy</span>
+                    
+                    <span class="label label-success label-outline">http</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>这是一篇使用Clash作为HTTP客户端代理的Go语言教程。在爬取网站时，经常会遇到一些反爬虫的网站，这些网站会检测你的IP地址，如果被检测到是爬虫，就会拒绝访问。为了解决这个问题，可以使用代理来隐藏真实IP地址。代理的原理是将请求发送到代理服务器，代理服务器再发送给目标服务器并返回数据。这样目标服务器无法知道真实IP地址。本文介绍了使用Clash作为HTTP客户端代理的方法。
+
+首先，需要获取HTTP代理。可以通过免费获取或者付费购买的方式来获取。作者选择了使用机场提供的v2或SSR协议的代理。
+
+接下来，将Clash代码引入Go程序中，并设置代理的配置信息。代码中使用了Clash的Start()方法来启动代理，并通过调用Proxies()方法获取代理列表。
+
+然后，使用代理URL并创建http.Transport和http.Client对象。在创建http.Transport对象时，将代理URL传入Proxy字段。最后，通过调用http.Client对象的Get方法来发送请求。
+
+以上就是使用Clash作为HTTP客户端代理的具体实现方法。通过这种方式，可以在Go程序中轻松地使用Clash作为HTTP客户端代理来访问需要隐藏真实IP地址的网站。</p>
+            </section>
+        </header>
+            <h1 id="在golang中使用clash作为http客户端的代理">在golang中使用clash作为http客户端的代理</h1>
+
+<p>在爬取网站时，经常会遇到一些反爬虫的网站，这些网站会检测你的ip地址，如果你的ip地址被检测到是爬虫的话，就会拒绝你的访问，这时候就需要使用代理来解决这个问题。代理的原理就是你的请求先发送给代理服务器，代理服务器再发送给目标服务器，目标服务器返回数据给代理服务器，代理服务器再返回给你。这样的话，目标服务器就无法知道你的真实ip地址，从而达到隐藏你的真实ip地址的目的。网上有一些免费的获取http代理的网站或者可以采用付费购买的方式获取http代理。</p>
+
+<p>我这里我想采用机场来做我的http代理但是机场一般提供的是v2或者ssr协议的代理，恰好clash是用golang写的所以我能在我的golang程序中直接引入clash的代码开启一个本地端口进行代理。</p>
+
+<p>下面是我的代码：</p>
+
+<p>代理实现</p>
+
+<pre><code class="language-go">package proxy
+
+import (
+	&quot;bytes&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;github.com/Dreamacro/clash/config&quot;
+	C &quot;github.com/Dreamacro/clash/constant&quot;
+	&quot;github.com/Dreamacro/clash/hub&quot;
+	logs &quot;github.com/danbai225/go-logs&quot;
+	&quot;go.uber.org/automaxprocs/maxprocs&quot;
+	&quot;io&quot;
+	&quot;math/rand&quot;
+	&quot;net/http&quot;
+	&quot;net/url&quot;
+	&quot;os&quot;
+	&quot;path/filepath&quot;
+	&quot;sync&quot;
+	&quot;time&quot;
+)
+
+func init() {
+	rand.NewSource(time.Now().UnixNano())
+}
+
+type Clash struct {
+	configPath string
+}
+
+func New(configPath string) *Clash {
+	return &amp;Clash{configPath: configPath}
+}
+func (c *Clash) Start() {
+	maxprocs.Set(maxprocs.Logger(func(string, ...any) {}))
+	C.SetHomeDir(&quot;.&quot;)
+	if c.configPath != &quot;&quot; {
+		if !filepath.IsAbs(c.configPath) {
+			currentDir, _ := os.Getwd()
+			c.configPath = filepath.Join(currentDir, c.configPath)
+		}
+		C.SetConfig(c.configPath)
+	} else {
+		configFile := filepath.Join(C.Path.HomeDir(), C.Path.Config())
+		C.SetConfig(configFile)
+	}
+	if err := config.Init(C.Path.HomeDir()); err != nil {
+		logs.Err(&quot;Initial configuration directory error: %s&quot;, err.Error())
+		return
+	}
+	if err := hub.Parse(hub.WithExternalController(&quot;:9091&quot;)); err != nil {
+		logs.Err(&quot;Parse config error: %s&quot;, err.Error())
+		return
+	}
+	time.Sleep(time.Second * 1)
+	c.Speed()
+	c.RandomSelect()
+}
+func (c *Clash) Speed() {
+	proxies := c.Proxies()
+	group := sync.WaitGroup{}
+	for _, s := range proxies {
+		group.Add(1)
+		go func() {
+			http.Get(fmt.Sprintf(`http://127.0.0.1:9091/proxies/%s/delay?timeout=5000&amp;url=%s`, url.PathEscape(s.Name), url.QueryEscape(`https://baidu.com`)))
+			group.Done()
+		}()
+	}
+	group.Wait()
+}
+func (c *Clash) Proxies() []P {
+	resp, _ := http.Get(`http://127.0.0.1:9091/proxies`)
+	all, _ := io.ReadAll(resp.Body)
+	m := make(map[string]interface{})
+	m2 := make(map[string]P)
+	json.Unmarshal(all, &amp;m)
+	marshal, _ := json.Marshal(m[&quot;proxies&quot;])
+	json.Unmarshal(marshal, &amp;m2)
+	ps := make([]P, 0)
+	for k := range m2 {
+		ps = append(ps, m2[k])
+	}
+	return ps
+}
+func (c *Clash) Switchover(name string) {
+	json := fmt.Sprintf(`{&quot;name&quot;:&quot;%s&quot;}`, name)
+	req, err := http.NewRequest(http.MethodPut, &quot;http://127.0.0.1:9091/proxies/GLOBAL&quot;, bytes.NewBufferString(json))
+	if err != nil {
+		logs.Err(err)
+		return
+	}
+	req.Header.Set(&quot;Content-Type&quot;, &quot;application/json&quot;)
+	_, err = http.DefaultClient.Do(req)
+	if err != nil {
+		logs.Err(err)
+		return
+	}
+}
+func (c *Clash) EffectiveProxy() []P {
+	ps := make([]P, 0)
+	for _, p := range c.Proxies() {
+		if len(p.History) &gt; 0 &amp;&amp; p.History[len(p.History)-1].Delay &gt; 0 {
+			ps = append(ps, p)
+		}
+	}
+	return ps
+}
+func (c *Clash) RandomSelect() string {
+	ps := c.EffectiveProxy()
+	name := ps[rand.Int63n(int64(len(ps)))].Name
+	c.Switchover(name)
+	logs.Info(&quot;切换为&quot;, name)
+	return name
+}
+
+type P struct {
+	Alive   bool `json:&quot;alive&quot;`
+	History []struct {
+		Time      time.Time `json:&quot;time&quot;`
+		Delay     int       `json:&quot;delay&quot;`
+		MeanDelay int       `json:&quot;meanDelay&quot;`
+	} `json:&quot;history&quot;`
+	Name string `json:&quot;name&quot;`
+	Type string `json:&quot;type&quot;`
+	Udp  bool   `json:&quot;udp&quot;`
+}
+
+</code></pre>
+
+<p>使用demo</p>
+
+<pre><code class="language-golang">package main
+
+import (
+	logs &quot;github.com/danbai225/go-logs&quot;
+	&quot;io&quot;
+	&quot;net/http&quot;
+	&quot;net/url&quot;
+	&quot;test/proxy&quot;
+)
+
+func main() {
+	clash := proxy.New(&quot;clash.yml&quot;)
+	clash.Start()
+	// 创建代理URL
+	proxyURL, err := url.Parse(&quot;http://127.0.0.1:7799&quot;)
+	if err != nil {
+		return
+	}
+	transport := &amp;http.Transport{
+		Proxy: http.ProxyURL(proxyURL),
+	}
+	c := &amp;http.Client{
+		Transport: transport,
+	}
+	resp, err := c.Get(&quot;https://ip.useragentinfo.com/json&quot;)
+	all, err := io.ReadAll(resp.Body)
+	logs.Info(string(all))
+}
+
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2023-07-28 14:23:57</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

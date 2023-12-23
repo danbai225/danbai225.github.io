@@ -1,0 +1,575 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Spring Cloud Alibaba,nacos,dubbo"/>
+    <meta name="description" content="Spring Cloud Alibaba是一个提供微服务开发解决方案的项目，包含了分布式应用微服务开发所需要的组件。它基于Spring Cloud编程模型，通过添加一些注解和配置，可以将Spring Cloud应用接入阿里微服务解决方案，快速搭建分布式应用系统。其中，Nacos是一种服务发现、配置和管理的工具，而Apache Dubbo是一款高性能的Java RPC框架。在搭建项目时，需要创建多个模块，包括API模块、服务提供者模块和消费者模块。具体的配置包括根POM.xml配置、Nacos依赖配置、Dubbo依赖配置、起始依赖（spring-cloud-alibaba-starter）配置，以及各个模块的POM.xml和配置文件的配置。使用Nacos作为配置中心，可以在Nacos的配置列表中上传配置文件，并在消费者和提供者模块中添加bootstrap.yaml文件进行配置。可以通过访问http://localhost:8002/demo来测试项目的功能。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>Spring Cloud Alibaba 整合Nacos和Dubbo - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">Spring Cloud Alibaba 整合Nacos和Dubbo</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-06-04 16:18:25</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Spring Cloud Alibaba</span>
+                    
+                    <span class="label label-success label-outline">nacos</span>
+                    
+                    <span class="label label-success label-outline">dubbo</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>Spring Cloud Alibaba是一个提供微服务开发解决方案的项目，包含了分布式应用微服务开发所需要的组件。它基于Spring Cloud编程模型，通过添加一些注解和配置，可以将Spring Cloud应用接入阿里微服务解决方案，快速搭建分布式应用系统。其中，Nacos是一种服务发现、配置和管理的工具，而Apache Dubbo是一款高性能的Java RPC框架。在搭建项目时，需要创建多个模块，包括API模块、服务提供者模块和消费者模块。具体的配置包括根POM.xml配置、Nacos依赖配置、Dubbo依赖配置、起始依赖（spring-cloud-alibaba-starter）配置，以及各个模块的POM.xml和配置文件的配置。使用Nacos作为配置中心，可以在Nacos的配置列表中上传配置文件，并在消费者和提供者模块中添加bootstrap.yaml文件进行配置。可以通过访问http://localhost:8002/demo来测试项目的功能。</p>
+            </section>
+        </header>
+            <h1 id="spring-cloud-alibaba">Spring Cloud Alibaba</h1>
+
+<p>Spring Cloud Alibaba 致力于提供微服务开发的一站式解决方案。此项目包含开发分布式应用微服务的必需组件，方便开发者通过 Spring Cloud 编程模型轻松使用这些组件来开发分布式应用服务。</p>
+
+<p>依托 Spring Cloud Alibaba，您只需要添加一些注解和少量配置，就可以将 Spring Cloud 应用接入阿里微服务解决方案，通过阿里中间件来迅速搭建分布式应用系统。</p>
+
+<p><a href="https://github.com/alibaba/spring-cloud-alibaba" target="_blank">Spring Cloud Alibaba Github</a></p>
+
+<h1 id="nacos">Nacos</h1>
+
+<p>什么是 Nacos？
+服务（Service）是 Nacos 世界的一等公民。Nacos 支持几乎所有主流类型的“服务”的发现、配置和管理。
+<a href="https://nacos.io/" target="_blank">Nacos官网</a></p>
+
+<h1 id="apache-dubbo">Apache Dubbo</h1>
+
+<p>Apache Dubbo™ 是一款高性能Java RPC框架。
+<a href="https://dubbo.apache.org" target="_blank">Apache Dubbo</a></p>
+
+<h1 id="搭建项目">搭建项目</h1>
+
+<p>项目结构</p>
+
+<pre><code>├─ demo
+│   ├─ demo-api #api
+│   ├─ demo-consumer #消费者
+│   ├─ demo-provider #提供者
+│   └─ pom.xml
+├─ dubbo 
+│   └─ pom.xml #dubbo依赖
+├─ nacos
+│   └─ pom.xml #nacos依赖
+├─ spring-cloud-alibaba-starter 起始依赖
+│   └─ pom.xml
+└─ pom.xml
+</code></pre>
+
+<h2 id="根pom-xml">根POM.xml</h2>
+
+<p>基于spring-boot 2.3.0RELEASE﹑spring-cloud-alibaba2.2.1.RELEASE</p>
+
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;2.3.0.RELEASE&lt;/version&gt;
+        &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;
+    &lt;packaging&gt;pom&lt;/packaging&gt;
+    &lt;groupId&gt;cn.p00q&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-alibaba-parent&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;spring-cloud-alibaba-parent&lt;/name&gt;
+    &lt;description&gt;微服务结构项目&lt;/description&gt;
+
+    &lt;properties&gt;
+        &lt;java.version&gt;1.8&lt;/java.version&gt;
+        &lt;spring-cloud-alibaba.version&gt;2.2.1.RELEASE&lt;/spring-cloud-alibaba.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencyManagement&gt;
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-cloud-alibaba-dependencies&lt;/artifactId&gt;
+                &lt;version&gt;${spring-cloud-alibaba.version}&lt;/version&gt;
+                &lt;type&gt;pom&lt;/type&gt;
+                &lt;scope&gt;import&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    &lt;/dependencyManagement&gt;
+&lt;/project&gt;
+</code></pre>
+
+<h2 id="nacos依赖">Nacos依赖</h2>
+
+<p>以根项目创建Nacos的POM项目</p>
+
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;parent&gt;
+        &lt;artifactId&gt;spring-cloud-alibaba-parent&lt;/artifactId&gt;
+        &lt;groupId&gt;cn.p00q&lt;/groupId&gt;
+        &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;/parent&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;artifactId&gt;nacos&lt;/artifactId&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre>
+
+<h2 id="dubbo依赖">Dubbo依赖</h2>
+
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;parent&gt;
+        &lt;artifactId&gt;spring-cloud-alibaba-parent&lt;/artifactId&gt;
+        &lt;groupId&gt;cn.p00q&lt;/groupId&gt;
+        &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;/parent&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;artifactId&gt;dubbo&lt;/artifactId&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-dubbo&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre>
+
+<h2 id="起始依赖-spring-cloud-alibaba-starter">起始依赖（spring-cloud-alibaba-starter）</h2>
+
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;parent&gt;
+        &lt;artifactId&gt;spring-cloud-alibaba-parent&lt;/artifactId&gt;
+        &lt;groupId&gt;cn.p00q&lt;/groupId&gt;
+        &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;/parent&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;artifactId&gt;spring-cloud-alibaba-starter&lt;/artifactId&gt;
+    &lt;packaging&gt;pom&lt;/packaging&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;org.junit.vintage&lt;/groupId&gt;
+                    &lt;artifactId&gt;junit-vintage-engine&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;cn.p00q&lt;/groupId&gt;
+            &lt;artifactId&gt;dubbo&lt;/artifactId&gt;
+            &lt;version&gt;${parent.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;cn.p00q&lt;/groupId&gt;
+            &lt;artifactId&gt;nacos&lt;/artifactId&gt;
+            &lt;version&gt;${parent.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre>
+
+<h2 id="正式demo项目开始">正式Demo项目开始</h2>
+
+<h3 id="api">Api</h3>
+
+<pre><code>package cn.p00q.cloud.demo.api;
+
+/**
+ * @program: AlibabaCloud
+ * @description: 例子Api
+ * @author: DanBai
+ * @create: 2020-06-02 20:09
+ **/
+public interface DemoService {
+
+    /**
+     * 返回信息
+     * @param name
+     * @return
+     */
+    String echo(String name);
+}
+
+</code></pre>
+
+<h3 id="服务提供者">服务提供者</h3>
+
+<h3 id="pom-xml">pom.xml</h3>
+
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;parent&gt;
+        &lt;artifactId&gt;demo&lt;/artifactId&gt;
+        &lt;groupId&gt;cn.p00q&lt;/groupId&gt;
+        &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;/parent&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;artifactId&gt;demo-provider&lt;/artifactId&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;cn.p00q&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-alibaba-starter&lt;/artifactId&gt;
+            &lt;version&gt;${parent.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;cn.p00q&lt;/groupId&gt;
+            &lt;artifactId&gt;demo-api&lt;/artifactId&gt;
+            &lt;version&gt;${parent.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre>
+
+<h4 id="实现接口">实现接口</h4>
+
+<p>Service接口是org.apache.dubbo.config.annotation.Service包下的</p>
+
+<pre><code>package cn.p00q.cloud.demo.service.impl;
+
+import cn.p00q.cloud.demo.api.DemoService;
+import org.apache.dubbo.config.annotation.Service;
+import org.apache.dubbo.rpc.RpcContext;
+
+/**
+ * @program: AlibabaCloud
+ * @description: DemoService实现
+ * @author: DanBai
+ * @create: 2020-06-02 20:39
+ **/
+@Service
+public class DemoServiceImpl implements DemoService {
+    @Override
+    public String echo(String name) {
+        RpcContext rpcContext = RpcContext.getContext();
+        return String.format(&quot;Service [name :%s , port : %d] %s(\&quot;%s\&quot;) : Hello,%s&quot;,
+                &quot;demo&quot;,
+                rpcContext.getLocalPort(),
+                rpcContext.getMethodName(),
+                name,
+                name);
+    }
+}
+
+</code></pre>
+
+<h4 id="启动类">启动类</h4>
+
+<pre><code>package cn.p00q.cloud.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+/**
+ * @program: AlibabaCloud
+ * @description: demo提供应用
+ * @author: DanBai
+ * @create: 2020-06-02 20:35
+ **/
+@EnableDiscoveryClient
+@SpringBootApplication
+public class DemoProviderApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoProviderApplication.class, args);
+    }
+}
+</code></pre>
+
+<h4 id="配置">配置</h4>
+
+<pre><code class="language-yaml">dubbo:
+  protocol:
+    name: dubbo #通信协议 
+    port: -1 #端口自增
+  registry:
+    address: nacos://127.0.0.1:8848 #nacos服务器地址
+  scan:
+    base-packages: cn.p00q.cloud.demo.service.impl #扫描服务包路径
+server:
+  port: 8001
+spring:
+  application:
+    name: demo-provider
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848 #nacos服务器地址
+</code></pre>
+
+<h3 id="消费者">消费者</h3>
+
+<h4 id="pom-xml-1">pom.xml</h4>
+
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;parent&gt;
+        &lt;artifactId&gt;demo&lt;/artifactId&gt;
+        &lt;groupId&gt;cn.p00q&lt;/groupId&gt;
+        &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;/parent&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;artifactId&gt;demo-consumer&lt;/artifactId&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;cn.p00q&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-alibaba-starter&lt;/artifactId&gt;
+            &lt;version&gt;${parent.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;cn.p00q&lt;/groupId&gt;
+            &lt;artifactId&gt;demo-api&lt;/artifactId&gt;
+            &lt;version&gt;${parent.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre>
+
+<h4 id="调用服务">调用服务</h4>
+
+<pre><code>package cn.p00q.cloud.demo.controller;
+
+import cn.p00q.cloud.demo.api.DemoService;
+import org.apache.dubbo.config.annotation.Reference;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * @program: AlibabaCloud
+ * @description: Demo
+ * @author: DanBai
+ * @create: 2020-06-03 10:18
+ **/
+@RestController
+public class DemoController {
+    @Reference
+    DemoService demoService;
+
+    @GetMapping(&quot;/demo&quot;)
+    public String getDemo(){
+        return demoService.echo(&quot;danbai&quot;);
+    }
+}
+
+</code></pre>
+
+<h4 id="启动类-1">启动类</h4>
+
+<pre><code>package cn.p00q.cloud.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+/**
+ * @program: AlibabaCloud
+ * @description: demo消费者启动类
+ * @author: DanBai
+ * @create: 2020-06-03 10:13
+ **/
+@EnableDiscoveryClient
+@SpringBootApplication
+public class DemoConsumerApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoConsumerApplication.class, args);
+    }
+}
+
+</code></pre>
+
+<h4 id="配置-1">配置</h4>
+
+<pre><code>dubbo:
+  cloud:
+    subscribed-services: demo-provider
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: nacos://127.0.0.1:8848
+server:
+  port: 8002
+spring:
+  application:
+    name: demo-consumer
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+</code></pre>
+
+<h3 id="启动两个提供者-一个消费者">启动两个提供者 一个消费者</h3>
+
+<p>访问<a href="http://localhost:8002/demo" target="_blank">http://localhost:8002/demo</a></p>
+
+<pre><code>Service [name :demo , port : 20880] echo(&quot;danbai&quot;) : Hello,danbai
+</code></pre>
+
+<p>刷新</p>
+
+<pre><code>Service [name :demo , port : 20881] echo(&quot;danbai&quot;) : Hello,danbai
+</code></pre>
+
+<p>dubbo均衡负载</p>
+
+<h3 id="nacos配置中心">Nacos配置中心</h3>
+
+<h4 id="在nacos项目下的pom-xml增加依赖">在Nacos项目下的pom.xml增加依赖</h4>
+
+<pre><code>        &lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-config&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+</code></pre>
+
+<h4 id="上传配置">上传配置</h4>
+
+<p>登录nacos后台，进入配置列表在public命名空间下添加配置。
+Data ID分别为demo-provider-dev.yaml和demo-consumer-dev.yaml。
+组默认DEFAULT_GROUP
+把各自的application.yaml添加进去</p>
+
+<h4 id="配置修改">配置修改</h4>
+
+<p>在消费者和提供者resources目录下添加bootstrap.yaml文件</p>
+
+<pre><code>spring:
+  application:
+    name: demo-provider #消费者为demo-consumer
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml
+  profiles:
+    active: dev
+</code></pre>
+
+<p>完成配置</p>
+
+<p><a href="https://github.com/danbai225/AlibabaCloud" target="_blank">本项目地址</a></p>
+
+<h1 id="工具">工具</h1>
+
+<p><a href="https://toyaml.com/index.html" target="_blank">在线yaml转properties-在线properties转yaml-ToYaml.com</a></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2021-06-10 15:19:58</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

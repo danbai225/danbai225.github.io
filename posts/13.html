@@ -1,0 +1,589 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Go,整理"/>
+    <meta name="description" content="Go语言是一种简洁、快速、安全的编程语言，具有并行处理、有趣、开源和跨平台的特点。它在内存管理、数组安全和编译速度方面表现优秀。
+
+第一个Go程序是一个打印&#34;Hello, World!&#34;的程序。
+
+Go语言内置了许多关键字，包括break、default、func、interface、select、case、defer、go、map、struct、chan、else、goto、package、switch、const、fallthrough、if、range、type、continue、for、import、return和var。
+
+Go语言的命名规范是在main函数的包必须为main，变量命名遵循相应的英文表达或简写，私有变量以小写开头，公共变量以大写开头。
+
+Go语言中的数组是固定长度的列表，而切片是长度不固定的列表。
+
+数组的使用包括声明、获取长度、获取容量、比较和遍历。
+
+切片的使用包括创建、初始化、访问、切片和其他函数。
+
+Go语言中的结构体是复合类型，可以通过struct关键字定义。
+
+结构体的定义包括类型名称和字段或属性。
+
+结构体的声明包括使用make()函数和直接赋值初始化。
+
+结构体的特性包括值传递、没有继承和不能包含自己。
+
+Go语言中的字典是键值对类型，可以使用make()函数和直接赋值初始化。
+
+字典的使用包括插入、遍历和删除。
+
+Go语言中的协程是一种轻量级线程实现，可以使用go关键字开启协程。
+
+协程的应用包括并发执行和通过通信模型进行协程间通信。
+
+通信模型包括共享内存和消息。
+
+消息机制使用channel来进行协程间通信，channel是类型相关的，并可以进行写入、读出和关闭。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>GoLang基础知识整理 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">GoLang基础知识整理</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2019-12-15 16:10:32</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Go</span>
+                    
+                    <span class="label label-success label-outline">整理</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>Go语言是一种简洁、快速、安全的编程语言，具有并行处理、有趣、开源和跨平台的特点。它在内存管理、数组安全和编译速度方面表现优秀。
+
+第一个Go程序是一个打印&#34;Hello, World!&#34;的程序。
+
+Go语言内置了许多关键字，包括break、default、func、interface、select、case、defer、go、map、struct、chan、else、goto、package、switch、const、fallthrough、if、range、type、continue、for、import、return和var。
+
+Go语言的命名规范是在main函数的包必须为main，变量命名遵循相应的英文表达或简写，私有变量以小写开头，公共变量以大写开头。
+
+Go语言中的数组是固定长度的列表，而切片是长度不固定的列表。
+
+数组的使用包括声明、获取长度、获取容量、比较和遍历。
+
+切片的使用包括创建、初始化、访问、切片和其他函数。
+
+Go语言中的结构体是复合类型，可以通过struct关键字定义。
+
+结构体的定义包括类型名称和字段或属性。
+
+结构体的声明包括使用make()函数和直接赋值初始化。
+
+结构体的特性包括值传递、没有继承和不能包含自己。
+
+Go语言中的字典是键值对类型，可以使用make()函数和直接赋值初始化。
+
+字典的使用包括插入、遍历和删除。
+
+Go语言中的协程是一种轻量级线程实现，可以使用go关键字开启协程。
+
+协程的应用包括并发执行和通过通信模型进行协程间通信。
+
+通信模型包括共享内存和消息。
+
+消息机制使用channel来进行协程间通信，channel是类型相关的，并可以进行写入、读出和关闭。</p>
+            </section>
+        </header>
+            <h1 id="go语言的特点">Go语言的特点:</h1>
+
+<p>简洁、快速、安全
+并行、有趣、开源
+内存管理、数组安全、编译迅速
+跨平台</p>
+
+<h1 id="第一个程序">第一个程序</h1>
+
+<pre><code class="language-go">package main
+
+import &quot;fmt&quot;
+
+func main() {
+    fmt.Println(&quot;Hello, World!&quot;)
+}
+</code></pre>
+
+<h1 id="go内置关键字">Go内置关键字</h1>
+
+<ul>
+<li>break 退出本层循环</li>
+<li>default 流程控制关键字 在没有匹配结果下默认执行</li>
+<li>func 方法/函数定义关键字</li>
+<li>interface 接口定义关键字</li>
+<li>select 用于选择不同类型的通讯</li>
+<li>case 流程控制-条件</li>
+<li>defer 用于资源的释放,会在函数返回之前进行调用。<br>
+</li>
+<li>go 用于开启一个协程(goroutine)<br>
+</li>
+<li>map map类型关键字<br>
+</li>
+<li>struct 结构体关键字</li>
+<li>chan 通道关键字<br>
+</li>
+<li>else 流程控制-否则<br>
+</li>
+<li>goto 跳转<br>
+</li>
+<li>package 定义包关键字<br>
+</li>
+<li>switch 流程控制-条件选择</li>
+<li>const 常量定义</li>
+<li>fallthrough 在switch中，使用fallthrough可以强制执行后面的case代码。<br>
+</li>
+<li>if 流程控制-条件判断<br>
+</li>
+<li>range 用于读取slice、map、channel数据<br>
+</li>
+<li>type 用于声明自定义类型</li>
+<li>continue 跳过本次循环<br>
+</li>
+<li>for 流程控制-循环<br>
+</li>
+<li>import 引入包关键字</li>
+<li>return 退出函数/方法<br>
+</li>
+<li>var 变量定义关键字</li>
+</ul>
+
+<h1 id="命名规范">命名规范</h1>
+
+<p>在main函数的包必须为main</p>
+
+<h2 id="变量">变量</h2>
+
+<ul>
+<li><p>变量命名基本上遵循相应的英文表达或简写。</p></li>
+
+<li><p>在相对简单的环境（对象数量少、针对性强）中，可以将一些名称由完整单词简写为单个字母</p></li>
+
+<li><p>若变量类型为 bool 类型，则名称应以 <code>Has</code>, <code>Is</code>, <code>Can</code> 或 <code>Allow</code> 开头</p></li>
+
+<li><p>如果变量为私有，且特有名词为首个单词，则使用小写，如 apiClient</p></li>
+
+<li><p>其它情况都应当使用该名词原有的写法，如 APIClient、repoID、UserID。</p>
+
+<h2 id="文件命名规范">文件命名规范</h2>
+
+<p>由于文件跟包无任何关系， 而又避免windows大小写的问题，所以推荐的明明规范如下： 文件名应一律使用小写， 不同单词之间用下划线分割, 命名应尽可能地见名知意</p></li>
+</ul>
+
+<h2 id="函数结构体">函数结构体</h2>
+
+<ul>
+<li>使用驼峰命名</li>
+<li>如果包外不需要访问请用小写开头的函数</li>
+<li>如果需要暴露出去给包外访问需要使用大写开头的函数名称</li>
+</ul>
+
+<h1 id="数组和切片">数组和切片</h1>
+
+<p>固定长度的列表叫数组
+长度不固定的叫切片</p>
+
+<h2 id="数组使用">数组使用</h2>
+
+<p><code>var 数组变量名 [元素数量]Type</code></p>
+
+<ul>
+<li>数组变量名：数组声明及使用时的变量名。</li>
+<li>元素数量：数组的元素数量，可以是一个表达式，但最终通过编译期计算的结果必须是整型数值，元素数量不能含有到运行时才能确认大小的数值。</li>
+<li>Type：可以是任意基本类型，包括数组本身，类型为数组本身时，可以实现多维数组。</li>
+</ul>
+
+<pre><code>var NumberList = [3]string
+NumberList = [3]string{&quot;Python&quot;, &quot;Golang&quot;, &quot;Java&quot;}
+</code></pre>
+
+<ul>
+<li>获取数组长度: len</li>
+<li>获取数组容量: cap</li>
+<li>比较两个数组是否相等 在数组类型长度相同的情况下可以直接用==或!=进行判断</li>
+<li>遍历通过for+range</li>
+</ul>
+
+<pre><code>var team [3]string
+team[0] = &quot;hammer&quot;
+team[1] = &quot;soldier&quot;
+team[2] = &quot;mum&quot;
+for k, v := range team {
+    fmt.Println(k, v)
+}
+</code></pre>
+
+<h2 id="切片使用">切片使用</h2>
+
+<p>Go中的slice依赖于数组，它的底层就是数组，所以数组具有的优点，slice都有。且slice支持可以通过append向slice中追加元素，长度不够时会动态扩展，通过再次slice切片，可以得到得到更小的slice结构，可以迭代、遍历等。</p>
+
+<p>实际上slice是这样的结构：先创建一个有特定长度和数据类型的底层数组，然后从这个底层数组中选取一部分元素，返回这些元素组成的集合(或容器)，并将slice指向集合中的第一个元素。换句话说，slice自身维护了一个指针属性，指向它底层数组中的某些元素的集合。</p>
+
+<h2 id="创建-初始化-访问slice">创建、初始化、访问slice</h2>
+
+<p>一种是使用make()：</p>
+
+<pre><code>// 创建一个length和capacity都等于5的slice
+slice := make([]int,5)
+
+// length=3,capacity=5的slice
+slice := make([]int,3,5)
+</code></pre>
+
+<p>直接赋值初始化的方式创建slice：</p>
+
+<pre><code>// 创建长度和容量都为4的slice，并初始化赋值
+color_slice := []string{&quot;red&quot;,&quot;blue&quot;,&quot;black&quot;,&quot;green&quot;}
+
+// 创建长度和容量为100的slice，并为第100个元素赋值为3
+slice := []int{99:3}
+</code></pre>
+
+<p>注意区分array和slice：</p>
+
+<pre><code>// 创建长度为3的int数组
+array := [3]int{10, 20, 30}
+
+// 创建长度和容量都为3的slice
+slice := []int{10, 20, 30}
+</code></pre>
+
+<p>对slice切片的语法为：</p>
+
+<pre><code>SLICE[A:B]
+SLICE[A:B:C]
+</code></pre>
+
+<p>其中A表示从SLICE的第几个元素开始切，B控制切片的长度(B-A)，C控制切片的容量(C-A)，如果没有给定C，则表示切到底层数组的最尾部。
+还有几种简化形式：</p>
+
+<pre><code>SLICE[A:]  // 从A切到最尾部
+SLICE[:B]  // 从最开头切到B(不包含B)
+SLICE[:]   // 从头切到尾，等价于复制整个SLICE
+</code></pre>
+
+<p>其他函数</p>
+
+<ul>
+<li>copy()函数</li>
+<li>append()函数</li>
+</ul>
+
+<p>扩容</p>
+
+<p>当slice的length已经等于capacity的时候，再使用append()给slice追加元素，会自动扩展底层数组的长度。</p>
+
+<h1 id="结构体">结构体</h1>
+
+<p>Go语言中提供了对struct的支持,struct,中文翻译称为结构体，与数组一样，属于复合类型，并非引用类型。</p>
+
+<h2 id="定义">定义</h2>
+
+<p>使用struct关键字可以定义一个结构体,结构体中的成员，称为结构体的字段或属性。</p>
+
+<pre><code>type Member struct {
+    Id     int
+    Name   string
+    Email  string
+    Gender int
+    Age    int
+}
+</code></pre>
+
+<h2 id="声明">声明</h2>
+
+<pre><code>var m2 = Member{1,&quot;小明&quot;,&quot;xiaoming@163.com&quot;,1,18} // 简短变量声明方式
+var m3 = Member{id:2,&quot;name&quot;:&quot;小红&quot;}// 简短变量声明方式
+</code></pre>
+
+<h2 id="特性">特性</h2>
+
+<ul>
+<li>值传递: 结构体与数组一样，是复合类型，无论是作为实参传递给函数时，还是赋值给其他变量，都是值传递，即复一个副本。</li>
+<li>没有继承: Go语言是支持面向对象编程的，但却没有继承的概念，在结构体中，可以通过组合其他结构体来构建更复杂的结构体。</li>
+<li>结构体不能包含自己: 一个结构体，并没有包含自身，比如Member中的字段不能是Member类型，但却可能是*Member。</li>
+</ul>
+
+<h1 id="map">Map</h1>
+
+<p>字典: 键值型</p>
+
+<h2 id="定义-1">定义</h2>
+
+<pre><code>/* 声明变量，默认 map 是 nil */
+var map_variable map[key_data_type]value_data_type
+
+/* 使用 make 函数 */
+map_variable := make(map[key_data_type]value_data_type)
+</code></pre>
+
+<h2 id="使用">使用</h2>
+
+<pre><code>package main
+
+import &quot;fmt&quot;
+
+func main() {
+    var countryCapitalMap map[string]string /*创建集合 */
+    countryCapitalMap = make(map[string]string)
+
+    /* map插入key - value对,各个国家对应的首都 */
+    countryCapitalMap [ &quot;France&quot; ] = &quot;巴黎&quot;
+    countryCapitalMap [ &quot;Italy&quot; ] = &quot;罗马&quot;
+    countryCapitalMap [ &quot;Japan&quot; ] = &quot;东京&quot;
+    countryCapitalMap [ &quot;India &quot; ] = &quot;新德里&quot;
+
+    /*使用键输出地图值 */
+    for country := range countryCapitalMap {
+        fmt.Println(country, &quot;首都是&quot;, countryCapitalMap [country])
+    }
+
+    /*查看元素在集合中是否存在 */
+    capital, ok := countryCapitalMap [ &quot;American&quot; ] /*如果确定是真实的,则存在,否则不存在 */
+    /*fmt.Println(capital) */
+    /*fmt.Println(ok) */
+    if (ok) {
+        fmt.Println(&quot;American 的首都是&quot;, capital)
+    } else {
+        fmt.Println(&quot;American 的首都不存在&quot;)
+    }
+}
+</code></pre>
+
+<p>delete() 函数用于删除集合的元素, 参数为 map 和其对应的 key。</p>
+
+<h1 id="协程">协程</h1>
+
+<p>　我们知道，协程（coroutine）是Go语言中的轻量级线程实现，由Go运行时（runtime）管理。</p>
+
+<p>　　在一个函数调用前加上go关键字，这次调用就会在一个新的goroutine中并发执行。当被调用的函数返回时，这个goroutine也自动结束。需要注意的是，如果这个函数有返回值，那么这个返回值会被丢弃。</p>
+
+<h2 id="golang-协程的应用">Golang 协程的应用</h2>
+
+<p>通过go关键字开启协程</p>
+
+<pre><code>func Add(x, y int) {
+    z := x + y
+    fmt.Println(z)
+
+}
+func main() {
+    for i:=0; i&lt;10; i++ {
+        go Add(i, i)
+    }
+}
+</code></pre>
+
+<p>执行上面的代码，会发现屏幕什么也没打印出来，程序就退出了。
+　　对于上面的例子，main()函数启动了10个goroutine，然后返回，这时程序就退出了，而被启动的执行 Add() 的 goroutine 没来得及执行。我们想要让 main() 函数等待所有 goroutine 退出后再返回，但如何知道 goroutine 都退出了呢？这就引出了多个goroutine之间通信的问题。
+　　在工程上，有两种最常见的并发通信模型：共享内存 和 消息。
+ 　　下面的例子，使用了锁变量（属于一种共享内存）来同步协程，事实上 Go 语言主要使用消息机制（channel）来作为通信模型</p>
+
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+    &quot;sync&quot;
+    &quot;runtime&quot;
+)
+
+var counter int = 0
+func Count(lock *sync.Mutex) {
+    lock.Lock() // 上锁
+    counter++
+    fmt.Println(&quot;counter =&quot;, counter)
+    lock.Unlock()   // 解锁
+}
+
+func main() {
+    lock := &amp;sync.Mutex{}
+    for i:=0; i&lt;10; i++ {
+        go Count(lock)
+    }
+    for {
+        lock.Lock() // 上锁
+        c := counter
+        lock.Unlock()   // 解锁
+        runtime.Gosched() // 出让时间片
+        if c &gt;= 10 {
+            break
+        }
+    }
+}
+</code></pre>
+
+<h2 id="channel">channel</h2>
+
+<p>消息机制认为每个并发单元是自包含的、独立的个体，并且都有自己的变量，但在不同并发单元间这些变量不共享。每个并发单元的输入和输出只有一种，那就是消息。</p>
+
+<p>channel 是 Go 语言在语言级别提供的 goroutine 间的通信方式，我们可以使用 channel 在多个 goroutine 之间传递消息。channel是进程内的通信方式，因此通过 channel 传递对象的过程和调用函数时的参数传递行为比较一致，比如也可以传递指针等。channel 是类型相关的，一个 channel 只能传递一种类型的值，这个类型需要在声明 channel 时指定。</p>
+
+<p>channel的声明形式为：</p>
+
+<pre><code>var chanName chan ElementType
+</code></pre>
+
+<p>举个例子，声明一个传递int类型的channel：</p>
+
+<pre><code>var ch chan int
+</code></pre>
+
+<p>　　使用内置函数 <code>make()</code> 定义一个channel：</p>
+
+<pre><code>ch := make(chan int)
+</code></pre>
+
+<p>在channel的用法中，最常见的包括写入和读出：</p>
+
+<pre><code>// 将一个数据value写入至channel，这会导致阻塞，直到有其他goroutine从这个channel中读取数据
+ch &lt;- value
+
+// 从channel中读取数据，如果channel之前没有写入数据，也会导致阻塞，直到channel中被写入数据为止
+value := &lt;-ch
+//默认情况下，channel的接收和发送都是阻塞的，除非另一端已准备好。
+
+//我们还可以创建一个带缓冲的channel：
+
+c := make(chan int, 1024)
+
+// 从带缓冲的channel中读数据
+for i:=range c {
+　　...
+}
+</code></pre>
+
+<p>此时，创建一个大小为1024的int类型的channel，即使没有读取方，写入方也可以一直往channel里写入，在缓冲区被填完之前都不会阻塞。</p>
+
+<p>可以关闭不再使用的channel：
+<code>close(ch)</code></p>
+
+<p>应该在生产者的地方关闭channel，如果在消费者的地方关闭，容易引起panic；</p>
+
+<p>现在利用channel来重写上面的例子：</p>
+
+<pre><code>func Count(ch chan int) {
+    ch &lt;- 1
+    fmt.Println(&quot;Counting&quot;)
+}
+
+func main() {
+    chs := make([] chan int, 10)
+    for i:=0; i&lt;10; i++ {
+        chs[i] = make(chan int)
+        go Count(chs[i])
+    }
+    for _, ch := range(chs) {
+        &lt;-ch
+    }
+}
+</code></pre>
+
+<h2 id="通道">通道</h2>
+
+<pre><code>
+var ch1 chan int  　　　　// 普通channel
+
+var ch2 chan &lt;- int 　　 // 只用于写int数据
+
+var ch3 &lt;-chan int 　　 // 只用于读int数据
+
+//可以通过类型转换，将一个channel转换为单向的：
+
+ch4 := make(chan int)
+
+ch5 := &lt;-chan int(ch4)   // 单向读
+
+ch6 := chan&lt;- int(ch4)  //单向写
+</code></pre>
+
+<p>各知识点收集于网络</p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-03-29 21:34:52</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

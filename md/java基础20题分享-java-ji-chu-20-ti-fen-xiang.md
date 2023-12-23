@@ -1,15 +1,17 @@
 ---
 title: java基础20题分享
-date: 2023-03-09 12:29:31.603
-updated: 2023-03-09 12:33:42.676
+date: "2023-03-09 12:29:31"
+updated: "2023-03-09 12:33:42"
 url: https://p00q.cn/?p=836
-categories: 
-- 学习
-- Java
-- 面试题
-tags: 
-- java
-- 面试题
+categories:
+    - 学习
+    - Java
+    - 面试题
+tags:
+    - java
+    - 面试题
+summary: 本文是一篇关于Java的面试题和答案的摘要。摘要中包括了20个常见的Java面试题，包括Java的基本数据类型、final关键字、抽象类和接口、多态、垃圾回收机制、异常、反射、泛型、线程、Synchronized关键字、HashMap和HashTable等内容。每个问题都附有答案和解释，帮助读者更好地理解和记忆Java面试知识。
+id: "836"
 ---
 
 # 20个Java常见面试题和答案

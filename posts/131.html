@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="java,Choice"/>
+    <meta name="description" content="Choice是一个Java库，提供了支持表达式和多匹配的功能。它能让Java支持类似JS中的函数变量传入的特性。使用Choice库可以根据不同的条件选择执行不同的方法。
+
+使用Choice的例子如下：
+
+int a = 1, b = 2, c = 3, d = 4;
+new Choice(true).add(1L, () -&gt; {
+    System.out.println(&#34;这里是1&#34;);
+}).add(a &lt; b ? c : d &gt; a ? b : c, () -&gt; {
+    System.out.println(&#34;这里是2&#34;);
+}).add(3.0f, () -&gt; {
+    System.out.println(&#34;这里是3&#34;);
+}).add(Color.BLUE, () -&gt; {
+    System.out.println(&#34;这里是4&#34;);
+}).add(() -&gt; {
+    System.out.println(&#34;多个匹配&#34;);
+}, 1, 2, 3, 4, 5, 6, 7, 8, 9).Default(() -&gt; {
+    System.out.println(&#34;这里是默认方法&#34;);
+}).execute(4);
+
+在这个例子中，使用了Lambda表达式来定义不同的方法。然后通过Choice库中的add方法将方法和对应的条件添加到Choice对象中。最后使用execute方法根据给定的条件执行相应的方法。
+
+Choice库的实现是通过定义一个Choice类，并在其中定义了一个Map来保存方法和对应的条件。通过add方法将方法和条件添加到Map中，然后通过execute方法根据给定的条件执行相应的方法。
+
+Choice库的实现代码如下：
+
+public interface Function {
+    void run();
+}
+
+public class Choice {
+    private Map&lt;Object, Function&gt; map;
+    private Function Default;
+    private boolean expression;
+
+    public Choice() {
+        map = new ConcurrentHashMap();
+    }
+
+    public Choice(boolean expression) {
+        this();
+        this.expression = expression;
+    }
+
+    public Choice add(Object v, Function function) {
+        if (v != null &amp;&amp; function != null) {
+            map.put(v, function);
+        }
+        return this;
+    }
+
+    public Choice add(Function function, Object... v) {
+        if (function != null) {
+            for (Object iv : v) {
+                if (iv != null) {
+                    map.put(iv, function);
+                }
+            }
+        }
+        return this;
+    }
+
+    public void execute() {
+        // 代码省略...
+    }
+
+    public void execute(Object v) {
+        // 代码省略...
+    }
+
+    public Choice Default(Function function) {
+        Default = function;
+        return this;
+    }
+}
+
+在Choice类中，使用ConcurrentHashMap来保存方法和条件的映射关系。可以通过add方法将方法和条件添加到map中。execute方法用于执行方法，如果没有匹配的条件，则执行默认方法。
+
+总结来说，Choice是一个简单的Java库，用于实现条件选择执行不同的方法。它支持表达式和多匹配的功能，并且使用起来非常方便。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>让java switch支持表达式和多匹配 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">让java switch支持表达式和多匹配</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-07-22 09:54:19</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">java</span>
+                    
+                    <span class="label label-success label-outline">Choice</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>Choice是一个Java库，提供了支持表达式和多匹配的功能。它能让Java支持类似JS中的函数变量传入的特性。使用Choice库可以根据不同的条件选择执行不同的方法。
+
+使用Choice的例子如下：
+
+int a = 1, b = 2, c = 3, d = 4;
+new Choice(true).add(1L, () -&gt; {
+    System.out.println(&#34;这里是1&#34;);
+}).add(a &lt; b ? c : d &gt; a ? b : c, () -&gt; {
+    System.out.println(&#34;这里是2&#34;);
+}).add(3.0f, () -&gt; {
+    System.out.println(&#34;这里是3&#34;);
+}).add(Color.BLUE, () -&gt; {
+    System.out.println(&#34;这里是4&#34;);
+}).add(() -&gt; {
+    System.out.println(&#34;多个匹配&#34;);
+}, 1, 2, 3, 4, 5, 6, 7, 8, 9).Default(() -&gt; {
+    System.out.println(&#34;这里是默认方法&#34;);
+}).execute(4);
+
+在这个例子中，使用了Lambda表达式来定义不同的方法。然后通过Choice库中的add方法将方法和对应的条件添加到Choice对象中。最后使用execute方法根据给定的条件执行相应的方法。
+
+Choice库的实现是通过定义一个Choice类，并在其中定义了一个Map来保存方法和对应的条件。通过add方法将方法和条件添加到Map中，然后通过execute方法根据给定的条件执行相应的方法。
+
+Choice库的实现代码如下：
+
+public interface Function {
+    void run();
+}
+
+public class Choice {
+    private Map&lt;Object, Function&gt; map;
+    private Function Default;
+    private boolean expression;
+
+    public Choice() {
+        map = new ConcurrentHashMap();
+    }
+
+    public Choice(boolean expression) {
+        this();
+        this.expression = expression;
+    }
+
+    public Choice add(Object v, Function function) {
+        if (v != null &amp;&amp; function != null) {
+            map.put(v, function);
+        }
+        return this;
+    }
+
+    public Choice add(Function function, Object... v) {
+        if (function != null) {
+            for (Object iv : v) {
+                if (iv != null) {
+                    map.put(iv, function);
+                }
+            }
+        }
+        return this;
+    }
+
+    public void execute() {
+        // 代码省略...
+    }
+
+    public void execute(Object v) {
+        // 代码省略...
+    }
+
+    public Choice Default(Function function) {
+        Default = function;
+        return this;
+    }
+}
+
+在Choice类中，使用ConcurrentHashMap来保存方法和条件的映射关系。可以通过add方法将方法和条件添加到map中。execute方法用于执行方法，如果没有匹配的条件，则执行默认方法。
+
+总结来说，Choice是一个简单的Java库，用于实现条件选择执行不同的方法。它支持表达式和多匹配的功能，并且使用起来非常方便。</p>
+            </section>
+        </header>
+            <h1 id="choice">choice</h1>
+
+<p>先上地址:<a href="https://github.com/danbai225/choice" target="_blank">Github</a>
+maven:</p>
+
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;cn.p00q.choice&lt;/groupId&gt;
+    &lt;artifactId&gt;choice&lt;/artifactId&gt;
+    &lt;version&gt;1.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>让java支持表达式和多匹配的实现.
+使用例子:</p>
+
+<pre><code> int a = 1, b = 2, c = 3, d = 4;
+        new Choice(true).add(1L, () -&gt; {
+            System.out.println(&quot;这里是1&quot;);
+        }).add(a &lt; b ? c : d &gt; a ? b : c, () -&gt; {
+            System.out.println(&quot;这里是2&quot;);
+        }).add(3.0f, () -&gt; {
+            System.out.println(&quot;这里是3&quot;);
+        }).add(Color.BLUE, () -&gt; {
+            System.out.println(&quot;这里是4&quot;);
+        }).add(() -&gt; {
+            System.out.println(&quot;多个匹配&quot;);
+        }, 1, 2, 3, 4, 5, 6, 7, 8, 9).Default(() -&gt; {
+            System.out.println(&quot;这里是默认方法&quot;);
+        }).execute(4);
+</code></pre>
+
+<p>使用了Lambda表达式的特性.不仅能这样用,还能可以这样用:
+在A类创建一个公开的静态Choice</p>
+
+<pre><code>public static Choice socketChoice;
+</code></pre>
+
+<p>在不同的任务类中去实现<code>Function</code>接口的<code>run</code>方法或者直接添加Lambda表达式.即可实现在不同请求调用不同方法的功能.</p>
+
+<pre><code>socketChoice.execute(请求值)
+</code></pre>
+
+<h1 id="实现">实现</h1>
+
+<p>java并不能直接像js那样将函数直接视为变量传入.所以通常以接口(只能有一个方法)当作函数进行传入.</p>
+
+<p>接口定义:</p>
+
+<pre><code>public interface Function {
+    /**
+     * 运行方法
+     */
+    void run();
+
+}
+</code></pre>
+
+<p>完整实现:</p>
+
+<pre><code>public class Choice {
+    /**
+     * 方法map
+     */
+    private Map&lt;Object, Function&gt; map;
+    /**
+     * 默认方法
+     */
+    private Function Default;
+    /**
+     * 表达式支持
+     */
+    private boolean expression;
+
+    public Choice() {
+        map = new ConcurrentHashMap();
+    }
+
+    public Choice(boolean expression) {
+        this();
+        this.expression = expression;
+    }
+
+    public Choice add(Object v, Function function) {
+        if (v != null &amp;&amp; function != null) {
+            map.put(v, function);
+        }
+        return this;
+    }
+
+    public Choice add(Function function, Object... v) {
+        if (function != null) {
+            for (Object iv : v) {
+                if (iv != null) {
+                    map.put(iv, function);
+                }
+            }
+        }
+        return this;
+    }
+
+    /**
+     * 不传值的执行
+     */
+    public void execute() {
+        AtomicBoolean flg = new AtomicBoolean(false);
+        //遍历map
+        for (Map.Entry&lt;Object, Function&gt; entry : map.entrySet()) {
+            Object iv = entry.getKey();
+            if (iv != null) {
+                Function iFun = entry.getValue();
+                //类型判断
+                if (expression &amp;&amp; iv.getClass().equals(Boolean.class)) {
+                    if (iv.equals(true)) {
+                        //类型一样eq为true 执行方法
+                        iFun.run();
+                        flg.set(true);
+                        return;
+                    }
+                }
+            }
+        }
+        if (!flg.get() &amp;&amp; Default != null) {
+            Default.run();
+        }
+    }
+
+    /**
+     * 传值的执行
+     *
+     * @param v 匹配值
+     */
+    public void execute(Object v) {
+        if (v == null) {
+            return;
+        }
+        AtomicBoolean flg = new AtomicBoolean(false);
+        Function fastTrue = null;
+        for (Map.Entry&lt;Object, Function&gt; entry : map.entrySet()) {
+            Object iv = entry.getKey();
+            Function iFun = entry.getValue();
+            //类型判断
+            if (v.getClass().equals(iv.getClass())) {
+                if (v.equals(iv)) {
+                    iFun.run();
+                    flg.set(true);
+                    return;
+                }
+            }
+            //表达式
+            if (expression &amp;&amp; iv.getClass().equals(Boolean.class)) {
+                if (v.equals(true)) {
+                    fastTrue = iFun;
+                    flg.set(true);
+                }
+            }
+        }
+        if (flg.get()) {
+            if (expression &amp;&amp; fastTrue != null) {
+                fastTrue.run();
+            }
+        } else if (Default != null) {
+            Default.run();
+        }
+    }
+
+    public Choice Default(Function function) {
+        Default = function;
+        return this;
+    }
+
+}
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2020-07-22 09:54:19</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

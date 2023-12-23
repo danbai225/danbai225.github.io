@@ -1,13 +1,15 @@
 ---
 title: RESTful token登陆(基于Spring、Redis)
-date: 2019-11-21 15:20:53.933
-updated: 2022-03-29 21:33:55.491
+date: "2019-11-21 15:20:53"
+updated: "2022-03-29 21:33:55"
 url: https://p00q.cn/?p=6
-categories: 
-- Java
-tags: 
-- redis
-- token
+categories:
+    - Java
+tags:
+    - redis
+    - token
+summary: 本文介绍了为什么要使用token进行身份验证，以及使用token实现身份验证的通信流程。在代码实战部分，给出了一个Token实体类，并提供了相关的service接口和实现类，包括创建token、检测token有效性、删除token和token登录等功能的实现。
+id: "6"
 ---
 
 ![](https://img.hacpai.com/bing/20190909.jpg?imageView2/1/w/960/h/540/interlace/1/q/100)
@@ -138,4 +140,5 @@ service接口和实现类
         return null;
     }                                                        
 ```
+
 

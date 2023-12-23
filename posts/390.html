@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Go,socket"/>
+    <meta name="description" content="在使用socks5代理客户端时，发现很多连接没有被正常关闭的问题。问题出现在代码中的两个地方。首先，在client.go文件中，当代理类型不为http时，会执行安全信道建立的代码。其次，在cryptogram.go文件中的copy方法中，会进行加密io复制。当一方连接断开时，另一方连接可能不会被正常关闭，导致锁一直没有释放。本地连接也一直没有关闭，从而打开了太多连接并出现报错。为了解决这个问题，对代码进行了修改。首先，在cryptogram.go文件的copy方法中，增加了对连接的关闭操作。其次，在client.go文件中，将连接的关闭放在copy方法内部，当一方连接被关闭时，关闭两个连接，另一个拷贝就能感知到并读取错误并正常关闭并退出。这样就解决了连接没有正常关闭的问题。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>修复一个open too many files - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">修复一个open too many files</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2021-09-09 18:00:03</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Go</span>
+                    
+                    <span class="label label-success label-outline">socket</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>在使用socks5代理客户端时，发现很多连接没有被正常关闭的问题。问题出现在代码中的两个地方。首先，在client.go文件中，当代理类型不为http时，会执行安全信道建立的代码。其次，在cryptogram.go文件中的copy方法中，会进行加密io复制。当一方连接断开时，另一方连接可能不会被正常关闭，导致锁一直没有释放。本地连接也一直没有关闭，从而打开了太多连接并出现报错。为了解决这个问题，对代码进行了修改。首先，在cryptogram.go文件的copy方法中，增加了对连接的关闭操作。其次，在client.go文件中，将连接的关闭放在copy方法内部，当一方连接被关闭时，关闭两个连接，另一个拷贝就能感知到并读取错误并正常关闭并退出。这样就解决了连接没有正常关闭的问题。</p>
+            </section>
+        </header>
+            <p>在使用<a href="github.com/shikanon/socks5proxy" target="_blank">socks5代理客户端</a>发现，很多连接没有被正常关闭。
+在文件<code>client.go</code>中当代理类型不为<code>http</code>时会执行以下代码</p>
+
+<pre><code>	// 和远程端建立安全信道
+	wg := new(sync.WaitGroup)
+	wg.Add(2)
+	// 本地的内容copy到远程端
+	go func() {
+		defer wg.Done()
+		SecureCopy(localClient, dstServer, auth.Encrypt)
+	}()
+
+	// 远程得到的内容copy到源地址
+	go func() {
+		defer wg.Done()
+		SecureCopy(dstServer, localClient, auth.Decrypt)
+	}()
+	wg.Wait()
+</code></pre>
+
+<p>在<code>cryptogram.go</code>中的copy方法如下</p>
+
+<pre><code>// 加密io复制，可接收加密函数作为参数
+func SecureCopy(src io.ReadWriteCloser, dst io.ReadWriteCloser, secure func(b []byte) error) (written int64, err error) {
+	size := 1024
+	buf := make([]byte, size)
+	for {
+		nr, er := src.Read(buf)
+		secure(buf)
+		if nr &gt; 0 {
+			nw, ew := dst.Write(buf[0:nr])
+			if nw &gt; 0 {
+				written += int64(nw)
+			}
+			if ew != nil {
+				err = ew
+				break
+			}
+			if nr != nw {
+				err = io.ErrShortWrite
+				break
+			}
+		}
+		if er != nil {
+			if er != io.EOF {
+				err = er
+			}
+			break
+		}
+	}
+	return written, err
+
+</code></pre>
+
+<p>当有一方连接断开时，另一方链接可能不会被正常关闭导致锁一直没有释放。本地连接也一直没有关闭。打开了太多连接也就出现了报错。</p>
+
+<p>修改后的代码：
+<code>cryptogram.go</code></p>
+
+<pre><code>func SecureCopy(src io.ReadWriteCloser, dst io.ReadWriteCloser, secure func(b []byte) error) (written int64, err error) {
+	defer func() {
+		if src != nil {
+			src.Close()
+		}
+		if dst != nil {
+			dst.Close()
+		}
+	}()
+	buf := make([]byte, 1024)
+	for {
+		nr, er := src.Read(buf)
+		if er != nil {
+			break
+		}
+		if nr &gt; 0 {
+			err = secure(buf)
+			if err != nil {
+				return written, err
+			}
+			nw, ew := dst.Write(buf[0:nr])
+			if nw &gt; 0 {
+				written += int64(nw)
+			}
+			if ew != nil {
+				err = ew
+				break
+			}
+			if nr != nw {
+				err = io.ErrShortWrite
+				break
+			}
+		}
+	}
+	return written, err
+}
+</code></pre>
+
+<p><code>client.go</code> 把连接的关闭放到copy内部 当一方连接被关闭则关闭两个连接，另一个拷贝就能感知从而读取错误正常关闭并退出。</p>
+
+<pre><code>	go SecureCopy(dstServer, localClient, auth.Decrypt)
+	SecureCopy(localClient, dstServer, auth.Encrypt)
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2021-09-10 10:05:26</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

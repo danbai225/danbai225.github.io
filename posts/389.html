@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Go,socks5"/>
+    <meta name="description" content="文章介绍了当学习网站被限制访问时，通过搭建一个套壳的socks5代理来解除限制的方法。作者修改了开源库socks5proxy的代码，添加了与最初的socks5代理相连接的功能。然后编译服务端和客户端代码，在服务端运行新的套壳服务端，在本地电脑上运行客户端，并将代理设置为本地客户端的代理端口，这样就能够访问限制的学习网站。并且作者在后续将该方法进行了改进和重写。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>给socks5套个壳 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">给socks5套个壳</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2021-09-06 20:05:18</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Go</span>
+                    
+                    <span class="label label-success label-outline">socks5</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>文章介绍了当学习网站被限制访问时，通过搭建一个套壳的socks5代理来解除限制的方法。作者修改了开源库socks5proxy的代码，添加了与最初的socks5代理相连接的功能。然后编译服务端和客户端代码，在服务端运行新的套壳服务端，在本地电脑上运行客户端，并将代理设置为本地客户端的代理端口，这样就能够访问限制的学习网站。并且作者在后续将该方法进行了改进和重写。</p>
+            </section>
+        </header>
+            <h1 id="限制我学习">限制我学习</h1>
+
+<p>由于公司限制了哔哩哔哩等学习网站我用的代理也是明文的socks5于是上级路由还是能够通过http给我拦截了。 注:我用socks5主要的原因是方便访问局域网</p>
+
+<p>于是我便给我的socks5套了一层壳
+通过修改<a href="https://github.com/shikanon/socks5proxy" target="_blank">socks5proxy</a>开源库即可实现。</p>
+
+<h1 id="解除限制">解除限制</h1>
+
+<p>前面的开源库本身就是一个socks5服务器和客户端，但为了连接我之前的socks（有代理）需要用到另一个socks5的开源实现<a href="https://github.com/txthinking/socks5" target="_blank">socks5</a>
+修改 <code>socks5proxy</code> 代码</p>
+
+<p><code>server.go</code>文件</p>
+
+<pre><code class="language-Go">//添加依赖
+&quot;github.com/txthinking/socks5&quot;
+
+//修改41行附近
+
+// 连接真正的远程服务
+	newClient, err := socks5.NewClient(&quot;socksServer&quot;, &quot;&quot;, &quot;&quot;, 0, 60)
+	if err!=nil{
+		return
+	}
+	dstServer, err := newClient.Dial(&quot;tcp&quot;, request.RAWADDR.String())
+	//dstServer, err := net.DialTCP(&quot;tcp&quot;, nil, request.RAWADDR)
+	if err != nil {
+		log.Print(client.RemoteAddr(), err)
+		return
+	}
+	defer dstServer.Close()
+</code></pre>
+
+<p>然后编译服务端和客户端代码，在socks5原来的服务器端上运行这个新的套壳服务端。
+在本地电脑上运行客户端。注意启动参数，启动客户端后把网络代理的socks5替换成本地客户端的代理端口，就能访问b站了。</p>
+
+<h1 id="追更-9-14">追更 9.14</h1>
+
+<p>前面的实现有些问题，后面我重写了。
+<a href="https://github.com/danbai225/tcpproxy" target="_blank">Github</a></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2021-09-14 15:43:20</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

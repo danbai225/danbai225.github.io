@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="web"/>
+    <meta name="description" content="在测试中台项目时，发现服务器带宽被占满，测试服务器变得很慢。查看了网络请求并没有发现有大量的资源请求。尝试多次重启测试后，发现在打开开发者工具时流量会突然激增。
+
+为了找到具体的原因，我试着使用了抓包软件，虽然可以看到流量在运行，但是不知道具体在做什么。后来想起今天前端更新了一个打包文件需要部署到服务器上，于是我替换了index.html文件，发现问题没有再次出现。接着我尝试替换注释中的一个js文件，问题就得到了解决。
+
+在查看js文件夹时，我发现每个js文件都有一个对应的js.map文件。我想起这个好像是用来进行调试的。结合控制台卡死的情况，我猜测可能是自动加载了这个文件导致的问题。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>打开控制台疯狂占用服务器带宽😂 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">打开控制台疯狂占用服务器带宽😂</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2022-09-02 17:34:24</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">web</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>在测试中台项目时，发现服务器带宽被占满，测试服务器变得很慢。查看了网络请求并没有发现有大量的资源请求。尝试多次重启测试后，发现在打开开发者工具时流量会突然激增。
+
+为了找到具体的原因，我试着使用了抓包软件，虽然可以看到流量在运行，但是不知道具体在做什么。后来想起今天前端更新了一个打包文件需要部署到服务器上，于是我替换了index.html文件，发现问题没有再次出现。接着我尝试替换注释中的一个js文件，问题就得到了解决。
+
+在查看js文件夹时，我发现每个js文件都有一个对应的js.map文件。我想起这个好像是用来进行调试的。结合控制台卡死的情况，我猜测可能是自动加载了这个文件导致的问题。</p>
+            </section>
+        </header>
+            <p>今天测试中台项目时，发现服务器带宽跑满，测试服务器小水管一下就卡住了。
+看了下网络请求里面没有什么大的资源请求。
+经过几次重启测试，打开f12就会出现流量激增的情况。</p>
+
+<p>我尝试使用使用抓包软件，虽然看到了流量在跑，但不知道具体在干嘛。
+后来想起，今天前端打了个包需要部署到服务器上，我替换了index.html发现就不会了。
+然后我再尝试替换里面的注释里面的js文件。在注释了其中一个js文件就好。</p>
+
+<p><img src="../res/img/771-1.png" alt="image-1662111198701" /></p>
+
+<p>我打开js文件夹看了下，发现每个js有个对应的js.map。想起这玩意好像是用来debug的。
+结合我打开控制台就会卡，想来是自动加载了这个文件。</p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-09-02 17:35:01</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

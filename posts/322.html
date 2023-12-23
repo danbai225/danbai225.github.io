@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="mac,黑苹果"/>
+    <meta name="description" content="该文章是一篇关于如何在台式电脑上安装黑苹果系统的教程。作者先介绍了自己准备玩黑苹果的动机和所需的工具。然后详细介绍了如何制作Mac启动盘和安装Mac系统的步骤。最后提到了一些引用的文章和参考链接。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>暗夜精灵3安装mac黑苹果 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">暗夜精灵3安装mac黑苹果</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2021-06-06 20:32:25</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">mac</span>
+                    
+                    <span class="label label-success label-outline">黑苹果</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>该文章是一篇关于如何在台式电脑上安装黑苹果系统的教程。作者先介绍了自己准备玩黑苹果的动机和所需的工具。然后详细介绍了如何制作Mac启动盘和安装Mac系统的步骤。最后提到了一些引用的文章和参考链接。</p>
+            </section>
+        </header>
+            <h1 id="前言">前言</h1>
+
+<p>买了台式后笔记本没有怎么使用比较闲置，正好有时间准备给装个黑苹果玩玩。也顺便学习学习看看在mac上开发是怎样一种体验。</p>
+
+<h1 id="准备">准备</h1>
+
+<p>开始前先准备以下东西：</p>
+
+<ul>
+<li>一个16gU盘（需要10g左右空间）</li>
+<li>MacOS镜像</li>
+<li>TransMac 或 etcher(看到过其他教程用过，我这里没用过刷树莓派到是用过)</li>
+<li>分区工具DiskGenius</li>
+<li>EFI引导</li>
+</ul>
+
+<p>镜像：这里提供一下我下载镜像的地址：<a href="https://mirrors.dtops.cc/ISO/MacOS/" target="_blank">点击进入下载</a>
+版本呢我选择的是10.15.7(19H2)不支持macOS Big Sur 11.x
+TransMac ：<a href="https://danbai.oss-cn-chengdu.aliyuncs.com/bk/TransMac_1622982963187.exe" target="_blank">点击下载</a>
+DiskGenius：<a href="https://www.diskgenius.cn/download.php" target="_blank">进入官网下载</a>
+EFI引导：<a href="https://danbai-cloud.oss-cn-chengdu.aliyuncs.com/uploads%2F2021%2F06%2F06%2FgxVuUgR4_EFI.zip?Expires=1622983634" target="_blank">下载</a></p>
+
+<h1 id="开始">开始</h1>
+
+<p>准备工作完成后开始进入正题。</p>
+
+<h2 id="制作mac启动盘">制作Mac启动盘</h2>
+
+<p>1.初始化u盘 记得备份数据
+ 插入U盘打开DiskGenius
+<img src="../res/img/322-1.png" alt="image.png" />
+选择u盘设备右键，删除所有分区保存更改。然后新建一个分区，完成后关闭软件。<img src="../res/img/322-2.png" alt="image.png" /></p>
+
+<p>2.写入mac镜像
+ 打开TransMac.exe软件
+<img src="../res/img/322-3.png" alt="image.png" />
+同样会有对应的U盘设备鼠标移动到设备上右键选择<img src="../res/img/322-4.png" alt="image.png" />
+提示框选择Yes、OK无需其余修改。
+操作完成后再鼠标右键选择<img src="../res/img/322-5.png" alt="image.png" />
+弹出提示框选择文件，选我们下号的mac镜像文件
+<img src="../res/img/322-6.png" alt="image.png" />
+点击yes、OK后继续等待进度条完成大概十几分钟（取决u盘写入速度）关闭软件。<img src="../res/img/322-7.png" alt="image.png" />完成</p>
+
+<ol>
+<li>替换EFI
+再打开DiskGenius
+<img src="../res/img/322-8.png" alt="image.png" />
+找到这个位置选择全部文件右键强力删除
+<img src="../res/img/322-9.png" alt="image.png" />
+然后再吧我们下载的EFI文件给放进去<img src="../res/img/322-10.png" alt="image.png" />
+之后可以关闭软件拔出U盘开始安装系统了。</li>
+</ol>
+
+<h2 id="安装mac系统">安装Mac系统</h2>
+
+<p>将启动盘插入笔记本,通电开机笔记本然后点按ESC进入启动菜单
+<img src="../res/img/322-11.png" alt="image.png" />
+F9进入引导菜单
+选择第一个你u盘名字的启动项回车。
+<img src="../res/img/322-12.png" alt="image.png" />
+进入这个界面选择Insstall mac Catalina
+<img src="../res/img/322-13.png" alt="image.png" />
+等等加载完成，进入mac安装界面。
+<img src="../res/img/322-14.png" alt="image.png" />
+选择磁盘工具
+然后对你原来的windows盘或者一个你需要安装mac的盘进行抹除格式改为Mac OS扩展（日志式）
+<img src="../res/img/322-15.png" alt="image.png" />
+分区后再关闭磁盘工具窗口回到首界面选择安装macOS，期间大约30分钟左右。
+安装完成后通过U盘启动选择界面选择MAC完成安装。
+引导修复，安装完成mac后不需要再用u盘启动，需要最后用u盘进入winpe系统也就是在前面引导菜单那里出现的两个同名u盘名的启动项的第二个。
+进入PE使用BOOTICE软件。找到UEFI-修改启动序列-添加 ，再挂载的EFI分区里面，找到OC文件夹下面的OpenCore.efi文件，选择并打开:
+<img src="../res/img/322-16.png" alt="image.png" />
+添加完后关机拔掉u盘能顺利启动mac就成功了。</p>
+
+<p>参考文章：<a href="https://www.sqlsec.com/2018/08/clover.html" target="_blank">https://www.sqlsec.com/2018/08/clover.html</a></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2021-06-06 22:03:03</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

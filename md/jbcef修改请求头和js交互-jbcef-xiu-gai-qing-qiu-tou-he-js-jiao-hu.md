@@ -1,14 +1,19 @@
 ---
 title: jbcef修改请求头和js交互
-date: 2021-11-29 19:59:09.249
-updated: 2021-11-29 19:59:09.249
+date: "2021-11-29 19:59:09"
+updated: "2021-11-29 19:59:09"
 url: https://p00q.cn/?p=516
-categories: 
-- Java
-- 开发
-tags: 
-- 插件开发
-- jcef
+categories:
+    - Java
+    - 开发
+tags:
+    - 插件开发
+    - jcef
+summary: |-
+    该文档介绍了如何使用CefBrowser类来修改请求头和实现和JavaScript的交互。首先，在实现CefContextMenuHandler接口的类中，可以通过onBeforeContextMenu方法清除默认的菜单项，并添加自定义菜单项。然后，可以在onContextMenuCommand方法中根据菜单项的ID执行相应的操作。接下来，在初始化时，可以通过addRequestHandler方法添加实现的处理方法。另外，在加载网页后，可以使用executeJavaScript方法加载JavaScript代码，并将方法注册到window对象中，以实现与JavaScript的交互。最后，可以通过JBCefJSQuery类的相关方法来处理JavaScript方法的调用，并在回调中返回调用结果。
+
+    参考链接：[CefBrowser文档](http://www.xuanyimao.com/doc/jcef/202011/org/cef/browser/CefBrowser.html) [帮助文档](http://www.xuanyimao.com/jcef/index.html)
+id: "516"
 ---
 
 

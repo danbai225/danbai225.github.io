@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="redis,token,dblogin"/>
+    <meta name="description" content="该文介绍了一个简单的登录注册中心，类似于微服务中的单点登录。作者在开发过程中发现频繁重复编写和使用登录注册功能的问题，因此开发了这个登录注册中心。服务端使用MySQL数据库存储用户信息，并使用Redis存储登录状态。接口包括登录、退出登录、设置token过期时间、注册、获取用户名和删除用户等功能。作者还提供了一个Java客户端库，方便与服务端进行通信。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>一个简单的登陆注册中心实现 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">一个简单的登陆注册中心实现</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-02-12 21:44:41</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">redis</span>
+                    
+                    <span class="label label-success label-outline">token</span>
+                    
+                    <span class="label label-success label-outline">dblogin</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>该文介绍了一个简单的登录注册中心，类似于微服务中的单点登录。作者在开发过程中发现频繁重复编写和使用登录注册功能的问题，因此开发了这个登录注册中心。服务端使用MySQL数据库存储用户信息，并使用Redis存储登录状态。接口包括登录、退出登录、设置token过期时间、注册、获取用户名和删除用户等功能。作者还提供了一个Java客户端库，方便与服务端进行通信。</p>
+            </section>
+        </header>
+            <h1 id="简介">简介</h1>
+
+<p>由于自己时常写一些小东西练手,有的需要涉及到用户登陆注册.网站应用多了的话简单的账号登陆注册重复写以及使用的时候重复注册登陆.于是乎我就写了这样一个登陆注册中心(就像微服务中的单点登录一样只是更简单)</p>
+
+<p><a href="https://github.com/danbai225/dblogin" target="_blank">github地址</a></p>
+
+<h1 id="服务端">服务端</h1>
+
+<h2 id="表结构">表结构</h2>
+
+<pre><code>CREATE TABLE `user` (
+  `username` varchar(128) NOT NULL,
+  `password` varchar(256) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+</code></pre>
+
+<p>只做一件事就是登陆注册所以就只有一张表结构也就很简单.</p>
+
+<h2 id="登陆处理">登陆处理</h2>
+
+<p>1.将请求来的用户密码验证(验证成功继续)</p>
+
+<p>2.获取个32位uuid(token)  以它为key用户名为value存入redis</p>
+
+<p>3.返回token</p>
+
+<p>返回的token可以请求出用户名 后续操作带上token即可</p>
+
+<pre><code>public Resources login(User user) {
+        User user1 = getUser(user.getUsername());
+        //用户名存在
+        if (user1 != null) {
+            if (StringUtils.md5(user.getPassword()).equals(user1.getPassword())) {
+                String uuid = uuidUtils.getUUID32();
+                redisTemplate.opsForValue().set(uuid, user.getUsername(), 1, TimeUnit.DAYS);
+                return Resources.Ok().setMsg(&quot;登陆成功&quot;).setData(uuid);
+            }
+            return Resources.Err().setMsg(&quot;账号或密码错误&quot;);
+        }
+        return Resources.Err().setMsg(&quot;账号不存在&quot;);
+    }
+</code></pre>
+
+<h1 id="接口">接口</h1>
+
+<ul>
+<li>/login 登陆(用户名,密码)</li>
+<li>/logout 退出登陆(token)</li>
+<li>/tokenTime token过期时间(token,时间秒)</li>
+<li>/register 注册(用户名,密码)</li>
+<li>/username token获取用户名(token)</li>
+<li>/delete 删除用户(用户名)</li>
+</ul>
+
+<p>如果服务端配置开启了口令还必须携带正确口令才行</p>
+
+<h1 id="客户端">客户端</h1>
+
+<p>可以通过http请求以上接口进行与服务端间的通信.
+java我封装了一个客户端可以直接依赖调用.
+在pom中添加</p>
+
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;cn.p00q.dblogin&lt;/groupId&gt;
+  &lt;artifactId&gt;client&lt;/artifactId&gt;
+  &lt;version&gt;1.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>在application配置中添加</p>
+
+<pre><code>danbai:
+  dblogin:
+    passwordManagement: &quot;DanBai&quot; #没用口令可不要
+    serviceURL: &quot;http://127.0.0.1:8085&quot;
+</code></pre>
+
+<p>在需要使用的地方注入 如:</p>
+
+<pre><code>    @Autowired
+    DBlogin dBlogin;
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-03-29 21:35:29</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

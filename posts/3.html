@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="影视网站,Python"/>
+    <meta name="description" content="该脚本是一个用于爬取影视网站的爬虫脚本，使用Python编写。脚本包括几个主要的模块和函数，通过请求URL获取网页的HTML内容，并使用XPath解析器提取需要的数据。脚本还使用了代理和多线程技术以提高爬取效率。在获取到数据后，脚本将数据存储到MySQL数据库中。
+
+具体实现逻辑如下：
+1. 定义了一个数据库连接池，并设置了一些连接参数。
+2. 定义了一个影视类(Ji)，用于存储影视的名称和URL。
+3. 定义了获取代理的函数(get_proxy)。
+4. 定义了获取页面HTML的函数(getHtml)。
+5. 定义了主函数(main)。在主函数中，首先获取网页的HTML内容，并使用XPath提取影视的URL。然后创建一个线程池，并将每个影视的URL作为参数传递给一个函数(run)。最后等待线程结束并关闭线程池。
+6. 定义了一个函数(run)，用于获取影视的详细数据并将数据存储到数据库中。在获取详细数据时，脚本使用XPath解析器提取需要的数据，并将数据存储到数据库中。
+
+总体来说，该脚本使用了Python的requests、lxml、re和pymysql等模块，通过请求网页、解析网页和操作数据库的方式实现了影视网站的数据爬取。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>为影视网站写一个爬虫脚本 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">为影视网站写一个爬虫脚本</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2019-10-11 14:37:04</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">影视网站</span>
+                    
+                    <span class="label label-success label-outline">Python</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>该脚本是一个用于爬取影视网站的爬虫脚本，使用Python编写。脚本包括几个主要的模块和函数，通过请求URL获取网页的HTML内容，并使用XPath解析器提取需要的数据。脚本还使用了代理和多线程技术以提高爬取效率。在获取到数据后，脚本将数据存储到MySQL数据库中。
+
+具体实现逻辑如下：
+1. 定义了一个数据库连接池，并设置了一些连接参数。
+2. 定义了一个影视类(Ji)，用于存储影视的名称和URL。
+3. 定义了获取代理的函数(get_proxy)。
+4. 定义了获取页面HTML的函数(getHtml)。
+5. 定义了主函数(main)。在主函数中，首先获取网页的HTML内容，并使用XPath提取影视的URL。然后创建一个线程池，并将每个影视的URL作为参数传递给一个函数(run)。最后等待线程结束并关闭线程池。
+6. 定义了一个函数(run)，用于获取影视的详细数据并将数据存储到数据库中。在获取详细数据时，脚本使用XPath解析器提取需要的数据，并将数据存储到数据库中。
+
+总体来说，该脚本使用了Python的requests、lxml、re和pymysql等模块，通过请求网页、解析网页和操作数据库的方式实现了影视网站的数据爬取。</p>
+            </section>
+        </header>
+            <h1 id="影视网站的爬虫脚本">影视网站的爬虫脚本</h1>
+
+<p>前段时间用java写的脚本不能用了这次想重新写一下,想选择python重新写一下,也没用什么框架就几个模块单文件</p>
+
+<pre><code>import json
+import random
+import requests
+from lxml import etree
+import re
+import pymysql
+from DBUtils.PooledDB import PooledDB
+from multiprocessing.pool import ThreadPool
+
+
+
+POOL = PooledDB(
+	creator=pymysql,  # 使用链接数据库的模块
+	maxconnections=0,  # 连接池允许的最大连接数，0和None表示不限制连接数
+	mincached=20,  # 初始化时，链接池中至少创建的空闲的链接，0表示不创建
+	maxcached=5,  # 链接池中最多闲置的链接，0和None不限制
+	maxshared=0,  # 链接池中最多共享的链接数量，0和None表示全部共享。PS: 无用，因为pymysql和MySQLdb等模块的 threadsafety都为1，所有值无论设置为多少，_maxcached永远为0，所以永远是所有链接都共享。
+	blocking=True,	# 连接池中如果没有可用连接后，是否阻塞等待。True，等待；False，不等待然后报错
+	maxusage=None,	# 一个链接最多被重复使用的次数，None表示无限制
+	setsession=[],	# 开始会话前执行的命令列表。如：[&quot;set datestyle to ...&quot;, &quot;set time zone ...&quot;]
+	ping=0,
+	# ping MySQL服务端，检查是否服务可用。# 如：0 = None = never, 1 = default = whenever it is requested, 2 = when a cursor is created, 4 = when a query is executed, 7 = always
+	host='127.0.0.1',
+	port=3306,
+	user='ys',
+	password='password',
+	database='ys',
+	charset='utf8'
+)
+class Ji:
+	name=&quot;&quot;
+	url=&quot;&quot;
+	def __init__(self, name, url):
+		self.name = name
+		self.url = url
+
+proxy=&quot;&quot;
+header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'}
+#获取代理
+def get_proxy():
+	global proxy
+	r=requests.get(&quot;http://ip.jiangxianli.com/&quot;)
+	if(r.status_code==200):
+		selector=etree.HTML(r.text)
+		i=random.randint(1,15)
+		proxy=selector.xpath(&quot;//button[@class=\&quot;btn btn-sm btn-copy\&quot;]/@data-url&quot;)[i]
+#获取页面html
+def getHtml(url):
+	global proxy
+	try:
+		html = requests.get(url,headers=header,timeout=5)
+		return html
+	except Exception as e:
+		print(e)
+		run(url)
+def main():
+	r=getHtml(&quot;http://www.okzy.co/?m=vod-index-pg-1.html&quot;)
+	selector=etree.HTML(r.text)
+	list=selector.xpath(&quot;//span[@class=\&quot;xing_vb4\&quot;]/a/@href&quot;)
+	#创建线程池
+	pool = ThreadPool(20)
+	for s in list:
+		url=&quot;http://www.okzyw.com&quot;+s
+		try:
+			pool.apply_async(run, args=(url,))
+		except Exception as e:
+			print(e)
+	pool.close()
+	pool.join()
+	print(&quot;结束&quot;)
+def run(url):
+	conn = POOL.connection()
+	cursor = conn.cursor()
+	#获取页面数据
+	r=getHtml(url)
+	if(r.status_code==200):
+		selector=etree.HTML(r.text)
+		#获取需要数据
+		id=re.compile(&quot;id-(.*).html&quot;).findall(r.url)[0]
+		list=selector.xpath(&quot;//div[@class=\&quot;vodh\&quot;]/h2/text()&quot;)
+		pm=ifnull(list)
+		list=selector.xpath(&quot;//img[@class=\&quot;lazy\&quot;]/@src&quot;)
+		tp=&quot;http://img.p00q.cn:222/ys.php?src=&quot;+ifnull(list)+&quot;&amp;q=50&amp;w=200&amp;h=285&quot;
+		list=selector.xpath(&quot;//div[@class=\&quot;vodh\&quot;]/span/text()&quot;)
+		zt=ifnull(list)
+		list=selector.xpath(&quot;//div[@class=\&quot;vodh\&quot;]/label/text()&quot;)
+		pf=ifnull(list)
+		list=selector.xpath(&quot;//div[@class=\&quot;vodinfobox\&quot;]/ul/li[1]/span/text()&quot;)
+		bm=ifnull(list)
+		list=selector.xpath(&quot;//div[@class=\&quot;vodinfobox\&quot;]/ul/li[2]/span/text()&quot;)
+		dy=ifnull(list)
+		list=selector.xpath(&quot;//div[@class=\&quot;vodinfobox\&quot;]/ul/li[3]/span/text()&quot;)
+		zy=ifnull(list)
+		list=selector.xpath(&quot;//div[@class=\&quot;vodinfobox\&quot;]/ul/li[4]/span/text()&quot;)
+		lx=ifnull(list)
+		if lx.find(&quot;福利&quot;) &gt; -1:
+			return
+		list=selector.xpath(&quot;//div[@class=\&quot;vodinfobox\&quot;]/ul/li[5]/span/text()&quot;)
+		dq=ifnull(list)
+		list=selector.xpath(&quot;//div[@class=\&quot;vodinfobox\&quot;]/ul/li[6]/span/text()&quot;)
+		yy=ifnull(list)
+		list=selector.xpath(&quot;//div[@class=\&quot;vodinfobox\&quot;]/ul/li[7]/span/text()&quot;)
+		sytime=ifnull(list)
+		list=selector.xpath(&quot;//div[@class=\&quot;vodinfobox\&quot;]/ul/li[8]/span/text()&quot;)
+		pctime=ifnull(list)
+		list=selector.xpath(&quot;//div[@class=\&quot;vodinfobox\&quot;]/ul/li[9]/span/text()&quot;)
+		gxtime=ifnull(list)
+		list=selector.xpath(&quot;//div[@class=\&quot;vodplayinfo\&quot;]/text()&quot;)
+		if(len(list)&gt;0):
+			js=list[3]
+		jilist=selector.xpath(&quot;//span[text()=\&quot;ckm3u8\&quot;]/../../ul/li/text()&quot;)
+		if len(jilist)&gt;0:
+			list=fenji(jilist)
+			gkdz = json.dumps(list, ensure_ascii=False)
+		else:
+			gkdz=&quot;[]&quot;
+		jilist=selector.xpath(&quot;//div[@id=\&quot;down_1\&quot;]/ul/li/text()&quot;)
+		if len(jilist)&gt;0:
+			list=fenji(jilist)
+			xzdz = json.dumps(list, ensure_ascii=False)
+		else:
+			xzdz=&quot;[]&quot;
+		if pm!=&quot;&quot;:
+			#向数据库插入数据
+			sql=&quot;INSERT INTO ysb (id,pm,tp,zt,pf,bm,dy,zy,lx,dq,yy,sytime,pctime,gxtime,js,gkdz,xzdz) VALUES ({},'{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}') ON DUPLICATE KEY UPDATE zt='{}',gxtime='{}',gkdz='{}',xzdz='{}',tp='{}';&quot;.format(id,pm,tp,zt,pf,bm,dy,zy,lx,dq,yy,sytime,pctime,gxtime,js,gkdz,xzdz,zt,gxtime,gkdz,xzdz,tp)
+			cursor.execute(sql)
+			print(&quot;更新&quot;+id+pm)
+			conn.commit()
+			conn.close()
+def fenji(jilist):
+	list=[]
+	for j in jilist:
+		ji =Ji(j.split(&quot;$&quot;)[0],j.split(&quot;$&quot;)[1])
+		list.append(ji.__dict__)
+	return list
+def ifnull(list):
+	if(len(list)&gt;0):
+		return list[0]
+	return &quot;&quot;
+if __name__ == &quot;__main__&quot;:
+	main()
+</code></pre>
+
+<p>不得不说python爬取速度确实快多了,但是由于我对python的语法不够了解所以写起来不是那么流畅.</p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-03-29 21:31:39</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

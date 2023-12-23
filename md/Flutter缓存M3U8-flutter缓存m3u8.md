@@ -1,12 +1,14 @@
 ---
 title: Flutter缓存M3U8
-date: 2020-04-26 13:03:18.266
-updated: 2021-06-10 15:18:02.294
+date: "2020-04-26 13:03:18"
+updated: "2021-06-10 15:18:02"
 url: https://p00q.cn/?p=67
-categories: 
-- Flutter
-tags: 
-- Flutter
+categories:
+    - Flutter
+tags:
+    - Flutter
+summary: 本文介绍了如何使用Flutter实现缓存影视功能，在安卓端添加了M3U8Manger的依赖库，并通过建立Flutter与安卓的通信实现了下载功能。在Flutter代码中调用安卓的M3U8Download方法进行下载任务，并通过UDP发送回调信息给Flutter端进行展示。具体的代码实现可以参考文章内容，其中包括了Flutter代码和安卓代码的链接。
+id: "67"
 ---
 
 # flutter实现缓存影视功能
@@ -216,3 +218,4 @@ public class M3U8Download {
 }
 
 ```
+

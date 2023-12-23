@@ -1,13 +1,15 @@
 ---
 title: 使用java websocket+agora.io实现影视同步一起观看和语音功能
-date: 2020-03-21 19:06:56.965
-updated: 2020-03-21 19:07:44.266
+date: "2020-03-21 19:06:56"
+updated: "2020-03-21 19:07:44"
 url: https://p00q.cn/?p=33
-categories: 
-- Java
-tags: 
-- 影视网站
-- websocket
+categories:
+    - Java
+tags:
+    - 影视网站
+    - websocket
+summary: 该功能是一个影视观看平台，用户可以创建房间并邀请好友一同观看影视，同时支持房间语音。具体流程是用户创建房间后，生成一个房间ID，然后通过邀请好友加入房间。前端页面使用DPlayer播放器播放影视，使用cdnbye进行p2p加速，并使用声网Agora处理房间语音。后端使用淡白影视作为基础进行开发，使用socket进行实时通信。具体实现包括前端页面和后端socket类，后端socket管理类用于处理各种操作，例如加入房间、创建房间、发送消息等。整个流程的效果图可以参考文章中的图片。
+id: "33"
 ---
 
 # 功能介绍
@@ -467,3 +469,4 @@ public class CinemaSocketManagement {
 ```
 # 完感 
 通过实现这个功能,还收获了一些其他的知识,nginx代理websocket、java多线程map、web语音.
+

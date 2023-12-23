@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="golang"/>
+    <meta name="description" content="该程序通过将用户名的哈希转换为一个手机号码，生成用户的手机号。在程序中，假设用户名为&#34;john&#34;。首先，将用户名&#34;john&#34;进行MD5哈希运算，生成一个128位的哈希值。然后，将哈希值转换为一个大整数。接下来，取该大整数的前9位数字作为手机号码。最后，从数字&#34;3456789&#34;中随机选择一个数字，将其添加到手机号码的前面，形成最终的手机号码。以上是该程序的基本流程和实现方式。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>通过字符串生成手机号 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">通过字符串生成手机号</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2023-04-18 12:12:42</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">golang</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>该程序通过将用户名的哈希转换为一个手机号码，生成用户的手机号。在程序中，假设用户名为&#34;john&#34;。首先，将用户名&#34;john&#34;进行MD5哈希运算，生成一个128位的哈希值。然后，将哈希值转换为一个大整数。接下来，取该大整数的前9位数字作为手机号码。最后，从数字&#34;3456789&#34;中随机选择一个数字，将其添加到手机号码的前面，形成最终的手机号码。以上是该程序的基本流程和实现方式。</p>
+            </section>
+        </header>
+            <p>用户信息中没有手机号，通过用户名的哈希来生成一个手机号。</p>
+
+<pre><code>package main
+
+import (
+	&quot;crypto/md5&quot;
+	&quot;fmt&quot;
+	&quot;math/big&quot;
+)
+
+func main() {
+	// 假设用户名为&quot;john&quot;
+	username := &quot;john&quot;
+
+	// 生成一个128位的MD5哈希值
+	hash := md5.Sum([]byte(username))
+
+	// 将哈希值转换为一个大整数
+	num := new(big.Int)
+	num.SetBytes(hash[:])
+
+	// 取前9位数字作为手机号码
+	mobile := num.Mod(num, big.NewInt(1e9)).String()
+
+	// 在手机号码前面添加&quot;13&quot;-&quot;19&quot;中的一个数字
+	mobile = &quot;1&quot; + string(&quot;3456789&quot;[num.Mod(num, big.NewInt(7)).Uint64()]) + mobile
+
+	fmt.Println(&quot;Username:&quot;, username)
+	fmt.Println(&quot;Mobile:&quot;, mobile)
+}
+
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2023-04-29 09:40:19</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

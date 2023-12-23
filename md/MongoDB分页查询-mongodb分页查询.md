@@ -1,12 +1,14 @@
 ---
 title: MongoDB分页查询
-date: 2020-07-02 12:01:30.807
-updated: 2020-07-04 20:20:09.949
+date: "2020-07-02 12:01:30"
+updated: "2020-07-04 20:20:09"
 url: https://p00q.cn/?p=105
-categories: 
-- Java
-tags: 
-- MongoDB
+categories:
+    - Java
+tags:
+    - MongoDB
+summary: 这段代码是一个表格分页的示例，数据是从MongoDB中获取的。代码中定义了一个`PageResult`类来存储分页结果，包括页码、页面大小、总数、总页数和数据列表。然后，有一个`DmServiceImpl`类实现了一个`DmService`接口，具有各种根据条件查询的方法以及分页查询的方法。在分页查询的方法中，首先根据条件查询总条数，然后计算总页数。如果页码不合法，则设置为第一页。接下来，根据是否有最后一条数据的id来确定是使用普通分页还是使用有lastId的分页。最后，将查询结果封装到`PageResult`对象中返回。
+id: "105"
 ---
 
 # 分页
@@ -109,3 +111,4 @@ public class DmServiceImpl implements DmService {
     }
 }
 ```
+

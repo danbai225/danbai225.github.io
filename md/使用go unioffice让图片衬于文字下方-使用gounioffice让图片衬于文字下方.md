@@ -1,12 +1,14 @@
 ---
 title: 使用go unioffice让图片衬于文字下方
-date: 2020-10-11 12:45:48.375
-updated: 2020-10-17 00:10:45.527
+date: "2020-10-11 12:45:48"
+updated: "2020-10-17 00:10:45"
 url: https://p00q.cn/?p=227
-categories: 
-- Go
-tags: 
-- unioffice
+categories:
+    - Go
+tags:
+    - unioffice
+summary: 该文章介绍了使用go处理office文档的开源库unioffice，并讨论了在处理word文档时遇到的问题。问题是如何将图片设置为封面背景时不挤压文字。作者发现了一种解决方案，通过修改文档的xml结构来实现。作者将两个文档进行了对比，找到了影响图片布局的属性，并通过unioffice库的API来修改这些属性，最终解决了问题。文章还给出了相关代码示例。
+id: "227"
 ---
 
 # unioffice

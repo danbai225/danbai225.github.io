@@ -1,12 +1,14 @@
 ---
 title: K8s安装以及使用
-date: 2020-07-09 08:09:29.101
-updated: 2020-07-09 09:21:17.541
+date: "2020-07-09 08:09:29"
+updated: "2020-07-09 09:21:17"
 url: https://p00q.cn/?p=107
-categories: 
-- 瞎折腾
-tags: 
-- k8s
+categories:
+    - 瞎折腾
+tags:
+    - k8s
+summary: 本文介绍了在进行安装之前的准备工作，包括修改主机名、关闭防火墙、关闭swap分区和关闭SELinux。然后，文中提供了安装k8s的详细教程，并包括了初始化master节点和worker节点的步骤。最后，介绍了安装Ingress Controller的步骤。文章给出了一些参考链接供读者参考。
+id: "107"
 ---
 
 # 安装

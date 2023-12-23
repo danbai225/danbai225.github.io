@@ -1,15 +1,17 @@
 ---
 title: 在mysql中使用json数据类型 grom
-date: 2022-03-16 15:01:22.599
-updated: 2022-03-16 15:18:29.041
+date: "2022-03-16 15:01:22"
+updated: "2022-03-16 15:18:29"
 url: https://p00q.cn/?p=548
-categories: 
-- Go
-- 数据库
-tags: 
-- Go
-- MySQL
-- gorm
+categories:
+    - Go
+    - 数据库
+tags:
+    - Go
+    - MySQL
+    - gorm
+summary: MySQL自从5.7版本开始支持JSON数据类型字段。本文介绍了如何使用MySQL和GORM库操作JSON类型的数据。首先，需要自定义数据类型来支持JSON字段，并实现Value和Scan接口。然后，可以通过语句"字段名->'$.json属性名'"来访问JSON属性，并进行查询和修改操作。此外，还介绍了一些MySQL内置函数用于操作JSON数据。更多详细信息可以参考附带的链接。
+id: "548"
 ---
 
 # mysql json类型

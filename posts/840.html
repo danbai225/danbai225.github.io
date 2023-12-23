@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="直播,推流,百人直播"/>
+    <meta name="description" content="本文介绍了在非公开直播平台进行线上直播的需求，并提出了使用WebRTC（Web Real-Time Communication）的方案。WebRTC是一个支持实时视频、音频和数据传输的开放式网络协议和技术标准，无需安装插件或其他软件即可在Web浏览器之间进行点对点通信。
+
+为了节省时间和减少费用开销，文章建议使用腾讯云提供的云直播服务支持WebRTC。首先需要准备一个域名和腾讯云账号，并登录腾讯云添加云直播域名。推流直播可以通过生成推流地址并使用Web推流工具进行直播，然后可以通过腾讯云提供的在线播放器或自己使用腾讯云提供的SDK编写播放页面进行观看。
+
+总的来说，使用WebRTC和腾讯云云直播服务可以快速搭建可用的线上直播平台，并实现低延迟的直播效果。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>快速搭建百人低延迟直播 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">快速搭建百人低延迟直播</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2023-04-10 10:46:04</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">直播</span>
+                    
+                    <span class="label label-success label-outline">推流</span>
+                    
+                    <span class="label label-success label-outline">百人直播</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>本文介绍了在非公开直播平台进行线上直播的需求，并提出了使用WebRTC（Web Real-Time Communication）的方案。WebRTC是一个支持实时视频、音频和数据传输的开放式网络协议和技术标准，无需安装插件或其他软件即可在Web浏览器之间进行点对点通信。
+
+为了节省时间和减少费用开销，文章建议使用腾讯云提供的云直播服务支持WebRTC。首先需要准备一个域名和腾讯云账号，并登录腾讯云添加云直播域名。推流直播可以通过生成推流地址并使用Web推流工具进行直播，然后可以通过腾讯云提供的在线播放器或自己使用腾讯云提供的SDK编写播放页面进行观看。
+
+总的来说，使用WebRTC和腾讯云云直播服务可以快速搭建可用的线上直播平台，并实现低延迟的直播效果。</p>
+            </section>
+        </header>
+            <h1 id="原始需求">原始需求</h1>
+
+<p>需要在非公开直播平台进行一场线上直播。如果用腾讯会议、飞书等软件不满足人数要求，大概会有300人左右在线观看。需要让直播延迟很低即时效果好延迟控制在1s以内。在这种需求下让我想到了webrtc，</p>
+
+<blockquote>
+<p>WebRTC (Web Real-Time Communication) 是一个支持实时视频、音频和数据传输的开放式网络协议和技术标准。它允许在Web浏览器之间进行点对点通信，而无需安装插件或其他软件。
+WebRTC是由Google发起并开发，并在W3C和IETF等标准组织中得到认可。它基于JavaScript API和HTML5技术构建，使用了标准的网络通信协议，如UDP、TCP和HTTP，并支持多媒体编解码器，如VP8、VP9、Opus等。
+WebRTC主要应用于视频会议、在线教育、在线客服、多人游戏、远程协作等实时通信场景。与传统的视频通信方案相比，WebRTC以其低延迟、高清晰度、易于使用和免费等优势，越来越受到开发者和企业的青睐。</p>
+</blockquote>
+
+<h1 id="基于腾讯云云直播服务推流">基于腾讯云云直播服务推流</h1>
+
+<p>既然需要快速搭建可用服务，那么自己写webrtc服务肯定是来不及了，而且还需要大的带宽服务器这也是不小的花费。为了节省时间和减少费用开销，这里我采用腾讯云提供的云直播服务支持webrtc。</p>
+
+<p>需要准备一个域名以及一个腾讯云账号</p>
+
+<h2 id="登录腾讯云添加云直播域名">登录腾讯云添加云直播域名</h2>
+
+<p><a href="https://console.cloud.tencent.com/live/domainmanage" target="_blank">云直播域名管理</a>
+默认会有一个推流域名，需要自己添加一个播放域名并完成认证。
+<img src="../res/img/840-1.jpeg" alt="image-1681094724419" /></p>
+
+<h2 id="开始推流直播">开始推流直播</h2>
+
+<p>没错就这么快连直播工具都无需下载直接开始直播。先在地址是生成器中生成一个推流地址
+会生成很多种推流方式地址，这里我们为了实现低延迟采用webrtc的推流方式。
+<a href="https://console.cloud.tencent.com/live/addrgenerator/addrgenerator" target="_blank">推流地址生成</a>
+在这里粘贴我们复制的webrtc直播推流地址。
+<a href="https://console.cloud.tencent.com/live/tools/webpush" target="_blank">web推流直播</a>
+通过web推流进行直播，可以选着窗口或屏幕进行分享。
+推流后就可以看到我们的播放地址：
+<img src="../res/img/840-2.jpeg" alt="image-1681095205409" /></p>
+
+<h2 id="播放直播">播放直播</h2>
+
+<p>实测在推流端和播放端不在同一网络情况下（wifi与手机流量）
+推流端以1080p60fps的情况进行推流，播放延迟任然保持在1s以内。</p>
+
+<p>因为使用了webrtc所以在播放时也需要专门的播放器：
+可以使用腾讯云提供的在线demo播放
+<a href="https://tcplayer.vcube.tencent.com/" target="_blank">播放器demo</a>
+或者自己根据腾讯云提供的sdk写一个简单的播放页面下面这是一个例子:</p>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;在线播放器&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-section {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;h1&gt;视频播放器&lt;/h1&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;input-section&quot;&gt;
+            &lt;label for=&quot;video-url&quot;&gt;输入视频URL：&lt;/label&gt;
+            &lt;input type=&quot;text&quot; id=&quot;video-url&quot; placeholder=&quot;https://example.com/video.mp4&quot;&gt;
+            &lt;button id=&quot;play-btn&quot;&gt;播放&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;section class=&quot;video-section&quot;&gt;
+            &lt;video id=&quot;player-container-id&quot; width=&quot;414&quot; height=&quot;270&quot; preload=&quot;auto&quot; playsinline webkit-playsinline&gt;
+            &lt;/video&gt;
+        &lt;/section&gt;
+    &lt;/div&gt;
+    &lt;link href=&quot;https://web.sdk.qcloud.com/player/tcplayer/release/v4.7.2/tcplayer.min.css&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;!--播放器脚本文件--&gt;
+    &lt;script src=&quot;https://web.sdk.qcloud.com/player/tcplayer/release/v4.7.2/tcplayer.v4.7.2.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        const playButton = document.getElementById(&quot;play-btn&quot;);
+        const player = TCPlayer('player-container-id', {});
+        playButton.addEventListener(&quot;click&quot;, () =&gt; {
+            const videoUrl = document.getElementById('video-url').value;
+            if (videoUrl) {
+                player.src(videoUrl);
+                player.play();
+            }
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>把这个html部署到服务器或者本地打开使用都行。
+注意的是浏览器最好都使用最新的谷歌浏览器。
+如有遇到实在播放不了的情况可以使用flv地址进行播放。延迟会增加1-2s</p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2023-04-10 11:22:43</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

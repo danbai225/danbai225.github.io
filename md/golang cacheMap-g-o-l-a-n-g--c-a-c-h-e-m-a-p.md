@@ -1,12 +1,14 @@
 ---
 title: golang cacheMap
-date: 2020-12-12 20:30:04.321
-updated: 2020-12-12 20:30:04.321
+date: "2020-12-12 20:30:04"
+updated: "2020-12-12 20:30:04"
 url: https://p00q.cn/?p=291
-categories: 
-- Go
-tags: 
-- Go
+categories:
+    - Go
+tags:
+    - Go
+summary: 本文介绍了一个简单的缓存实现方法，通过使用Map来存储缓存数据，并利用sync.Mutex实现并发安全。其中缓存数据包含一个值和过期时间，可以通过SetCache方法设置缓存并指定过期时间，通过GetCache方法获取缓存值，通过Remove方法移除缓存。示例代码展示了如何使用该缓存库，先设置一个缓存值为"cache"并设置过期时间为10秒，然后获取并打印该缓存值。
+id: "291"
 ---
 
 # 缓存

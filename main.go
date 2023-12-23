@@ -15,6 +15,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"time"
 )
 
 type site struct {
@@ -29,7 +30,7 @@ type meta struct {
 	URL        string   `yaml:"url"`
 	Categories []string `yaml:"categories"`
 	Tags       []string `yaml:"tags"`
-	Summary    string
+	Summary    string   `yaml:"summary"`
 	Id         string
 }
 type data struct {
@@ -115,22 +116,24 @@ func parse(path string) meta {
 	u, _ := url.Parse(m.URL)
 	id := u.Query().Get("p")
 	m.Id = id
-	if id != "803" {
-		return m
-	}
 	m.Date = m.Date[:19]
 	m.Updated = m.Updated[:19]
-	path = fmt.Sprintf("posts/%s.html", id)
-	stat, err := os.Stat(path)
+	htmlPath := fmt.Sprintf("posts/%s.html", id)
+	stat, err := os.Stat(htmlPath)
 	if err == nil && stat.Size() > 0 {
 		return m
 	}
-	m.Summary = summary(dataStr)
 	if m.Summary == "" {
-		return m
+		m.Summary = summary(dataStr)
+		if m.Summary == "" {
+			return m
+		}
+		out, _ := yaml.Marshal(m)
+		_ = os.WriteFile(path, []byte(fmt.Sprintf("---\n%s---\n%s", string(out), dataStr)), 0644)
 	}
+	fmt.Println(m.Title, m.Summary)
 	s := fillTemplate(string(mdToHTML([]byte(dataStr))), m)
-	_ = os.WriteFile(path, []byte(s), 0644)
+	_ = os.WriteFile(htmlPath, []byte(s), 0644)
 	return m
 }
 func mdToHTML(md []byte) []byte {
@@ -168,7 +171,7 @@ func summary(content string) string {
 		Messages: []openai.ChatCompletionMessage{
 			{
 				Role:    openai.ChatMessageRoleSystem,
-				Content: "你需要以第一人称提取用户文章的摘要。",
+				Content: "提取文章的摘要",
 			},
 			{
 				Role:    openai.ChatMessageRoleUser,
@@ -180,5 +183,6 @@ func summary(content string) string {
 		fmt.Printf("openai 摘要错误: %v", err)
 		return ""
 	}
+	time.Sleep(10 * time.Second)
 	return resp.Choices[0].Message.Content
 }

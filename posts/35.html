@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="java"/>
+    <meta name="description" content="本文介绍了如何给影视app添加一个投屏功能。首先需要在项目中添加依赖，然后在Activity中实现投屏功能。具体实现包括搜索设备、添加设备到下拉框、设置投屏信息以及实现投屏按钮的点击事件。最后给出了参考地址和项目地址供参考。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>实现一个简单的投屏影视功能 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">实现一个简单的投屏影视功能</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-03-30 13:52:54</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">java</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>本文介绍了如何给影视app添加一个投屏功能。首先需要在项目中添加依赖，然后在Activity中实现投屏功能。具体实现包括搜索设备、添加设备到下拉框、设置投屏信息以及实现投屏按钮的点击事件。最后给出了参考地址和项目地址供参考。</p>
+            </section>
+        </header>
+            <h1 id="给影视app添加个投屏功能">给影视app添加个投屏功能</h1>
+
+<p>手机app上选中影视投屏给电视.
+<a href="https://cdn.p00q.cn/ys/app/dbys.apk" target="_blank">app地址</a></p>
+
+<h1 id="添加依赖">添加依赖</h1>
+
+<pre><code class="language-language">allprojects {
+	repositories {
+		...
+		maven { url 'https://www.jitpack.io' }
+      		maven {url 'http://4thline.org/m2'}
+	}
+ 
+}
+
+</code></pre>
+
+<pre><code>android  {
+	//必须添加，不加会报错
+ packagingOptions {
+        exclude 'META-INF/beans.xml'
+    }
+
+  }
+dependencies {
+
+       compileOnly 'javax.enterprise:cdi-api:2.0'
+       implementation 'com.github.yanbo469:VideoDlnaScreen:v1.0'
+}
+</code></pre>
+
+<h1 id="在activity中实现">在Activity中实现</h1>
+
+<p><a href="https://github.com/danbai225/dbysapp/blob/master/app/src/main/java/com/danbai/dbysapp/activity/YsActivity.java" target="_blank">代码地址</a>
+我在Activity布局xml中添加了一个下拉框和一个按钮</p>
+
+<p>在onCreate中注册服务和获得组件</p>
+
+<pre><code class="language-java">@Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_ys);
+        spinner=findViewById(R.id.spinner);
+        touping=findViewById(R.id.touping);
+	//使用前先注册服务
+        ClingManager.getInstance().startClingService();
+        tp();
+    }
+</code></pre>
+
+<p>投屏初始化和实现</p>
+
+<pre><code class="language-java">private void tp(){
+        //搜索设备
+        clingDevices = DeviceManager.getInstance().getClingDeviceList();
+        adapter = new ArrayAdapter&lt;&gt;(this,android.R.layout.simple_spinner_item);
+        //设置下拉列表风格
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //将适配器添加到spinner中去
+        spinner.setAdapter(adapter);
+        spinner.setVisibility(View.VISIBLE);//设置默认显示
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView&lt;?&gt; arg0, View arg1,
+                                       int arg2, long arg3) {
+                // TODO Auto-generated method stub
+		//遍历获取当前选中的设备
+                for (int i=0;i&lt;clingDevices.size();i++){
+                    if(getDname(clingDevices.get(i)).equals(((TextView)arg1).getText())){
+                        DeviceManager.getInstance().setCurrClingDevice(clingDevices.get(i));
+                    }
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView&lt;?&gt; arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+	//添加设备到下拉框
+        if(clingDevices.size()&gt;0){
+            for (int i=0;i&lt;clingDevices.size();i++){
+                adapter.add(getDname(clingDevices.get(i)));
+            }
+        }
+//投屏按钮点击事件
+        touping.setOnClickListener(b-&gt;{
+            //设置网络投屏的信息
+            RemoteItem itemurl = new RemoteItem(&quot;淡白影视&quot;, &quot;996&quot;, &quot;淡白影视&quot;,107362668, &quot;00:00:00&quot;, &quot;1920x1080&quot;,jiList.get(playindex).getUrl());
+            //添加网络投屏的信息
+            ClingManager.getInstance().setRemoteItem(itemurl);
+            remoteItem = ClingManager.getInstance().getRemoteItem();
+            //播放
+            if (ControlManager.getInstance().getState() == ControlManager.CastState.STOPED) {
+                newPlayCastRemoteContent();
+            }
+        });
+    }
+    /**
+     * 网络投屏
+     */
+    private String getDname(ClingDevice device){
+        return device.getDevice().getDetails().getFriendlyName()+&quot;-&quot;+device.getDevice().getDetails().getPresentationURI().getHost();
+    }
+    private void newPlayCastRemoteContent() {
+
+        ControlManager.getInstance().setState(ControlManager.CastState.TRANSITIONING);
+
+        ControlManager.getInstance().newPlayCast(remoteItem, new ControlCallback() {
+
+            @Override
+            public void onSuccess() {
+                ControlManager.getInstance().setState(ControlManager.CastState.PLAYING);
+                ControlManager.getInstance().initScreenCastCallback();
+                Log.d(&quot;投屏&quot;, &quot;投屏成功&quot;);
+            }
+
+            @Override
+            public void onError(int code, String msg) {
+                ControlManager.getInstance().setState(ControlManager.CastState.STOPED);
+                Log.d(&quot;投屏&quot;, &quot;投屏失败&quot;);
+            }
+        });
+    }
+</code></pre>
+
+<p><a href="https://github.com/yanbo469/VideoDlnaScreen" target="_blank">参考地址</a>
+<a href="https://github.com/danbai225/dbysapp" target="_blank">项目地址</a></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-03-29 21:35:58</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

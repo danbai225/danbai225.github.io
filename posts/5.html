@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Vue"/>
+    <meta name="description" content="该文介绍了作者用vue开发一套手机前端页面的经历。作者在介绍了项目的创建和vue项目开发的基本结构后，分享了自己在开发过程中遇到的困难和解决方法。其中困难包括对如何引入和使用组件的不熟悉、使用axios获取数据时的跨域和cookie问题、以及修改element-ui默认样式的困难。作者最终通过修改样式元素的class来覆盖原有样式。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>使用vue&#43;element开发移动端页面 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">使用vue&#43;element开发移动端页面</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2019-10-23 15:19:04</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Vue</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>该文介绍了作者用vue开发一套手机前端页面的经历。作者在介绍了项目的创建和vue项目开发的基本结构后，分享了自己在开发过程中遇到的困难和解决方法。其中困难包括对如何引入和使用组件的不熟悉、使用axios获取数据时的跨域和cookie问题、以及修改element-ui默认样式的困难。作者最终通过修改样式元素的class来覆盖原有样式。</p>
+            </section>
+        </header>
+            <p><img src="https://img.hacpai.com/bing/20180824.jpg?imageView2/1/w/960/h/540/interlace/1/q/100" alt="" /></p>
+
+<h1 id="介绍">介绍</h1>
+
+<p>为了更好的使<a href="https://github.com/danbai225/dbys" target="_blank">淡白影视</a>在手机web页面有更好的表现。所以决定用vue开发一套手机前端页面.<del>编译的源码可以通过<a href="https://cordova.apache.org/" target="_blank">cordova</a>编译成跨平台的应用.</del>
+ps:经过开发一段时间后,发现在各大浏览器都有自己内置的播放器所以导致很多弹幕显示问题.并且使用cordova打包的app应用也存在播放问题.
+所以app端采用原生开发,移动web端对弹幕不支持.</p>
+
+<p>项目地址:<a href="https://github.com/danbai225/dbysapp" target="_blank">淡白影视app</a></p>
+
+<h1 id="创建项目">创建项目</h1>
+
+<p>项目基于nodejs开发所以需要安装nodejs
+<a href="https://nodejs.org/zh-cn/download/" target="_blank">下载地址</a>
+然后安装vue-cli、vue和cordova加element-ui等所需依赖
+推荐使用vue-cli的vue ui创建vue项目
+在cmd窗口输入vue ui即可,稍后会在浏览器打开管理页面
+<img src="https://img.hacpai.com/file/2019/10/TIM截图20191023200955-a2caf185.png" alt="TIM截图20191023200955.png" />
+进入到工作目录创建项目按照需要配置创建项目即可</p>
+
+<h1 id="vue项目开发">vue项目开发</h1>
+
+<h2 id="项目结构">项目结构</h2>
+
+<p><img src="https://img.hacpai.com/file/2019/10/TIM截图20191023201836-ba40a69f.png" alt="TIM截图20191023201836.png" />
+这是已经开发了两天的项目结构了
+已经实现了一些基本功能
+下面讲讲这两天遇到的困难</p>
+
+<ol>
+<li>由于vue是我最近才学的还不熟悉,所以在开发组件和使用组件的时候对如何引入组件和使用组件是按照vue-cli生成的初始项目修改添加才搞懂的.
+2.使用axios获取数据也遇到了一定困难,跨域问题还有cookie问题
+3.使用element-ui修改默认样式也让我搞了半天,由于我主要注重移动端页面所以element-ui一些组件偏大,需要修改css,根据官网提供的工具编译不通过.所以我用的方法是找到需要修改样式元素的class通过<code>!important</code>覆盖它原有的样式</li>
+</ol>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-03-29 21:33:45</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

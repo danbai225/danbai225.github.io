@@ -1,17 +1,19 @@
 ---
 title: golang解析sql从中获取表名
-date: 2022-04-24 20:34:12.673
-updated: 2022-04-24 20:37:30.787
+date: "2022-04-24 20:34:12"
+updated: "2022-04-24 20:37:30"
 url: https://p00q.cn/?p=610
-categories: 
-- 学习
-- Go
-- 开发
-tags: 
-- Go
-- MySQL
-- sql
-- antlr
+categories:
+    - 学习
+    - Go
+    - 开发
+tags:
+    - Go
+    - MySQL
+    - sql
+    - antlr
+summary: ANTLR是一个用Java语言编写的识别器工具，可以自动生成解析器。它支持生成Java、Go、C等语言的解析器客户端。可以通过下载ANTLR的jar包和mysql的语法规则文件，使用ANTLR来生成解析器。通过覆盖`BaseMySqlParserListener`的`EnterTableName`接口，可以收集解析过程中的表名。
+id: "610"
 ---
 
 # antlr

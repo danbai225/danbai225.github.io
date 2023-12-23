@@ -1,13 +1,24 @@
 ---
 title: IDEA插件开发-发送事件日志(eventLog)
-date: 2021-11-28 18:32:05.401
-updated: 2021-11-29 19:41:59.978
+date: "2021-11-28 18:32:05"
+updated: "2021-11-29 19:41:59"
 url: https://p00q.cn/?p=515
-categories: 
-- 开发
-tags: 
-- IDEA
-- 插件开发
+categories:
+    - 开发
+tags:
+    - IDEA
+    - 插件开发
+summary: |-
+    这段代码实现了在 IntelliJ IDEA 插件中发送通知的功能。首先，通过 `NotificationGroupManager.getInstance().getNotificationGroup("com.github.danbai225.pwlchat.notify")` 获取到通知组，并使用 `createNotification()` 创建一个通知实例。然后，通过 `setTitle()` 设置通知的标题，并使用 `notify()` 方法发送通知。
+
+    在 `plugin.xml` 中，需要添加一个通知组的注册，例如：
+    ```xml
+    <notificationGroup id="com.github.danbai225.pwlchat.notify" displayType="NONE"/>
+    ```
+    其中，`displayType` 属性可以决定通知的显示方式。
+
+    你可以在[这里](https://github.com/danbai225/pwl-chat/blob/main/src/main/kotlin/com/github/danbai225/pwlchat/notify/Notification.kt)找到完整的代码。
+id: "515"
 ---
 
 

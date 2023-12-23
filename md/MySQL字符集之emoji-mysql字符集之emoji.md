@@ -1,12 +1,19 @@
 ---
 title: MySQL字符集之emoji
-date: 2020-07-11 21:04:34.175
-updated: 2021-06-10 15:23:28.425
+date: "2020-07-11 21:04:34"
+updated: "2021-06-10 15:23:28"
 url: https://p00q.cn/?p=112
-categories: 
-- 数据库
-tags: 
-- MySQL
+categories:
+    - 数据库
+tags:
+    - MySQL
+summary: |-
+    可以使用以下SQL语句设置字段的字符集为utf8mb4：
+
+    ALTER TABLE table_name MODIFY column_name VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+    其中，table_name是要修改的表名，column_name是要修改的字段名。这样可以确保字段支持emoji字符。
+id: "112"
 ---
 
 # 啥为啥搜索😃报500

@@ -4,58 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="keywords" content="Flutter,video_player"/>
-    <meta name="description" content="在切换播放源时，有可能出现后台播放的问题。为了解决这个问题，我们可以在切换新的`VideoPlayerController`之前先将其保存到一个变量上，在初始化完成后再销毁。切换播放源的代码如下：
-
-```dart
-if (_videoPlayerController == null) {
-  _initController(url); // 初始化一个新的控制器
-} else {
-  final oldController = _videoPlayerController; // 将当前控制器保存到oldController变量中
-  WidgetsBinding.instance.addPostFrameCallback((_) async {
-    await oldController.dispose(); // 在下一次刷新时销毁旧的控制器
-  });
-  setState(() {
-    _videoPlayerController = null;
-    _initController(url); // 初始化一个新的控制器
-  });
-}
-```
-
-控制器初始化的代码如下：
-
-```dart
-_initController(String link) {
-  _videoPlayerController = VideoPlayerController.network(link)
-    ..initialize().then((_) {
-      _chewieController = ChewieController(
-          customControls: CustomControls(),
-          allowedScreenSleep: false,
-          videoPlayerController: _videoPlayerController,
-          aspectRatio: _videoPlayerController.value.aspectRatio,
-          autoPlay: true,
-          looping: true,
-          startAt: startTime);
-      setState(() {});
-    });
-}
-```
-
-还需要在页面销毁时先销毁播放器，以避免内存泄漏：
-
-```dart
-@override
-dispose() {
-  super.dispose();
-  if (_videoPlayerController != null) {
-    _videoPlayerController.pause();
-    _videoPlayerController.dispose();
-    _videoPlayerController = null;
-    _chewieController = null;
-  }
-}
-```
-
-可以查看该[链接](https://www.thetopsites.net/article/58955831.shtml)获取完整的解决方案。" />
+    <meta name="description" content="本文介绍了在切换播放源时可能出现的后台播放问题，并提供了一种解决方案。在切换播放源之前，先将新的`VideoPlayerController`保存在一个变量中，待其初始化完成后再销毁上一个控制器。具体操作通过判断当前控制器是否为空，如果为空则直接初始化新的控制器；如果不为空，则先保存当前控制器到一个变量，在下一次刷新时销毁之前的控制器，并初始化新的控制器。控制器初始化的过程是先初始化`VideoPlayerController`，然后使用其初始化完成的回调来初始化`ChewieController`。在页面销毁时，需要先销毁播放器以避免泄漏。" />
     
     <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
     
@@ -112,58 +61,7 @@ dispose() {
                 </dd>
             </dl>
             <section class="abstract">
-                <p><strong>摘要：</strong>在切换播放源时，有可能出现后台播放的问题。为了解决这个问题，我们可以在切换新的`VideoPlayerController`之前先将其保存到一个变量上，在初始化完成后再销毁。切换播放源的代码如下：
-
-```dart
-if (_videoPlayerController == null) {
-  _initController(url); // 初始化一个新的控制器
-} else {
-  final oldController = _videoPlayerController; // 将当前控制器保存到oldController变量中
-  WidgetsBinding.instance.addPostFrameCallback((_) async {
-    await oldController.dispose(); // 在下一次刷新时销毁旧的控制器
-  });
-  setState(() {
-    _videoPlayerController = null;
-    _initController(url); // 初始化一个新的控制器
-  });
-}
-```
-
-控制器初始化的代码如下：
-
-```dart
-_initController(String link) {
-  _videoPlayerController = VideoPlayerController.network(link)
-    ..initialize().then((_) {
-      _chewieController = ChewieController(
-          customControls: CustomControls(),
-          allowedScreenSleep: false,
-          videoPlayerController: _videoPlayerController,
-          aspectRatio: _videoPlayerController.value.aspectRatio,
-          autoPlay: true,
-          looping: true,
-          startAt: startTime);
-      setState(() {});
-    });
-}
-```
-
-还需要在页面销毁时先销毁播放器，以避免内存泄漏：
-
-```dart
-@override
-dispose() {
-  super.dispose();
-  if (_videoPlayerController != null) {
-    _videoPlayerController.pause();
-    _videoPlayerController.dispose();
-    _videoPlayerController = null;
-    _chewieController = null;
-  }
-}
-```
-
-可以查看该[链接](https://www.thetopsites.net/article/58955831.shtml)获取完整的解决方案。</p>
+                <p><strong>摘要：</strong>本文介绍了在切换播放源时可能出现的后台播放问题，并提供了一种解决方案。在切换播放源之前，先将新的`VideoPlayerController`保存在一个变量中，待其初始化完成后再销毁上一个控制器。具体操作通过判断当前控制器是否为空，如果为空则直接初始化新的控制器；如果不为空，则先保存当前控制器到一个变量，在下一次刷新时销毁之前的控制器，并初始化新的控制器。控制器初始化的过程是先初始化`VideoPlayerController`，然后使用其初始化完成的回调来初始化`ChewieController`。在页面销毁时，需要先销毁播放器以避免泄漏。</p>
             </section>
         </header>
             <h1 id="切换播放">切换播放</h1>

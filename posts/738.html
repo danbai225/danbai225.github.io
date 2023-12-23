@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="derper,tailscale"/>
+    <meta name="description" content="本文介绍了使用docker-compose快速部署DERP服务器的方法。首先，在docker-compose文件中定义了DERP服务的相关配置，如重启策略、网络模式、容器名称和环境变量等。然后，使用`docker-compose up -d`命令启动DERP服务器。
+
+接下来，文章介绍了如何修改DERP服务器的管理配置。通过修改配置文件中的`derpMap`部分，可以添加或修改DERP服务器的区域、节点信息等。
+
+最后，保存并重启客户端，即可使用修改后的DERP服务器。
+
+该教程的详细步骤可参考原文链接。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>tailscale快速搭建derper中转服务器 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">tailscale快速搭建derper中转服务器</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2022-08-01 12:58:25</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">derper</span>
+                    
+                    <span class="label label-success label-outline">tailscale</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>本文介绍了使用docker-compose快速部署DERP服务器的方法。首先，在docker-compose文件中定义了DERP服务的相关配置，如重启策略、网络模式、容器名称和环境变量等。然后，使用`docker-compose up -d`命令启动DERP服务器。
+
+接下来，文章介绍了如何修改DERP服务器的管理配置。通过修改配置文件中的`derpMap`部分，可以添加或修改DERP服务器的区域、节点信息等。
+
+最后，保存并重启客户端，即可使用修改后的DERP服务器。
+
+该教程的详细步骤可参考原文链接。</p>
+            </section>
+        </header>
+            <h1 id="使用docke-compose快速部署">使用docke-compose快速部署</h1>
+
+<pre><code>version: '3.3'
+services:
+  yangchuansheng:
+    restart: always
+    network_mode: host
+    container_name: derper
+    environment:
+      - DERP_HTTP_PORT=2180
+      - 'DERP_ADDR=:21443'
+    image: ghcr.io/yangchuansheng/ip_derper
+</code></pre>
+
+<p><code>docker-compose up -d</code>
+开放端口3478 还有配置中的端口
+端口根据自身情况进行修改</p>
+
+<h1 id="修改管理配置">修改管理配置</h1>
+
+<p><img src="../res/img/738-1.jpeg" alt="image-1659330026532" />&rdquo;`</p>
+
+<pre><code>&quot;derpMap&quot;: {
+		&quot;Regions&quot;: {&quot;900&quot;: {
+			&quot;RegionID&quot;:   900,
+			&quot;RegionCode&quot;: &quot;my&quot;,
+			&quot;Nodes&quot;: [{
+				&quot;Name&quot;:             &quot;1&quot;,
+				&quot;RegionID&quot;:         900,
+				&quot;HostName&quot;:         &quot;1.14.75.115&quot;,
+				&quot;IPv4&quot;:             &quot;1.14.75.115&quot;,
+				&quot;DERPPort&quot;:         21443,
+				&quot;InsecureForTests&quot;: true,
+			}],
+		}},
+	},
+</code></pre>
+
+<p>保存重启客户端
+<img src="../res/img/738-2.jpeg" alt="image-1659330163364" /></p>
+
+<p>教程来源：<a href="https://icloudnative.io/posts/custom-derp-servers/" target="_blank">https://icloudnative.io/posts/custom-derp-servers/</a></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-08-01 13:42:18</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Go,A_Toolset"/>
+    <meta name="description" content="最近作者写了一个命令行工具集，其中包含一些常用的小工具。作者希望工具能够脱离环境，不需要额外的配置文件，只需要一个可执行文件即可运行。为了实现这个目标，作者将配置数据放在程序自身，并使用程序自我更新的方式来更新数据。
+
+具体实现如下：
+- 在程序的最后8个字节中存储数据的长度（包括8个字节）。
+- 程序每次初始化时读取数据，每次写入数据时更新程序。
+- 初始时，程序在最后写入一个int64型的0（因为没有数据）。
+- 数据以JSON格式保存在程序后面。
+
+作者使用了一个名为&#34;itself&#34;的包来实现以上功能。该包包含以下方法：
+- `Get(key string) string`：根据键获取对应的值。
+- `Put(key string, val string)`：根据键和值将数据存储起来。
+- `Remove(key string)`：根据键删除对应的数据。
+
+作者还实现了一些辅助方法来支持自我更新。
+- `getDataLength() int64`：从程序中读取存储的数据长度。
+- `marshalMap()`：将map数据转换成JSON并更新程序。
+- `loadMapData()`：加载map数据到内存中。
+
+以上就是作者通过将配置数据放在程序自身来实现命令行工具集的方法。这种方法可以避免使用额外的配置文件，使得工具更加方便和易用。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>让数据脱离环境(GoLang) - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">让数据脱离环境(GoLang)</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-07-22 10:13:04</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Go</span>
+                    
+                    <span class="label label-success label-outline">A_Toolset</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>最近作者写了一个命令行工具集，其中包含一些常用的小工具。作者希望工具能够脱离环境，不需要额外的配置文件，只需要一个可执行文件即可运行。为了实现这个目标，作者将配置数据放在程序自身，并使用程序自我更新的方式来更新数据。
+
+具体实现如下：
+- 在程序的最后8个字节中存储数据的长度（包括8个字节）。
+- 程序每次初始化时读取数据，每次写入数据时更新程序。
+- 初始时，程序在最后写入一个int64型的0（因为没有数据）。
+- 数据以JSON格式保存在程序后面。
+
+作者使用了一个名为&#34;itself&#34;的包来实现以上功能。该包包含以下方法：
+- `Get(key string) string`：根据键获取对应的值。
+- `Put(key string, val string)`：根据键和值将数据存储起来。
+- `Remove(key string)`：根据键删除对应的数据。
+
+作者还实现了一些辅助方法来支持自我更新。
+- `getDataLength() int64`：从程序中读取存储的数据长度。
+- `marshalMap()`：将map数据转换成JSON并更新程序。
+- `loadMapData()`：加载map数据到内存中。
+
+以上就是作者通过将配置数据放在程序自身来实现命令行工具集的方法。这种方法可以避免使用额外的配置文件，使得工具更加方便和易用。</p>
+            </section>
+        </header>
+            <h1 id="命令行工具集">命令行工具集</h1>
+
+<p>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;最近我在写一个<a href="https://github.com/danbai225/A_Toolset" target="_blank">命令行工具集</a>,想把一些常用的小工具集合在一起以便使用.希望工具本身是脱离环境的不会有这样那样的配置文件就单独一个执行文件,拖到那都能运行出一样的效果.于是我就在想要把一些配置数据放在哪里?或者说不需要配置文件?但在运行过程中有些数据需要缓存也得要个位置空间吧.</p>
+
+<h1 id="解决之道">解决之道</h1>
+
+<p>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;我想我能不能把数据放在程序自身,但程序在运行过程中是无法修改自身的.在这里我联想到程序自我更新的例子.程序更新往往将新的版本与旧版本进行重命名的方式更替.</p>
+
+<p>主要变量:程序路径 程序大小 数据长度 数据Map</p>
+
+<p>在程序的最后8个字节(int64)用来记录数据的长度(包含8个字节)
+程序每次初始化读取数据,每次写入数据即更新程序.在第一次编译完成后初始化一下程序在程序后面写入一个int64的8(因为没有数据)
+下面是实现代码</p>
+
+<pre><code class="language-Go">package itself
+
+import (
+	&quot;bytes&quot;
+	&quot;encoding/json&quot;
+	&quot;github.com/gogf/gf/os/gfile&quot;
+	&quot;io/ioutil&quot;
+	&quot;os&quot;
+	&quot;os/exec&quot;
+	&quot;p00q.cn/A_Toolset/utils&quot;
+	&quot;path/filepath&quot;
+)
+
+var (
+	appPath           = &quot;&quot;
+	appFileSize int64 = 0
+	DataLength  int64 = 0
+	mapData     map[string]string
+)
+
+func Get(key string) string {
+	str := mapData[key]
+	if !utils.IsNil(str) {
+		return str
+	}
+	return &quot;&quot;
+}
+func Put(key string, val string) {
+	mapData[key] = val
+	marshalMap()
+}
+func getDataLength() int64 {
+	path := gfile.GetBytesByTwoOffsetsByPath(execPath(), execFileSize()-8, execFileSize())
+	DataLength = utils.BytesToInt64(path)
+	return DataLength
+}
+func Init() {
+	loadMapData()
+}
+func marshalMap() {
+	if utils.IsNil(mapData) {
+		loadMapData()
+	}
+	data, err := json.Marshal(mapData)
+	utils.Check(err)
+	//新的数据长度
+	oldLength := DataLength
+	DataLength = int64(len(data) + 8)
+	data = bytesCombine(data, utils.Int64ToBytes(DataLength))
+	//读取当前文件全部数据
+	readFile, err := ioutil.ReadFile(execPath())
+	utils.Check(err)
+	//追加新的数据
+	readFile = bytesCombine(readFile[:appFileSize-oldLength], data)
+	//替换文件
+	_ = gfile.Rename(execPath(), execPath()+&quot;-old&quot;)
+	_ = gfile.PutBytesAppend(execPath()+&quot;-new&quot;, readFile)
+	_ = gfile.Rename(execPath()+&quot;-new&quot;, execPath())
+}
+
+//BytesCombine 多个[]byte数组合并成一个[]byte
+func bytesCombine(pBytes ...[]byte) []byte {
+	return bytes.Join(pBytes, []byte(&quot;&quot;))
+}
+
+//加载map数据
+func loadMapData() {
+	if gfile.IsFile(execPath() + &quot;-old&quot;) {
+		_ = gfile.Remove(execPath() + &quot;-old&quot;)
+	}
+	if getDataLength()&gt;8 {
+		mapDataBytes := gfile.GetBytesByTwoOffsetsByPath(execPath(), execFileSize()-getDataLength(), execFileSize()-8)
+		err := json.Unmarshal(mapDataBytes, &amp;mapData)
+		utils.Check(err)
+	}else {
+		mapData = make(map[string]string)
+	}
+}
+
+/**
+程序路径
+*/
+func execPath() string {
+	if appPath == &quot;&quot; {
+		file, err := exec.LookPath(os.Args[0])
+		utils.Check(err)
+		appPath, _ = filepath.Abs(file)
+	}
+	return appPath
+}
+
+func execFileSize() int64 {
+	if appFileSize == 0 {
+		fileInfo, err := os.Stat(execPath())
+		utils.Check(err)
+		appFileSize = fileInfo.Size()
+	}
+	return appFileSize
+}
+func Remove(key string) {
+	delete(mapData, key)
+}
+
+
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2021-06-10 15:24:20</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

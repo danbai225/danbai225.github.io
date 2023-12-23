@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Go"/>
+    <meta name="description" content="该代码是一个基于HTTP的代理服务器，主要实现了自动密码输入的功能。通过传入本地监听地址、远程地址、用户名和密码，可以实现在不支持密码输入的HTTP客户端上使用密码进行访问。
+
+具体实现步骤如下：
+1. 构造待编码的用户名和密码字符串，使用base64进行编码。
+2. 监听本地地址，等待连接。
+3. 当有连接请求时，创建到远程地址的连接。
+4. 在两个连接之间进行数据传输。
+5. 在传输过程中，检查是否存在需要密码认证的请求头或者响应头，如果存在，则将用户名和密码信息进行替换或拼接。
+6. 对传输的数据进行读取和写入操作，实现数据的流转。
+
+通过这种方式，可以在不修改HTTP客户端的情况下，实现密码认证的功能。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>http代理服务器的代理 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">http代理服务器的代理</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2023-04-29 15:07:29</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Go</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>该代码是一个基于HTTP的代理服务器，主要实现了自动密码输入的功能。通过传入本地监听地址、远程地址、用户名和密码，可以实现在不支持密码输入的HTTP客户端上使用密码进行访问。
+
+具体实现步骤如下：
+1. 构造待编码的用户名和密码字符串，使用base64进行编码。
+2. 监听本地地址，等待连接。
+3. 当有连接请求时，创建到远程地址的连接。
+4. 在两个连接之间进行数据传输。
+5. 在传输过程中，检查是否存在需要密码认证的请求头或者响应头，如果存在，则将用户名和密码信息进行替换或拼接。
+6. 对传输的数据进行读取和写入操作，实现数据的流转。
+
+通过这种方式，可以在不修改HTTP客户端的情况下，实现密码认证的功能。</p>
+            </section>
+        </header>
+            <p>代理http代理服务器，实现自动密码输入，让不支持密码输入的http客户端使用</p>
+
+<pre><code>func main() {
+	logs.Info(&quot;http代理服务器的代理&quot;)
+	proxyHttpProxy(&quot;:8080&quot;, &quot;1.14.75.115:7777&quot;, &quot;user&quot;, &quot;pass&quot;)
+}
+func proxyHttpProxy(lAddr, addr, user, pass string) {
+	// 构造待编码的字符串
+	auth := user + &quot;:&quot; + pass
+	// 对字符串进行base64编码
+	encoded := base64.StdEncoding.EncodeToString([]byte(auth))
+	authStr := fmt.Sprintf(&quot;Proxy-Authorization: Basic %s&quot;, encoded)
+	listen, err := net.Listen(&quot;tcp&quot;, lAddr)
+	if err != nil {
+		logs.Err(err)
+		return
+	}
+	for {
+		accept, acceptErr := listen.Accept()
+		if err != nil {
+			logs.Err(acceptErr)
+			continue
+		}
+		dial, err2 := net.Dial(&quot;tcp&quot;, addr)
+		if err2 != nil {
+			logs.Err(err2)
+			continue
+		}
+		go hand(accept, dial, authStr)
+	}
+}
+
+var regex = regexp.MustCompile(`Proxy-Authorization: Basic\s+(.*)`)
+var regex2 = regexp.MustCompile(`HTTP\/1\.[0-2]`)
+
+func hand(conn, dial net.Conn, authStr string) {
+	defer conn.Close()
+	go func() {
+		defer dial.Close()
+		re := false
+		bs := make([]byte, 1024)
+		for {
+			var n int
+			n, err2 := conn.Read(bs)
+			bs = bs[:n]
+			if !re {
+				if regex.MatchString(string(bs)) {
+					bs = regex.ReplaceAll(bs, []byte(authStr))
+				} else {
+					if bytes.Contains(bs, []byte(&quot;Proxy-Connection: Keep-Alive&quot;)) {
+						bs = bytes.ReplaceAll(bs, []byte(&quot;Proxy-Connection: Keep-Alive&quot;), []byte(&quot;Proxy-Connection: Keep-Alive\n&quot;+authStr))
+					} else if bytes.Contains(bs, []byte(&quot;Proxy-Connection: keep-alive&quot;)) {
+						bs = bytes.ReplaceAll(bs, []byte(&quot;Proxy-Connection: keep-alive&quot;), []byte(&quot;Proxy-Connection: Keep-Alive\n&quot;+authStr))
+					} else if regex2.MatchString(string(bs)) {
+						findString := regex2.FindString(string(bs))
+						bs = bytes.ReplaceAll(bs, []byte(findString), []byte(findString+&quot;\n&quot;+authStr))
+					}
+				}
+				re = true
+			}
+			if err2 != nil {
+				break
+			}
+			_, err2 = dial.Write(bs)
+			if err2 != nil {
+				break
+			}
+		}
+	}()
+	io.Copy(conn, dial)
+}
+
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2023-04-29 15:20:24</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="css,html"/>
+    <meta name="description" content="文章提到了作者在使用Apache时遇到了一个字体文件加载错误的问题。作者起初在自己的电脑上没有遇到问题，但在其他主机上却出现了字体显示不正常的情况。作者后来发现原因是他自己的电脑安装了这个字体文件，导致其他主机无法正确加载字体。作者尝试将字体文件转换成其他格式，但仍然出现错误。最后，作者从一个仓库下载了使用示例的字体文件，发现使用这个字体文件时一切正常。作者最后得出结论是字体的版本造成了这个问题。另外，作者还提到了关于字体格式兼容性的一些内容，总结出了一个完美兼容所有浏览器的字体格式组合。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>字体加载错误，我的代码有问题？？？ - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">字体加载错误，我的代码有问题？？？</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2021-09-03 12:16:33</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">css</span>
+                    
+                    <span class="label label-success label-outline">html</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>文章提到了作者在使用Apache时遇到了一个字体文件加载错误的问题。作者起初在自己的电脑上没有遇到问题，但在其他主机上却出现了字体显示不正常的情况。作者后来发现原因是他自己的电脑安装了这个字体文件，导致其他主机无法正确加载字体。作者尝试将字体文件转换成其他格式，但仍然出现错误。最后，作者从一个仓库下载了使用示例的字体文件，发现使用这个字体文件时一切正常。作者最后得出结论是字体的版本造成了这个问题。另外，作者还提到了关于字体格式兼容性的一些内容，总结出了一个完美兼容所有浏览器的字体格式组合。</p>
+            </section>
+        </header>
+            <p>apache在使用一个字体文件时，浏览器加载出错。起初在我本机浏览器没问题，就没在意。但在其他主机上出现了字体现在不正常的问题，查明后发现原来是我本机安装了这个字体。:joy:</p>
+
+<pre><code>Failed to decode downloaded font: file:///Users/danbai/Downloads/website/zpixnew.ttf
+index.html:1 OTS parsing error: OS/2: Failed to parse table
+</code></pre>
+
+<p>后尝试把字体转成其他格式。<a href="https://convertio.co/zh/font-converter/" target="_blank"><code>在线字体文件转换器</code></a></p>
+
+<pre><code class="language-apache">index.html:1 Failed to decode downloaded font: file:///Users/danbai/Downloads/website/zpixb.woff2
+index.html:1 OTS parsing error: OS/2: Failed to parse table
+</code></pre>
+
+<p>然而报错还是这样，最后下载了<a href="https://github.com/SolidZORO/zpix-pixel-font" target="_blank">仓库</a>的使用 demo 发现用里面的字体文件是显示正常的后我下载了以前tag里的字体文件也没有问题。搞了半天原来是版本造成的，搞了半天。:tada:</p>
+
+<blockquote>
+<p>另外顺便了解了一下字体格式兼容性的问题 <a href="https://segmentfault.com/a/1190000018215174" target="_blank">https://segmentfault.com/a/1190000018215174</a></p>
+
+<p>@Font-face目前浏览器的兼容性：</p>
+
+<p>•Webkit/Safari(3.2+)：TrueType/OpenType TT (.ttf) 、OpenType PS (.otf)；
+•Opera (10+)： TrueType/OpenType TT (.ttf) 、 OpenType PS (.otf) 、 SVG (.svg)；
+•Internet Explorer： 自ie4开始，支持EOT格式的字体文件；ie9支持WOFF；
+•Firefox(3.5+)： TrueType/OpenType TT (.ttf)、 OpenType PS (.otf)、 WOFF (since Firefox 3.6)
+•Google Chrome：TrueType/OpenType TT (.ttf)、OpenType PS (.otf)、WOFF since version 6</p>
+
+<p><strong>由上面可以得出：.eot + .ttf /.otf + svg + woff = 所有浏览器的完美支持。</strong></p>
+</blockquote>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2021-09-03 12:20:35</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

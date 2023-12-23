@@ -1,13 +1,15 @@
 ---
 title: golang err:Today is Thursday,please give me 50$ i go to eat KFC
-date: 2022-07-28 12:40:01.584
-updated: 2022-07-28 21:52:53.433
+date: "2022-07-28 12:40:01"
+updated: "2022-07-28 21:52:53"
 url: https://p00q.cn/?p=709
-categories: 
-- Go
-- 奇技淫巧
-tags: 
-- kfc
+categories:
+    - Go
+    - 奇技淫巧
+tags:
+    - kfc
+summary: 这篇文章描述了作者在编写代码时遇到的一个错误，然后作者发现是钱不够导致的问题。作者通过让另一个有钱的人给他50块解决了问题。代码经过修改后，再次运行就没有问题了。
+id: "709"
 ---
 
 今天写代码遇到一个奇怪的报错记录一下，对了今天是星期四
@@ -85,3 +87,4 @@ func main() {
 这样就没问题了。
 
 懂我意思吧
+

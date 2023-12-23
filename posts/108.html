@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="redis,MySQL"/>
+    <meta name="description" content="文章提到了迁移准备和MySQL迁移以及Redis迁移。
+
+在迁移准备部分，作者提到目标服务器已经安装了MySQL和Redis数据库，并指明了源数据库和目标数据库的版本信息。对于MySQL的迁移，作者试过使用SQLyog连接两边的数据库，但觉得比较麻烦需要手动创建数据库和用户。于是作者决定尝试宝塔控制面板的数据迁移API，但遇到了问题，发现不能从Windows服务器迁移到Linux服务器，只能手动迁移。
+
+对于Redis的迁移，作者使用了redis-shake进行迁移。作者提供了使用RDB文件迁移的方式，并提供了redis-shake工具的下载链接。作者解释了如何修改redis-shake的配置文件，并指出在Linux和Windows下分别如何执行redis-shake命令。最后，作者展示了Redis迁移完成的截图。
+
+根据文章内容可以得知，文章主要是讲述了作者进行服务器迁移的准备工作以及具体的MySQL和Redis迁移过程。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>数据库迁移-MySQL-Redis - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">数据库迁移-MySQL-Redis</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-07-09 09:23:03</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">redis</span>
+                    
+                    <span class="label label-success label-outline">MySQL</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>文章提到了迁移准备和MySQL迁移以及Redis迁移。
+
+在迁移准备部分，作者提到目标服务器已经安装了MySQL和Redis数据库，并指明了源数据库和目标数据库的版本信息。对于MySQL的迁移，作者试过使用SQLyog连接两边的数据库，但觉得比较麻烦需要手动创建数据库和用户。于是作者决定尝试宝塔控制面板的数据迁移API，但遇到了问题，发现不能从Windows服务器迁移到Linux服务器，只能手动迁移。
+
+对于Redis的迁移，作者使用了redis-shake进行迁移。作者提供了使用RDB文件迁移的方式，并提供了redis-shake工具的下载链接。作者解释了如何修改redis-shake的配置文件，并指出在Linux和Windows下分别如何执行redis-shake命令。最后，作者展示了Redis迁移完成的截图。
+
+根据文章内容可以得知，文章主要是讲述了作者进行服务器迁移的准备工作以及具体的MySQL和Redis迁移过程。</p>
+            </section>
+        </header>
+            <h1 id="迁移准备">迁移准备</h1>
+
+<p>准备换服务器了，在目标服务已经安装完成了 MySQL 和 Redis 数据库。
+源MySQL版本：5.5.62  目标MySQL版本：5.7.30
+源Redis版本：3.2.100  目标Redis版本：6.0.5</p>
+
+<h1 id="mysql迁移">MySQL迁移</h1>
+
+<p>上次我试过 SQLyog 连接两边的数据库，复制数据比较麻烦需要手动创建数据库和用户。
+这次我两边服务器都安装了宝塔控制面板所以我试试宝塔的数据迁移api。需要在源服务器上安装插件。</p>
+
+<p>源数据服务器是window 目标是linux
+<img src="../res/img/108-1.png" alt="image.png" /></p>
+
+<p>在目标机器控制面板打开API
+<img src="../res/img/108-2.png" alt="image.png" /></p>
+
+<p>并且设置IP白名单和获取API密钥
+<img src="../res/img/108-3.png" alt="image.png" /></p>
+
+<p>遇到了这样一个问题</p>
+
+<p><img src="../res/img/108-4.png" alt="image.png" /></p>
+
+<p>在安装完PHP7.3后继续
+<img src="../res/img/108-5.png" alt="image.png" /></p>
+
+<p>原来并不能从window服务器迁移至linux服务器只能手动了。</p>
+
+<h1 id="redis迁移">Redis迁移</h1>
+
+<p>通过 redis-shake 进行Redis数据库的迁移
+<a href="https://help.aliyun.com/document_detail/116378.html?spm=a2c4g.11186623.6.629.5f137892cAsnwf" target="_blank">使用RDB文件迁移的方式</a>
+下载redis-shake <a href="https://github.com/alibaba/RedisShake/releases/download/release-v2.0.2-20200506/redis-shake-v2.0.2.tar.gz" target="_blank">下载</a>
+解压后打开 <code>redis-shake.conf</code>根据自己情况修改</p>
+
+<pre><code>#备份文件（RDB文件）的路径，可使用相对路径或绝对路径。
+source.rdb.input = C:\BtSoft\redis\dump.rdb
+#目的Redis的连接地址与端口号。
+target.address = 185.x.x.x:6379
+#目的Redis的连接密码。
+target.password_raw=123123
+#设置待迁移的数据在目的Redis中的逻辑数据库名，默认值为-1。
+例如，要将所有数据迁移到目的Redis中的DB10，则需将此参数的值设置为10。当该值设置为-1时，逻辑数据库名在源Redis和目的Redis中的名称相同，即源Redis中的DB0将被迁移至目的Redis中的DB0，DB1将被迁移至DB1，以此类推。
+target.db=-1
+#如果目的Redis有与RDB文件中相同的key，是否覆盖，可选值：
+true（覆盖）
+false（不覆盖）
+rewrite=true
+</code></pre>
+
+<p>linux执行</p>
+
+<pre><code>./redis-shake -type=restore -conf=redis-shake.conf
+</code></pre>
+
+<p>window</p>
+
+<pre><code>redis-shake -type=restore -conf=redis-shake.conf
+</code></pre>
+
+<p>复制完成
+<img src="../res/img/108-6.png" alt="image.png" /></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2021-06-10 15:21:25</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

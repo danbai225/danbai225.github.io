@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="MongoDB"/>
+    <meta name="description" content="这段代码是一个表格分页的示例，数据是从MongoDB中获取的。代码中定义了一个`PageResult`类来存储分页结果，包括页码、页面大小、总数、总页数和数据列表。然后，有一个`DmServiceImpl`类实现了一个`DmService`接口，具有各种根据条件查询的方法以及分页查询的方法。在分页查询的方法中，首先根据条件查询总条数，然后计算总页数。如果页码不合法，则设置为第一页。接下来，根据是否有最后一条数据的id来确定是使用普通分页还是使用有lastId的分页。最后，将查询结果封装到`PageResult`对象中返回。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>MongoDB分页查询 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">MongoDB分页查询</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-07-02 12:01:30</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">MongoDB</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>这段代码是一个表格分页的示例，数据是从MongoDB中获取的。代码中定义了一个`PageResult`类来存储分页结果，包括页码、页面大小、总数、总页数和数据列表。然后，有一个`DmServiceImpl`类实现了一个`DmService`接口，具有各种根据条件查询的方法以及分页查询的方法。在分页查询的方法中，首先根据条件查询总条数，然后计算总页数。如果页码不合法，则设置为第一页。接下来，根据是否有最后一条数据的id来确定是使用普通分页还是使用有lastId的分页。最后，将查询结果封装到`PageResult`对象中返回。</p>
+            </section>
+        </header>
+            <h1 id="分页">分页</h1>
+
+<p>写个table分页,数据在mogodb找了个<a href="https://github.com/Ryan-Miao/mongo-page-helper" target="_blank">现有</a>分页改了下.</p>
+
+<h2 id="pageresult">PageResult</h2>
+
+<pre><code>public class PageResult&lt;T&gt; {
+
+    /**
+     * 页码，从1开始
+     */
+    private Integer pageNum;
+
+    /**
+     * 页面大小
+     */
+    private Integer pageSize;
+
+
+    /**
+     * 总数
+     */
+    private Long total;
+
+    /**
+     * 总页数
+     */
+    private Integer pages;
+
+    /**
+     * 数据
+     */
+    private List&lt;T&gt; list;
+
+}
+</code></pre>
+
+<h2 id="分页服务">分页服务</h2>
+
+<pre><code>public class DmServiceImpl implements DmService {
+    private static final int FIRST_PAGE_NUM = 1;
+    private static final String ID = &quot;_id&quot;;
+    @Autowired
+    MongoTemplate mongoTemplate;
+
+
+    @Override
+    public PageResult&lt;Dan&gt; getDmList(Integer pageSize, Integer pageNum) {
+        return pageQuery(new Query(), pageSize, pageNum, null);
+    }
+
+    @Override
+    public PageResult&lt;Dan&gt; getDmListById(String id, Integer pageSize, Integer pageNum) {
+        return pageQuery(new Query(Criteria.where(&quot;_id&quot;).is(id)), pageSize, pageNum, null);
+    }
+
+    @Override
+    public PageResult&lt;Dan&gt; getDmListByYsJi(String ysJi, Integer pageSize, Integer pageNum) {
+        Query query = new Query(Criteria.where(&quot;player&quot;).is(ysJi));
+        return pageQuery(query, pageSize, pageNum, null);
+    }
+
+    @Override
+    public PageResult&lt;Dan&gt; getDmListByYsUsername(String username, Integer pageSize, Integer pageNum) {
+        Query query = new Query(Criteria.where(&quot;author&quot;).is(username));
+        return pageQuery(query, pageSize, pageNum, null);
+    }
+
+    @Override
+    public PageResult&lt;Dan&gt; pageQuery(Query query, Integer pageSize, Integer pageNum, String lastId) {
+        //条件查询总条数
+        long total = mongoTemplate.count(query, Dan.class);
+        //算页数
+        final Integer pages = (int) Math.ceil(total / (double) pageSize);
+        if (pageNum &lt;= 0 || pageNum &gt; pages) {
+            pageNum = FIRST_PAGE_NUM;
+        }
+        final Criteria criteria = new Criteria();
+        if (!StringUtils.isEmpty(lastId)) {
+            //有lastId的分页
+            if (pageNum != FIRST_PAGE_NUM) {
+                criteria.and(ID).gt(new ObjectId(lastId));
+            }
+            query.limit(pageSize);
+        } else {
+            //分页
+            int skip = pageSize * (pageNum - 1);
+            query.skip(skip).limit(pageSize);
+        }
+        final List&lt;Dan&gt; entityList = mongoTemplate
+                .find(query.addCriteria(criteria), Dan.class);
+        final PageResult&lt;Dan&gt; pageResult = new PageResult&lt;&gt;();
+        pageResult.setTotal(total);
+        pageResult.setPages(pages);
+        pageResult.setPageSize(pageSize);
+        pageResult.setPageNum(pageNum);
+        pageResult.setList(entityList);
+        return pageResult;
+    }
+}
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2020-07-04 20:20:09</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

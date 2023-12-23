@@ -1,0 +1,323 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Flutter"/>
+    <meta name="description" content="本文介绍了如何使用Flutter实现缓存影视功能，在安卓端添加了M3U8Manger的依赖库，并通过建立Flutter与安卓的通信实现了下载功能。在Flutter代码中调用安卓的M3U8Download方法进行下载任务，并通过UDP发送回调信息给Flutter端进行展示。具体的代码实现可以参考文章内容，其中包括了Flutter代码和安卓代码的链接。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>Flutter缓存M3U8 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">Flutter缓存M3U8</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-04-26 13:03:18</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Flutter</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>本文介绍了如何使用Flutter实现缓存影视功能，在安卓端添加了M3U8Manger的依赖库，并通过建立Flutter与安卓的通信实现了下载功能。在Flutter代码中调用安卓的M3U8Download方法进行下载任务，并通过UDP发送回调信息给Flutter端进行展示。具体的代码实现可以参考文章内容，其中包括了Flutter代码和安卓代码的链接。</p>
+            </section>
+        </header>
+            <h1 id="flutter实现缓存影视功能">flutter实现缓存影视功能</h1>
+
+<p>安卓添加依赖</p>
+
+<pre><code>compile 'com.jwkj:M3U8Manger:v2.3.0'
+</code></pre>
+
+<h2 id="主要实现内容">主要实现内容</h2>
+
+<p>1.建立flutter与安卓直接的通信
+2.flutter添加下载任务 调用安卓 M3U8Download
+3.安卓处理任务并发回任务回调信息(在启动应用时初始化创建一个udp服务,用于发送回调信息)
+4.flutter这边进入下载页面就会创建一个监听udp的链接 根据信息数据进行下载信息的展示.</p>
+
+<p><a href="https://github.com/danbai225/dbys_flutterhttps://github.com/danbai225/dbys_flutter/tree/master/lib/Page/Download" target="_blank">Flutter代码</a>
+<a href="https://github.com/danbai225/dbys_flutter/tree/master/android/app/src/main/kotlin/cn/p00q/dbys" target="_blank">安卓代码</a></p>
+
+<h2 id="代码">代码</h2>
+
+<p>Flutter:</p>
+
+<pre><code>import 'dart:convert';
+
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
+
+class DownloadManagement {
+  static Map&lt;String, String&gt; nameMap = {};
+  static List urlList = [];
+  static int xz = 0;
+
+  //与原生交互的通道
+  static const platform = const MethodChannel('cn.p00q.dbys/M3U8Download');
+
+  static init() async {
+    platform.invokeMethod('Path', (await getExternalStorageDirectory()).path);
+  }
+
+  static add(String url, String pm, String jiName) {
+    platform.invokeMethod(
+        'Add', jsonEncode({&quot;url&quot;: url, &quot;pm&quot;: pm, &quot;jiName&quot;: jiName}));
+  }
+
+  static cancel() {
+    platform.invokeMethod('Cancel');
+  }
+
+  //关掉udp
+  static removeBind() {
+    platform.invokeMethod('removeBind');
+  }
+}
+
+</code></pre>
+
+<p>安卓:</p>
+
+<pre><code>package cn.p00q.dbys;
+
+import android.os.Environment;
+import android.util.Log;
+
+import com.hdl.m3u8.M3U8DownloadTask;
+import com.hdl.m3u8.M3U8Manger;
+import com.hdl.m3u8.bean.M3U8;
+import com.hdl.m3u8.bean.M3U8Listener;
+import com.hdl.m3u8.bean.OnDownloadListener;
+import com.hdl.m3u8.utils.NetSpeedUtils;
+
+import org.eclipse.jetty.util.ajax.JSON;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class M3U8Download {
+    private static String SaveFilePath=Environment.getExternalStorageDirectory().getPath() + File.separator;
+    public static List&lt;Download&gt; downloadList=new ArrayList&lt;&gt;();
+    private static  MyM3U8DownloadTask downloadTask;
+    //1.创建服务器端DatagramSocket，指定端口
+    public static DatagramSocket  socket;
+    public static void init(){
+        try {
+            if(socket!=null){
+                socket.close();
+            }
+            socket = new DatagramSocket(2252);
+        }catch (Exception e) {
+                e.printStackTrace();
+            }
+    }
+    public static void sendData(String msg){
+        byte[] buf = msg.getBytes();
+        try {
+            //目标主机地址，这里发送到本机所以是127.0.0.1
+            InetAddress address = InetAddress.getByName(&quot;127.0.0.1&quot;);
+            int port = 2256;  //目标主机的端口号
+            //创建发送方的数据报信息
+            DatagramPacket dataGramPacket = new DatagramPacket(buf, buf.length, address, port);
+            socket.send(dataGramPacket);  //通过套接字发送数据
+    } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (SocketException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void setPath(String path){
+        SaveFilePath=path;
+    }
+    public static void Add(Object data){
+        JSONObject jObject= null;
+        try {
+            jObject = new JSONObject(data.toString());
+            String id=jObject.getString(&quot;pm&quot;)+&quot;-&quot;+jObject.getString(&quot;jiName&quot;);
+            Download d=new Download(id,jObject.getString(&quot;pm&quot;),jObject.getString(&quot;url&quot;),jObject.getString(&quot;jiName&quot;));
+            downloadList.add(d);
+            if(downloadList.size()&gt;0&amp;&amp;(downloadTask==null||!downloadTask.isRunning())){
+                Download(downloadList.get(0));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void cancel(){
+        if(downloadTask!=null&amp;&amp;downloadTask.isRunning()){
+            downloadTask.stop();
+            downloadList.remove(0);
+            if(downloadList.size()&gt;0){
+                Download(downloadList.get(0));
+            }
+        }
+    }
+        public static void Download(Download d){
+            downloadTask = new MyM3U8DownloadTask(d.getId());
+            MyM3U8DownloadTask.curTs=0;
+            downloadTask.setThreadCount(10);
+            downloadTask.setSaveFilePath(SaveFilePath+&quot;/下载/&quot;+d.getPm()+&quot;/&quot;+d.getJiName()+&quot;.mp4&quot;);
+            downloadTask.download(d.getUrl(), new OnDownloadListener() {
+                private long lastLength = 0;
+                @Override
+                public void onDownloading(final long itemFileSize, final int totalTs, final int curTs) {
+                    Log.d(&quot;TEST&quot;,totalTs+&quot;--curTs:&quot;+curTs);
+                    Map rs=new HashMap();
+                    rs.put(&quot;type&quot;,&quot;onDownloading&quot;);
+                    rs.put(&quot;taskId&quot;,d.getId());
+                    rs.put(&quot;schedule&quot;,((double)curTs/totalTs));
+                    rs.put(&quot;pm&quot;,d.getPm());
+                    rs.put(&quot;JiName&quot;,d.getJiName());
+                    Runnable networkTask = () -&gt; M3U8Download.sendData(JSON.toString(rs));
+                    new Thread(networkTask).start();
+                }
+                /**
+                 * 下载成功
+                 */
+                @Override
+                public void onSuccess() {
+                    downloadList.remove(0);
+                    if(downloadList.size()&gt;0&amp;&amp;!downloadTask.isRunning()){
+                        Download(downloadList.get(0));
+                    }
+                    Log.d(&quot;M3U8Download&quot;,&quot;下载完成了:&quot;+d.getId());
+                    Map rs=new HashMap();
+                    rs.put(&quot;type&quot;,&quot;onSuccess&quot;);
+                    Runnable networkTask = () -&gt; M3U8Download.sendData(JSON.toString(rs));
+                    new Thread(networkTask).start();
+                }
+                /**
+                 * 当前的进度回调
+                 *
+                 * @param curLenght
+                 */
+                @Override
+                public void onProgress(final long curLenght) {
+                    if (curLenght - lastLength &gt; 0) {
+                        final String speed = NetSpeedUtils.getInstance().displayFileSize(curLenght - lastLength) + &quot;/s&quot;;
+                        lastLength = curLenght;
+                        Map rs=new HashMap();
+                        rs.put(&quot;type&quot;,&quot;onProgress&quot;);
+                        rs.put(&quot;taskId&quot;,d.getId());
+                        rs.put(&quot;speed&quot;,speed);
+                        Runnable networkTask = () -&gt; M3U8Download.sendData(JSON.toString(rs));
+                        new Thread(networkTask).start();
+                    }
+                }
+                @Override
+                public void onStart() {
+                    Log.d(&quot;M3U8Download&quot;,&quot;开始下载了&quot;);
+                }
+
+                @Override
+                public void onError(Throwable errorMsg) {
+                    Log.e(&quot;M3U8Download&quot;,errorMsg.getMessage());
+                }
+            });
+    }
+}
+
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2021-06-10 15:18:02</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

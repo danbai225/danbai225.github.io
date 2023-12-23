@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="socks5,tun,tun2socks,proxy"/>
+    <meta name="description" content="tun2socks是一个基于tun设备的部分TCP/UDP流量代理工具。通过抓取本地IP流量并识别需要代理的流量，再将识别出的流量通过tun设备处理后发送至socks代理服务器。使用tun2socks可以实现多个应用程序共享代理服务，而无需修改各个应用程序的代理设置。该工具常被用于科学上网等用途。以上是tun2socks的一个实现代码，其中使用了tun2socks库和fyne库来构建一个具有连接和断开功能的窗口界面。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>基于tun2socks实现简单的windows代理 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">基于tun2socks实现简单的windows代理</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2023-04-03 18:22:40</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">socks5</span>
+                    
+                    <span class="label label-success label-outline">tun</span>
+                    
+                    <span class="label label-success label-outline">tun2socks</span>
+                    
+                    <span class="label label-success label-outline">proxy</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>tun2socks是一个基于tun设备的部分TCP/UDP流量代理工具。通过抓取本地IP流量并识别需要代理的流量，再将识别出的流量通过tun设备处理后发送至socks代理服务器。使用tun2socks可以实现多个应用程序共享代理服务，而无需修改各个应用程序的代理设置。该工具常被用于科学上网等用途。以上是tun2socks的一个实现代码，其中使用了tun2socks库和fyne库来构建一个具有连接和断开功能的窗口界面。</p>
+            </section>
+        </header>
+            <p>tun2socks是一个基于tun设备的部分TCP/UDP流量代理工具。在使用过程中，通过抓取本地IP流量，识别需要代理的流量，再通过tun设备将识别出的流量处理后发送至socks代理服务器。使用tun2socks可以实现多个应用程序共享代理服务，而无需修改各个应用程序的代理设置。这个工具可用于安全地访问因政策原因在本地网络限制的国外互联网资源，常常被用于科学上网等用途。</p>
+
+<h1 id="实现代码">实现代码</h1>
+
+<pre><code>package main
+
+import (
+	&quot;github.com/xjasonlyu/tun2socks/v2/engine&quot;  // 引入 tun2socks 库
+	&quot;os&quot;
+	&quot;os/exec&quot;
+)
+
+import (
+	&quot;fyne.io/fyne/v2/app&quot;       // 引入 fyne 库
+	&quot;fyne.io/fyne/v2/container&quot;
+	&quot;fyne.io/fyne/v2/widget&quot;
+)
+
+var key *engine.Key  // tun2socks 库的关键结构体
+
+func init() {
+	os.Setenv(&quot;FYNE_FONT&quot;, &quot;C:\\windows\\Fonts\\simfang.ttf&quot;)  // 设置 Fyne 应用程序的字体
+}
+
+func main() {
+	defer func() {  // 在 main() 函数返回时执行
+		if key != nil {  // 如果有连接，关闭它
+			stop()
+		}
+	}()
+
+	a := app.New()  // 创建一个新的 Fyne 应用程序
+	w := a.NewWindow(&quot;Tun2Socks&quot;)  // 在应用程序中创建一个新窗口
+	hello := widget.NewLabel(&quot;点击按钮建立连接&quot;)  // 创建一个新的标签
+	var button *widget.Button  // 声明一个指向 widget.Button 的指针
+	button = widget.NewButton(&quot;开始连接&quot;, func() {  // 创建一个新的按钮，并设置其回调函数
+		if key == nil {  // 如果当前没有连接，则创建一个连接
+			button.SetText(&quot;断开连接&quot;)    // 将按钮文本设置为“断开连接”
+			hello.SetText(&quot;已经建立连接&quot;)  // 将标签文本设置为“已经建立连接”
+			run()   // 开始连接
+		} else {  // 如果当前有连接，则断开连接
+			button.SetText(&quot;开始连接&quot;)    // 将按钮文本设置为“开始连接”
+			hello.SetText(&quot;已经断开连接&quot;)  // 将标签文本设置为“已经断开连接”
+			stop()  // 断开连接
+		}
+	})
+	w.SetContent(container.NewVBox(hello, button))  // 在窗口中添加标签和按钮
+	w.ShowAndRun()  // 显示窗口并开始运行应用程序
+}
+
+func run() {
+	if key != nil {
+		return  // 如果已经存在连接，则退出
+	}
+	key = &amp;engine.Key{
+		MTU:                      0,
+		Mark:                     0,
+		Proxy:                    &quot;192.168.1.1:5215&quot;,  // 连接的代理服务器IP地址和端口号
+		RestAPI:                  &quot;&quot;,
+		Device:                   &quot;tun0&quot;,
+		LogLevel:                 &quot;info&quot;,
+		Interface:                &quot;&quot;,
+		TCPModerateReceiveBuffer: false,
+		TCPSendBufferSize:        &quot;&quot;,
+		TCPReceiveBufferSize:     &quot;&quot;,
+		UDPTimeout:               0,
+	}
+	engine.Insert(key)  // 插入新的连接
+	exec.Command(&quot;route&quot;, &quot;add&quot;, &quot;192.168.1.1&quot;, &quot;mask&quot;, &quot;255.255.255.255&quot;, &quot;192.168.1.1&quot;, &quot;metric&quot;, &quot;5&quot;).Run()  // 添加一个路由条目
+	engine.Start()  // 启动 tun2socks 服务
+	exec.Command(&quot;netsh&quot;, &quot;interface&quot;, &quot;ip&quot;, &quot;set&quot;, &quot;address&quot;, &quot;tun0&quot;, &quot;static&quot;, &quot;10.0.10.10&quot;, &quot;255.255.255.0&quot;, &quot;10.0.10.1&quot;, &quot;3&quot;).Run()  // 设置新的 IP 地址和子网掩码
+}
+
+func stop() {
+	engine.Stop()  // 停止 tun2socks 连接
+	exec.Command(&quot;route&quot;, &quot;delete&quot;, &quot;0.0.0.0&quot;, &quot;10.0.10.1&quot;).Run()  // 删除路由表项
+	key = nil  // 删除与 tun2socks 连接有关的结构体
+}
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2023-04-03 18:29:16</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

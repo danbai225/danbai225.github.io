@@ -1,0 +1,329 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Go,daemon,守护进程,进程"/>
+    <meta name="description" content="本文介绍了守护进程和僵尸进程的概念。守护进程是在后台运行的进程，类似于使用`nohup`命令启动的进程。僵尸进程是子进程退出后父进程没有正确回收进程描述符导致子进程占用进程资源的进程。文章还给出了使用Go语言创建守护进程的示例代码，该代码通过调用`exec`包的相关函数创建和管理守护进程。最后，文章提供了该示例代码的GitHub链接。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>使用Go创建一个守护进程 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">使用Go创建一个守护进程</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2021-08-07 16:53:33</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Go</span>
+                    
+                    <span class="label label-success label-outline">daemon</span>
+                    
+                    <span class="label label-success label-outline">守护进程</span>
+                    
+                    <span class="label label-success label-outline">进程</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>本文介绍了守护进程和僵尸进程的概念。守护进程是在后台运行的进程，类似于使用`nohup`命令启动的进程。僵尸进程是子进程退出后父进程没有正确回收进程描述符导致子进程占用进程资源的进程。文章还给出了使用Go语言创建守护进程的示例代码，该代码通过调用`exec`包的相关函数创建和管理守护进程。最后，文章提供了该示例代码的GitHub链接。</p>
+            </section>
+        </header>
+            <h1 id="守护进程">守护进程</h1>
+
+<p>守护进程（daemon）是运行在后台的进程，类似使用<code>nohup</code>命令一样。
+这种进程 ppid=1 且在UNIX系统进程层级中直接位于init之下。</p>
+
+<p><a href="https://zh.wikipedia.org/wiki/%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B" target="_blank">守护进程-维基百科</a></p>
+
+<h1 id="僵尸进程">僵尸进程</h1>
+
+<p>当一个进程创建了一个子进程，这个子进程退出后父进程没有调用 <code>wait()</code> 正确回收子进程们的进程描述符时，子进程就成了僵尸进程继续占用进程资源。</p>
+
+<h1 id="使用go创建一个守护进程">使用go创建一个守护进程</h1>
+
+<pre><code class="language-GO">package main
+
+import (
+	&quot;flag&quot;
+	&quot;fmt&quot;
+	&quot;github.com/gin-gonic/gin&quot;
+	&quot;io/ioutil&quot;
+	&quot;net/http&quot;
+	&quot;os&quot;
+	&quot;os/exec&quot;
+	&quot;path/filepath&quot;
+	&quot;strconv&quot;
+	&quot;strings&quot;
+	&quot;syscall&quot;
+	&quot;time&quot;
+)
+
+//https://www.cnblogs.com/tobycnblogs/p/9981796.html
+var daemon bool
+var launcher bool
+
+func init() {
+	flag.BoolVar(&amp;daemon, &quot;d&quot;, false, &quot;是否为守护启动模式&quot;)
+	flag.BoolVar(&amp;launcher, &quot;l&quot;, false, &quot;Launcher&quot;)
+	flag.Parse()
+	if launcher {
+		return
+	}
+	if os.Getppid() != 1 &amp;&amp; daemon &amp;&amp; len(os.Args) &gt;= 2 {
+		arg := make([]string, 0)
+		if len(os.Args) &gt; 3 {
+			arg = os.Args[3:]
+		}
+		cmdStr := os.Args[2]
+		cmdStr += strings.Join(arg, &quot;&quot;)
+		cmd := exec.Command(os.Args[2], arg...)
+		stat, err := os.Stat(&quot;pid/&quot;)
+		if err != nil || !stat.IsDir() {
+			os.Mkdir(&quot;pid/&quot;, 0777)
+		}
+		cmd.Start()
+		syscall.Umask(27)
+		pidFile := fmt.Sprintf(&quot;pid%c%s.pid&quot;, os.PathSeparator, cmdStr)
+		file, err := os.OpenFile(pidFile, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
+		defer file.Close()
+		if err == nil {
+			file.WriteString(strconv.Itoa(cmd.Process.Pid))
+		}
+		os.Exit(0)
+	} else if !launcher {
+		go checkPidRun()
+	}
+}
+func checkPidRun() {
+	for {
+		rd, err := ioutil.ReadDir(&quot;pid/&quot;)
+		if err == nil {
+			for _, fi := range rd {
+				if !fi.IsDir() {
+					path := fmt.Sprintf(&quot;pid%c%s&quot;, os.PathSeparator, fi.Name())
+					bytes, err := ioutil.ReadFile(path)
+					if err == nil {
+						pid, _ := strconv.ParseInt(string(bytes), 10, 32)
+						if !checkPid(int(pid)) {
+							os.Remove(path)
+						}
+					}
+				}
+			}
+		}
+		time.Sleep(time.Second)
+	}
+}
+func main() {
+	if launcher {
+		if len(os.Args) &gt;= 2 {
+			u := daemonRun(os.Args[2])
+			print(u)
+			os.Exit(0)
+		}
+	} else {
+		router := gin.Default()
+		router.POST(&quot;/run&quot;, run)
+		router.Run(&quot;:8080&quot;)
+	}
+}
+func run(c *gin.Context) {
+	a := struct {
+		Cmd string `json:&quot;cmd&quot;`
+	}{}
+	if err := c.ShouldBindJSON(&amp;a); err != nil {
+		c.AbortWithStatusJSON(
+			http.StatusOK,
+			gin.H{&quot;error&quot;: err.Error()})
+		return
+	}
+	
+	command := exec.Command(ExecPath(), &quot;-l&quot;, a.Cmd)
+	out, _ := command.CombinedOutput()
+	parseUint, _ := strconv.ParseUint(string(out), 10, 32)
+	c.JSON(http.StatusOK, gin.H{&quot;msg&quot;: &quot;ok&quot;, &quot;data&quot;: map[string]interface{}{
+		&quot;pid&quot;: parseUint,
+	}})
+	return
+}
+
+func daemonRun(cmd string) uint {
+	split := strings.Split(cmd, &quot; &quot;)
+	split = append([]string{ExecPath(), &quot;-d&quot;}, split...)
+	attr := &amp;os.ProcAttr{
+		Dir: &quot;./&quot;,
+		Env: os.Environ(),
+		Files: []*os.File{
+			os.Stdin,
+			os.Stdout,
+			os.Stderr,
+		},
+		Sys: &amp;syscall.SysProcAttr{
+			//Chroot:     d.Chroot,
+			Setsid: true,
+		},
+	}
+	if c, err := os.StartProcess(ExecPath(), split, attr); err == nil {
+		defer c.Release()
+		pidFile := fmt.Sprintf(&quot;pid%c%s.pid&quot;, os.PathSeparator, strings.ReplaceAll(cmd, &quot; &quot;, &quot;&quot;))
+		time.Sleep(time.Second)
+		bytes, err := ioutil.ReadFile(pidFile)
+		if err == nil {
+			parseUint, _ := strconv.ParseUint(string(bytes), 10, 32)
+			return uint(parseUint)
+		}
+		c.Wait()
+	}
+	return 0
+}
+
+var appPath = &quot;&quot;
+
+func ExecPath() string {
+	if appPath == &quot;&quot; {
+		file, err := exec.LookPath(os.Args[0])
+		if err != nil {
+			return &quot;&quot;
+		}
+		appPath, _ = filepath.Abs(file)
+	}
+	return appPath
+}
+
+// Will return true if the process with PID exists.
+func checkPid(pid int) bool {
+	process, err := os.FindProcess(pid)
+	if err != nil {
+		return false
+	}
+	err = process.Signal(syscall.Signal(0))
+	if err != nil {
+		return false
+	} else {
+		return true
+	}
+}
+
+
+</code></pre>
+
+<p>使用命令 <code>go run main.go</code>
+<img src="../res/img/355-1.jpeg" alt="image.png" />
+运行这个段代码会开启一个 8080 端口的web程序。通过调用 <code>:8080/run</code>
+<img src="../res/img/355-2.jpeg" alt="image.png" />
+会执行 <code>a web</code> 命令，该命令是运行一个 80 端口的 web 服务程序。
+返回守护进程的 pid</p>
+
+<pre><code>{
+&quot;data&quot;: {
+    &quot;pid&quot;: 6515
+},
+&quot;msg&quot;: &quot;ok&quot;
+}
+</code></pre>
+
+<p><img src="../res/img/355-3.jpeg" alt="image.png" /></p>
+
+<p>然后退出我们编写的程序，80 端口依然能访问。</p>
+
+<pre><code>ps -ef|grep &quot;a web&quot;
+501  6515     1   0  5:18下午 ??         0:01.02 a web
+</code></pre>
+
+<h1 id="实现原理">实现原理</h1>
+
+<p>在api进程中创建一个进程①，在进程一中创建一个进程②在进程②中执行所需要运行的命令，然后进程②退出执行命令的进程将变成孤儿进程由init（pid=1）管理。但是这时由于进程②的退出产生了一个僵尸进程在进程①中调用 <code>Wait()</code> 函数释放进程符。然后再退出进程①。
+我这里fork了两次其实fork一次也行。</p>
+
+<h1 id="github">GitHub</h1>
+
+<p><a href="https://github.com/danbai225/go-daemons-api" target="_blank">go-daemons-api</a></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2021-08-07 17:44:36</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

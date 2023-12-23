@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Beego,Go"/>
+    <meta name="description" content="本文介绍了在GoLang中使用beego框架进行ORM（对象关系映射）操作的基本知识。首先，文章介绍了如何连接数据库，然后说明了如何创建模型。在查询方面，文章展示了使用原始SQL查询和根据主键查询的例子。在插入和更新方面，文章展示了插入新数据和更新已有数据的例子。最后，文章总结了学习beego框架的一些感受，并提供了相关中文文档和参考链接。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>golang beego框架orm操作mysql数据库 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">golang beego框架orm操作mysql数据库</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2019-12-12 16:08:54</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Beego</span>
+                    
+                    <span class="label label-success label-outline">Go</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>本文介绍了在GoLang中使用beego框架进行ORM（对象关系映射）操作的基本知识。首先，文章介绍了如何连接数据库，然后说明了如何创建模型。在查询方面，文章展示了使用原始SQL查询和根据主键查询的例子。在插入和更新方面，文章展示了插入新数据和更新已有数据的例子。最后，文章总结了学习beego框架的一些感受，并提供了相关中文文档和参考链接。</p>
+            </section>
+        </header>
+            <p>上周学完了GoLang基础部分知识,这周学习下beego框架.
+这篇文章记录了ORM部分知识</p>
+
+<h1 id="连接数据库">连接数据库</h1>
+
+<p>在包名dao下创建mysql.go</p>
+
+<pre><code>package dao
+
+import (
+	&quot;github.com/astaxie/beego/orm&quot;
+	_ &quot;github.com/go-sql-driver/mysql&quot;
+)
+func init() {
+	orm.RegisterDriver(&quot;mysql&quot;, orm.DRMySQL)
+	orm.RegisterDataBase(&quot;default&quot;, &quot;mysql&quot;, &quot;user:pass@tcp(185.207.153.189:3306)/tempyun&quot;)
+	//参数3按照官网参数连接不上mysql
+	// orm.RegisterDataBase(&quot;default&quot;, &quot;mysql&quot;, &quot;root:root@/orm_test?charset=utf8&quot;)
+}
+
+func Getcon() orm.Ormer {
+	return orm.NewOrm()
+}
+</code></pre>
+
+<h1 id="model">model</h1>
+
+<pre><code>type User struct {
+	Username string `orm:&quot;pk&quot;`
+	Password string
+	Email string
+	Headurl string
+}
+</code></pre>
+
+<p>如果表的主键不是id，那么需要加上pk注释，显式的说这个字段是主键
+属性名首字母大写
+第二个单词首字母不能大写,如要大写将对应 如HeadUrl  对应表字段 Head_url</p>
+
+<p><a href="https://beego.me/docs/mvc/model/models.md" target="_blank">更多使用</a></p>
+
+<h1 id="查询">查询</h1>
+
+<pre><code>func Ut()  {
+	var o=dao.Getcon()
+	var users []models.User
+	//原始sql
+	num, err := o.Raw(&quot;SELECT * FROM user&quot;).QueryRows(&amp;users)
+	if err == nil {
+		fmt.Println(&quot;user nums: &quot;, num)
+		fmt.Println(users[0])
+	}
+	//根据主键
+	user := models.User{Username: &quot;danbai&quot;}
+	err = o.Read(&amp;user)
+	if err == orm.ErrNoRows {
+		fmt.Println(&quot;查询不到&quot;)
+	} else if err == orm.ErrMissPK {
+		fmt.Println(&quot;找不到主键&quot;)
+	} else {
+		fmt.Println(user.Password)
+	}
+}
+</code></pre>
+
+<h1 id="插入更新">插入更新</h1>
+
+<pre><code>func Ut1()  {
+	var o=dao.Getcon()
+	var user = models.User{&quot;test&quot;,&quot;123&quot;,&quot;225@qq.com&quot;,&quot;https://www.123.com&quot;}
+	username, err := o.Insert(&amp;user)
+	if err == nil {
+		fmt.Println(username)
+	}
+	user1 := models.User{Username: &quot;test&quot;}
+	if o.Read(&amp;user1) == nil {
+		user1.Password = &quot;pass&quot;
+		if num, err := o.Update(&amp;user1); err == nil {
+			fmt.Println(num)
+		}
+	}
+}
+</code></pre>
+
+<h1 id="总结">总结</h1>
+
+<p>今天大概看了遍文档 和spring框架还是有点区别,但是内容都差不多路由、控制、服务、视图、过滤器等.
+简单练习了下,发现启动速度也很快.占用内存比java少了不少.
+接下来就开始边做边学了,加油!</p>
+
+<p><a href="https://beego.me/docs/intro/" target="_blank">beego中文文档</a></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-03-29 21:34:16</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

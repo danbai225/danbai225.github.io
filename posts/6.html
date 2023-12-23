@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="redis,token"/>
+    <meta name="description" content="本文介绍了为什么要使用token进行身份验证，以及使用token实现身份验证的通信流程。在代码实战部分，给出了一个Token实体类，并提供了相关的service接口和实现类，包括创建token、检测token有效性、删除token和token登录等功能的实现。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>RESTful token登陆(基于Spring、Redis) - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">RESTful token登陆(基于Spring、Redis)</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2019-11-21 15:20:53</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">redis</span>
+                    
+                    <span class="label label-success label-outline">token</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>本文介绍了为什么要使用token进行身份验证，以及使用token实现身份验证的通信流程。在代码实战部分，给出了一个Token实体类，并提供了相关的service接口和实现类，包括创建token、检测token有效性、删除token和token登录等功能的实现。</p>
+            </section>
+        </header>
+            <p><img src="https://img.hacpai.com/bing/20190909.jpg?imageView2/1/w/960/h/540/interlace/1/q/100" alt="" /></p>
+
+<h1 id="为什么使用token">为什么使用token</h1>
+
+<p>网站服务端在存储用户登陆信息使用session+cookie.在进行其他客户端通信中使用cookie的话操作太繁琐,所以选择token这种简易自定义的标识符来进行身份确认.</p>
+
+<h1 id="通信流程">通信流程</h1>
+
+<p>1.客服端通过post请求服务端带上用户名密码进行认证,服务端认证通过返回token,并将token存在redis数据库中key为用户名.
+2.客服端在需要权限的请求中带上token,服务端通过token即可判断是那个用户.
+3.用户登陆、退出登陆、长时间未操作都会使token改变或失效</p>
+
+<h1 id="代码实战">代码实战</h1>
+
+<h2 id="token实体类">Token实体类</h2>
+
+<pre><code>package com.danbai.ys.entity;
+
+import java.io.Serializable;
+
+/**
+ * @author danbai
+ * @date 2019-11-21 14:21
+ */
+public class Token implements Serializable {
+    private String username;
+    private String token;
+    public static final String TOKEN=&quot;token_&quot;;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Token(String username, String token) {
+        this.username = username;
+        this.token = token;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;Token{&quot; +
+                &quot;username='&quot; + username + '\'' +
+                &quot;, token='&quot; + token + '\'' +
+                '}';
+    }
+
+    public Token() {
+    }
+}
+
+</code></pre>
+
+<p>service接口和实现类</p>
+
+<pre><code>    /**
+     * 关联用户和token
+     * @param username 用户名
+     * @return
+     */
+    Token createToken(String username);
+
+    /**
+     * 检测token有效性
+     * @param token
+     * @return
+     */
+    boolean checkToken(Token token);
+
+    /**
+     * 删除token
+     * @param username
+     */
+    void deleteToken (String username);
+    /**
+     * token登陆
+     * @param user
+     * @return
+     */
+    Token login(User user);
+------------------------------------------------------实现-------------------------------------
+ @Override
+    public Token createToken(String username) {
+        String tokenid= UUID.randomUUID().toString().replace (&quot;-&quot;, &quot;&quot;);
+        Token token=new Token(username,tokenid);
+        redisTemplate.opsForValue().set(Token.TOKEN+username,token,7,TimeUnit.DAYS);
+        return token;
+    }
+
+    @Override
+    public boolean checkToken(Token token) {
+        if (token == null|token.getUsername()==null|token.getToken()==null|token.getUsername().length()&lt;1|token.getToken().length()&lt;1) {
+            return false;
+        }
+        Token rtoken = (Token) redisTemplate.opsForValue().get(Token.TOKEN+token.getUsername());
+        if(rtoken.getToken().equals(token.getToken())){
+            // 如果验证成功，说明此用户进行了一次有效操作，延长 token 的过期时间
+            redisTemplate.expire(Token.TOKEN+token.getUsername (),7, TimeUnit.DAYS);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void deleteToken(String username) {
+        redisTemplate.delete(Token.TOKEN+username);
+    }
+
+    @Override
+    public Token login(User user) {
+        if (user != null) {
+            User user1 = new User();
+            user1.setUsername(user.getUsername());
+            User user2 = getUser(user1);
+            if (user2 != null) {
+                if (DigestUtils.md5DigestAsHex(user.getPassword().getBytes()).equals(user2.getPassword())) {
+                    return createToken(user.getUsername());                }
+            }
+        }
+        return null;
+    }                                                        
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-03-29 21:33:55</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

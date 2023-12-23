@@ -1,13 +1,15 @@
 ---
 title: 修复一个open too many files
-date: 2021-09-09 18:00:03.538
-updated: 2021-09-10 10:05:26.246
+date: "2021-09-09 18:00:03"
+updated: "2021-09-10 10:05:26"
 url: https://p00q.cn/?p=390
-categories: 
-- Go
-tags: 
-- Go
-- socket
+categories:
+    - Go
+tags:
+    - Go
+    - socket
+summary: 在使用socks5代理客户端时，发现很多连接没有被正常关闭的问题。问题出现在代码中的两个地方。首先，在client.go文件中，当代理类型不为http时，会执行安全信道建立的代码。其次，在cryptogram.go文件中的copy方法中，会进行加密io复制。当一方连接断开时，另一方连接可能不会被正常关闭，导致锁一直没有释放。本地连接也一直没有关闭，从而打开了太多连接并出现报错。为了解决这个问题，对代码进行了修改。首先，在cryptogram.go文件的copy方法中，增加了对连接的关闭操作。其次，在client.go文件中，将连接的关闭放在copy方法内部，当一方连接被关闭时，关闭两个连接，另一个拷贝就能感知到并读取错误并正常关闭并退出。这样就解决了连接没有正常关闭的问题。
+id: "390"
 ---
 
 在使用[socks5代理客户端](github.com/shikanon/socks5proxy)发现，很多连接没有被正常关闭。

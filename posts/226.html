@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="cc,nginx"/>
+    <meta name="description" content="作者描述了自己的小服务器遭受了CC攻击，攻击者一直调用其项目中的搜索接口，导致服务器流量消耗完毕，项目无法访问。为了解决这个问题，作者租了一台性能更好的服务器，并安装了宝塔面板和Nginx防火墙插件，通过查看请求日志和写黑名单限制，成功减少了大部分攻击和流量。最终，项目恢复正常使用。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>小水管服务器被cc攻击 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">小水管服务器被cc攻击</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-10-08 18:10:55</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">cc</span>
+                    
+                    <span class="label label-success label-outline">nginx</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>作者描述了自己的小服务器遭受了CC攻击，攻击者一直调用其项目中的搜索接口，导致服务器流量消耗完毕，项目无法访问。为了解决这个问题，作者租了一台性能更好的服务器，并安装了宝塔面板和Nginx防火墙插件，通过查看请求日志和写黑名单限制，成功减少了大部分攻击和流量。最终，项目恢复正常使用。</p>
+            </section>
+        </header>
+            <h1 id="遭受攻击">遭受攻击</h1>
+
+<p>前两天我的小水管服务器被cc攻击,对方一直调我项目中的一个搜索接口,有时命中了关键词会返回很多数据,造成流量消耗。
+达到了每天几万IP的访问,每秒20+
+<img src="../res/img/226-1.jpeg" alt="image.png" />
+这是某一天的流量和请求数
+<img src="../res/img/226-2.jpeg" alt="image.png" />|<img src="../res/img/226-5.jpeg" alt="image.png" />|
+虽然不是很多,但是在我小水管服务器(2Mpbs)看来已经是难以承受。
+导致我的服务器流量被消耗完毕,导致项目无法访问软件无法正常使用。</p>
+
+<h1 id="解决">解决</h1>
+
+<p>在我发现的时候流量已经被刷完了,导致服务器无法访问。
+还好我的服务并不部署在这台服务器上,而是部署在k8s集群上。这台服务器只是起个网关代理作用。
+于是我又租了一台服务器50M的服务器18一个月,虽然只有0.5g内存但是安装个Nginx没得问题。
+<img src="../res/img/226-3.jpeg" alt="image.png" />
+<a href="http://yun.0220.cn/page.aspx?c=referral&amp;u=8155" target="_blank">低价服务器</a></p>
+
+<p>购买后我先安装了宝塔面板和nginx。然后使用了一款里面的插件 Nginx防火墙
+然后通过查看日志请求URL然后写个正则对请求进行黑名单限制就减少了大部分攻击和流量。
+<img src="../res/img/226-4.jpeg" alt="image.png" />
+至此APP又能正常使用</p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2020-10-17 00:14:02</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

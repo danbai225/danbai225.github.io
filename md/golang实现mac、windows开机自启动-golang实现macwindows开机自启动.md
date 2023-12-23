@@ -1,15 +1,17 @@
 ---
 title: golang实现mac、windows开机自启动
-date: 2022-07-25 19:17:05.584
-updated: 2022-07-25 23:10:02.375
+date: "2022-07-25 19:17:05"
+updated: "2022-07-25 23:10:02"
 url: https://p00q.cn/?p=707
-categories: 
-- Go
-- 奇技淫巧
-- 开发
-- 推荐分享
-tags: 
-- Go
+categories:
+    - Go
+    - 奇技淫巧
+    - 开发
+    - 推荐分享
+tags:
+    - Go
+summary: DownTip是一个摸鱼小工具，作者最近在给状态栏小工具添加一些功能模块，其中包括了一个自启动的功能。实现原理是通过在LaunchAgents目录下写入一个启动配置文件，在Mac上实现自启动。在Windows上，作者是在用户启动目录下写入一个bat文件来启动当前二进制。具体实现的代码可以参考上述代码段。
+id: "707"
 ---
 
 # [DownTip](https://github.com/danbai225/down_tip)
@@ -87,3 +89,4 @@ func writer(on bool, path, content string) error {
 }
 
 ```
+

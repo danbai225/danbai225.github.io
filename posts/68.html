@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Flutter"/>
+    <meta name="description" content="这段代码主要是关于使用chewie和video_player库来实现视频播放的。首先定义了_videoPlayerController和_chewieController两个变量，用来控制视频播放。然后在dispose方法中，对这两个控制器进行释放。接下来是_initController方法，初始化_videoPlayerController和_chewieController，并设置相关参数，其中使用了VideoPlayerController和ChewieController类。最后是_loadVideo方法，根据传入的视频链接初始化控制器，如果已经有视频在播放，则先将旧的控制器处理掉。在build方法中，使用Container和Chewie组件来展示视频播放界面。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>Flutter 播放器(video_player)切换源 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">Flutter 播放器(video_player)切换源</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-04-27 15:22:40</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Flutter</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>这段代码主要是关于使用chewie和video_player库来实现视频播放的。首先定义了_videoPlayerController和_chewieController两个变量，用来控制视频播放。然后在dispose方法中，对这两个控制器进行释放。接下来是_initController方法，初始化_videoPlayerController和_chewieController，并设置相关参数，其中使用了VideoPlayerController和ChewieController类。最后是_loadVideo方法，根据传入的视频链接初始化控制器，如果已经有视频在播放，则先将旧的控制器处理掉。在build方法中，使用Container和Chewie组件来展示视频播放界面。</p>
+            </section>
+        </header>
+            <h1 id="依赖">依赖</h1>
+
+<p>chewie: ^0.9.10
+  video_player: ^0.10.8+1</p>
+
+<h1 id="代码">代码</h1>
+
+<p>定义变量</p>
+
+<pre><code> VideoPlayerController _videoPlayerController;
+  ChewieController _chewieController;
+</code></pre>
+
+<p>主要代码</p>
+
+<pre><code> @override
+  void dispose() {
+    // 退出处理
+    super.dispose();
+    if (_videoPlayerController != null) {
+      _videoPlayerController.dispose();
+      _chewieController.dispose();
+      _videoPlayerController = null;
+      _chewieController = null;
+    }
+  }
+
+//初始化控制器
+  void _initController(String link) {
+    _videoPlayerController = VideoPlayerController.network(link)
+      ..initialize().then((_) {
+        _chewieController = ChewieController(
+          customControls: CustomControls(),
+          allowedScreenSleep: false,
+          videoPlayerController: _videoPlayerController,
+          aspectRatio: _videoPlayerController.value.aspectRatio,
+          autoPlay: true,
+          looping: true,
+        );
+        setState(() {});
+      });
+  }
+
+  //加载视频
+  _loadVideo(String url) async {
+    if (_videoPlayerController == null) {
+      //没有视频在播放
+      _initController(url);
+    } else {
+      // 如果有控制器，我们需要先处理旧的
+      final oldController = _videoPlayerController;
+      // 为下一帧的结束注册回调
+      // 处理一个旧控制器
+      // (调用setState后不再使用)
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await oldController.dispose();
+      });
+      // 通过将其设置为null来确保没有使用该控制器
+      setState(() {
+        _videoPlayerController = null;
+        _initController(url);
+      });
+    }
+  }
+
+
+在build中...
+	Container(
+              child: _videoPlayerController != null &amp;&amp;
+                      _chewieController != null &amp;&amp;
+                      _videoPlayerController.value.initialized
+                  ? Chewie(
+                      controller: _chewieController,
+                    )
+                  : null,
+            )
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2021-06-10 15:18:34</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

@@ -1,18 +1,29 @@
 ---
 title: 在golang中使用clash作为http客户端的代理
-date: 2023-07-28 14:23:57.456
-updated: 2023-07-28 14:23:57.456
+date: "2023-07-28 14:23:57"
+updated: "2023-07-28 14:23:57"
 url: https://p00q.cn/?p=906
-categories: 
-- Go
-- 奇技淫巧
-- 开发
-- 编码协议
-- 解决办法
-tags: 
-- Go
-- proxy
-- http
+categories:
+    - Go
+    - 奇技淫巧
+    - 开发
+    - 编码协议
+    - 解决办法
+tags:
+    - Go
+    - proxy
+    - http
+summary: |-
+    这是一篇使用Clash作为HTTP客户端代理的Go语言教程。在爬取网站时，经常会遇到一些反爬虫的网站，这些网站会检测你的IP地址，如果被检测到是爬虫，就会拒绝访问。为了解决这个问题，可以使用代理来隐藏真实IP地址。代理的原理是将请求发送到代理服务器，代理服务器再发送给目标服务器并返回数据。这样目标服务器无法知道真实IP地址。本文介绍了使用Clash作为HTTP客户端代理的方法。
+
+    首先，需要获取HTTP代理。可以通过免费获取或者付费购买的方式来获取。作者选择了使用机场提供的v2或SSR协议的代理。
+
+    接下来，将Clash代码引入Go程序中，并设置代理的配置信息。代码中使用了Clash的Start()方法来启动代理，并通过调用Proxies()方法获取代理列表。
+
+    然后，使用代理URL并创建http.Transport和http.Client对象。在创建http.Transport对象时，将代理URL传入Proxy字段。最后，通过调用http.Client对象的Get方法来发送请求。
+
+    以上就是使用Clash作为HTTP客户端代理的具体实现方法。通过这种方式，可以在Go程序中轻松地使用Clash作为HTTP客户端代理来访问需要隐藏真实IP地址的网站。
+id: "906"
 ---
 
 # 在golang中使用clash作为http客户端的代理

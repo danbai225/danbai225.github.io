@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="工具,Go"/>
+    <meta name="description" content="该程序的目的是为了解决在禁用CV大法的程序中输入复杂或长字符串时的不便。它通过监听Ctrl &#43; I的快捷键，将剪切板中的内容作为字符串读取，然后用按键库模拟输入字符串的每个字符。该程序使用了robotgo、clipboard和systray等库，并且集成了一个带有图标的托盘应用程序。在运行该程序时，会在托盘中显示一个图标，右键点击可以选择退出程序。然后通过按下Ctrl &#43; I快捷键，即可模拟输入剪切板中的字符串。但需要注意的是，并不是所有程序都支持输入，需要进一步使用虚拟键盘才能实现对这些程序的支持。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>用go实现一个通过模拟输入剪切板内容的程序 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">用go实现一个通过模拟输入剪切板内容的程序</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2021-06-08 20:32:38</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">工具</span>
+                    
+                    <span class="label label-success label-outline">Go</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>该程序的目的是为了解决在禁用CV大法的程序中输入复杂或长字符串时的不便。它通过监听Ctrl &#43; I的快捷键，将剪切板中的内容作为字符串读取，然后用按键库模拟输入字符串的每个字符。该程序使用了robotgo、clipboard和systray等库，并且集成了一个带有图标的托盘应用程序。在运行该程序时，会在托盘中显示一个图标，右键点击可以选择退出程序。然后通过按下Ctrl &#43; I快捷键，即可模拟输入剪切板中的字符串。但需要注意的是，并不是所有程序都支持输入，需要进一步使用虚拟键盘才能实现对这些程序的支持。</p>
+            </section>
+        </header>
+            <h1 id="简介">简介</h1>
+
+<p>在有些程序中为了安全起见，禁用了CV大法。在输入很复杂很长窜的字符串时感觉很难受。于是便有了下面这个程序，该代码的核心部分是通过robotgo这个库封装的C代码实现的，所以没有什么硬代码。</p>
+
+<h1 id="代码">代码</h1>
+
+<pre><code class="language-Go">
+package main
+
+import (
+	_ &quot;embed&quot; //Go1.16支持将资源文件一同打包
+	&quot;github.com/atotto/clipboard&quot; //读取剪切板
+	&quot;github.com/getlantern/systray&quot; //托盘图标
+	&quot;github.com/go-vgo/robotgo&quot; //按键库
+	&quot;os&quot;
+	&quot;strings&quot;
+	&quot;test/log&quot;
+	&quot;time&quot;
+)
+//下面这个注释就是添加本地静态资源的
+//go:embed assets/jqb.ico
+var iconData []byte
+func main() {
+	 systray.Run(onReady, onExit)
+	for {
+		if robotgo.AddEvents(&quot;i&quot;, &quot;ctrl&quot;){
+			// 读取剪切板中的内容到字符串
+			content, err := clipboard.ReadAll()
+			if err != nil {
+				log.LogErr(err)
+			}
+			split := strings.Split(content, &quot;&quot;)
+			for _, s := range split {
+				time.Sleep(time.Millisecond*66)
+				robotgo.KeyTap(s)
+			}
+		}
+	}
+}
+func onReady() {
+	systray.SetIcon(iconData)
+	systray.SetTitle(&quot;帮你输入剪切板&quot;)
+	systray.SetTooltip(&quot;帮你输入剪切板&quot;)
+	mQuit := systray.AddMenuItem(&quot;退出&quot;, &quot;点击退出应用程序&quot;)
+	go func() {
+		select {
+		case &lt;-mQuit.ClickedCh:
+			os.Exit(0)
+		}
+	}()
+}
+
+func onExit() {
+
+}
+</code></pre>
+
+<h1 id="编译运行">编译运行</h1>
+
+<p>通过命令<code>go build -ldflags &quot;-s -w -H=windowsgui&quot;</code>编译出来的程序没有命令行窗口。运行后在托盘会展示图标，右键可以选择退出。
+运行效果<img src="1" alt="image.png" />
+快捷键<code>Ctrl</code>+<code>I</code>就能模拟输入剪切板内的字符串了。
+注：并不是所有程序都支持输入，WeGame测试不行。
+部分程序不支持，进一步支持需要用到虚拟键盘
+<a href="https://github.com/ddxoft/master" target="_blank">https://github.com/ddxoft/master</a></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2021-06-10 15:07:06</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

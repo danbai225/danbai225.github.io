@@ -1,13 +1,93 @@
 ---
 title: 让java switch支持表达式和多匹配
-date: 2020-07-22 09:54:19.968
-updated: 2020-07-22 09:54:19.968
+date: "2020-07-22 09:54:19"
+updated: "2020-07-22 09:54:19"
 url: https://p00q.cn/?p=131
-categories: 
-- Java
-tags: 
-- java
-- Choice
+categories:
+    - Java
+tags:
+    - java
+    - Choice
+summary: |-
+    Choice是一个Java库，提供了支持表达式和多匹配的功能。它能让Java支持类似JS中的函数变量传入的特性。使用Choice库可以根据不同的条件选择执行不同的方法。
+
+    使用Choice的例子如下：
+
+    int a = 1, b = 2, c = 3, d = 4;
+    new Choice(true).add(1L, () -> {
+        System.out.println("这里是1");
+    }).add(a < b ? c : d > a ? b : c, () -> {
+        System.out.println("这里是2");
+    }).add(3.0f, () -> {
+        System.out.println("这里是3");
+    }).add(Color.BLUE, () -> {
+        System.out.println("这里是4");
+    }).add(() -> {
+        System.out.println("多个匹配");
+    }, 1, 2, 3, 4, 5, 6, 7, 8, 9).Default(() -> {
+        System.out.println("这里是默认方法");
+    }).execute(4);
+
+    在这个例子中，使用了Lambda表达式来定义不同的方法。然后通过Choice库中的add方法将方法和对应的条件添加到Choice对象中。最后使用execute方法根据给定的条件执行相应的方法。
+
+    Choice库的实现是通过定义一个Choice类，并在其中定义了一个Map来保存方法和对应的条件。通过add方法将方法和条件添加到Map中，然后通过execute方法根据给定的条件执行相应的方法。
+
+    Choice库的实现代码如下：
+
+    public interface Function {
+        void run();
+    }
+
+    public class Choice {
+        private Map<Object, Function> map;
+        private Function Default;
+        private boolean expression;
+
+        public Choice() {
+            map = new ConcurrentHashMap();
+        }
+
+        public Choice(boolean expression) {
+            this();
+            this.expression = expression;
+        }
+
+        public Choice add(Object v, Function function) {
+            if (v != null && function != null) {
+                map.put(v, function);
+            }
+            return this;
+        }
+
+        public Choice add(Function function, Object... v) {
+            if (function != null) {
+                for (Object iv : v) {
+                    if (iv != null) {
+                        map.put(iv, function);
+                    }
+                }
+            }
+            return this;
+        }
+
+        public void execute() {
+            // 代码省略...
+        }
+
+        public void execute(Object v) {
+            // 代码省略...
+        }
+
+        public Choice Default(Function function) {
+            Default = function;
+            return this;
+        }
+    }
+
+    在Choice类中，使用ConcurrentHashMap来保存方法和条件的映射关系。可以通过add方法将方法和条件添加到map中。execute方法用于执行方法，如果没有匹配的条件，则执行默认方法。
+
+    总结来说，Choice是一个简单的Java库，用于实现条件选择执行不同的方法。它支持表达式和多匹配的功能，并且使用起来非常方便。
+id: "131"
 ---
 
 # choice
@@ -175,3 +255,4 @@ public class Choice {
 
 }
 ```
+

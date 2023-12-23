@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Go"/>
+    <meta name="description" content="本文介绍了一个简单的缓存实现方法，通过使用Map来存储缓存数据，并利用sync.Mutex实现并发安全。其中缓存数据包含一个值和过期时间，可以通过SetCache方法设置缓存并指定过期时间，通过GetCache方法获取缓存值，通过Remove方法移除缓存。示例代码展示了如何使用该缓存库，先设置一个缓存值为&#34;cache&#34;并设置过期时间为10秒，然后获取并打印该缓存值。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>golang cacheMap - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">golang cacheMap</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-12-12 20:30:04</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Go</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>本文介绍了一个简单的缓存实现方法，通过使用Map来存储缓存数据，并利用sync.Mutex实现并发安全。其中缓存数据包含一个值和过期时间，可以通过SetCache方法设置缓存并指定过期时间，通过GetCache方法获取缓存值，通过Remove方法移除缓存。示例代码展示了如何使用该缓存库，先设置一个缓存值为&#34;cache&#34;并设置过期时间为10秒，然后获取并打印该缓存值。</p>
+            </section>
+        </header>
+            <h1 id="缓存">缓存</h1>
+
+<p>为了缓解一些接口的压力(数据还重复计算和数据量大),又没有redis就用Map写了个简单的做缓存.</p>
+
+<pre><code>package utils
+
+import (
+	&quot;sync&quot;
+	&quot;time&quot;
+)
+var Cache cacheMap
+func init()  {
+	go Cache.iniCache()
+}
+type cacheMap struct {
+	cacheMap  map[string]cacheVal
+	cacheLock sync.Mutex
+}
+type cacheVal struct {
+	val     interface{}
+	outTime time.Time
+}
+func (this *cacheMap) iniCache() {
+	this.cacheMap = make(map[string]cacheVal)
+	for {
+		time.Sleep(time.Second)
+		this.cacheLock.Lock()
+		for k, val := range this.cacheMap {
+			if val.outTime.Sub(time.Now()).Microseconds() &lt; 0 {
+				delete(this.cacheMap, k)
+			}
+		}
+		this.cacheLock.Unlock()
+	}
+}
+func (this *cacheMap) GetCache(key string) interface{} {
+	this.cacheLock.Lock()
+	defer this.cacheLock.Unlock()
+	return this.cacheMap[key].val
+}
+func (this *cacheMap) Remove(key string){
+	this.cacheLock.Lock()
+	defer this.cacheLock.Unlock()
+	delete(this.cacheMap,key)
+}
+
+func (this *cacheMap) SetCache(key string, val interface{}, Time time.Duration) {
+	this.cacheLock.Lock()
+	defer this.cacheLock.Unlock()
+	cacheVal := cacheVal{
+		val:     val,
+		outTime: time.Now().Add(Time),
+	}
+	this.cacheMap[key] = cacheVal
+}
+</code></pre>
+
+<h1 id="使用">使用</h1>
+
+<pre><code>func main() {
+	utils.Cache.SetCache(&quot;test&quot;,&quot;cache&quot;,time.Second*10)
+	println(utils.Cache.GetCache(&quot;test&quot;).(string))
+}
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2020-12-12 20:30:04</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

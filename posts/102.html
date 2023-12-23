@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="zip"/>
+    <meta name="description" content="以上代码是用于判断压缩包内是否存在名为index.html的文件。
+
+其中，通过`ZipInputStream`从输入流中读取压缩包的文件流。通过`zin.getNextEntry()`获得压缩包中的文件，然后判断文件名是否为index.html。若存在index.html文件，则将变量`ifThere`置为true，跳出循环。
+
+最后，根据`ifThere`的值来判断是否存在index.html文件，并返回对应的响应。
+
+另外，如果有文件对象，可以直接使用`ZipFile`来读取压缩包内的文件。可以通过`zipfile.getEntry(&#34;index.html&#34;)`获取index.html文件的入口，并通过`.getName()`获取文件名。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>java判断压缩包内是否存在指定文件 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">java判断压缩包内是否存在指定文件</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-05-20 09:02:03</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">zip</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>以上代码是用于判断压缩包内是否存在名为index.html的文件。
+
+其中，通过`ZipInputStream`从输入流中读取压缩包的文件流。通过`zin.getNextEntry()`获得压缩包中的文件，然后判断文件名是否为index.html。若存在index.html文件，则将变量`ifThere`置为true，跳出循环。
+
+最后，根据`ifThere`的值来判断是否存在index.html文件，并返回对应的响应。
+
+另外，如果有文件对象，可以直接使用`ZipFile`来读取压缩包内的文件。可以通过`zipfile.getEntry(&#34;index.html&#34;)`获取index.html文件的入口，并通过`.getName()`获取文件名。</p>
+            </section>
+        </header>
+            <p>业务需求,需要判断压缩包内是否存在index.html文件.不通过解压进行判断.
+通过ZipInputStream获取文件流进行判断.</p>
+
+<p>上代码:</p>
+
+<pre><code>//判断是否存在index.html
+        boolean ifThere=false;
+        try {
+            InputStream in = new BufferedInputStream(file.getInputStream());
+            ZipInputStream zin = new ZipInputStream(in,Charset.forName(&quot;gbk&quot;));
+            ZipEntry ze;
+            while ((ze = zin.getNextEntry()) != null) {
+                if (ze.isDirectory()) {
+                } else {
+                    String name = ze.getName();
+                    if(name.toLowerCase().equals(WallpaperConstant.INDEX)){
+                        ifThere=true;
+                        break;
+                    }
+                }
+            }
+            zin.closeEntry();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(!ifThere){
+            return Response.Err(WallpaperConstant.NOT_FIND_INDEX);
+        }
+</code></pre>
+
+<p>上面的代码是读取http请求中的文件流
+如果有文件对象能直接读取指定文件</p>
+
+<pre><code>ZipFile zipfile=new ZipFile(file.getInputStream(),Charset.forName(&quot;gbk&quot;));
+System.out.println(zipfile.getEntry(&quot;index.html&quot;).getName());
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2023-03-08 18:55:31</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

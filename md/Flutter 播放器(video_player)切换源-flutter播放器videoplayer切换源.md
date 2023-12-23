@@ -1,12 +1,14 @@
 ---
 title: Flutter 播放器(video_player)切换源
-date: 2020-04-27 15:22:40.542
-updated: 2021-06-10 15:18:34.851
+date: "2020-04-27 15:22:40"
+updated: "2021-06-10 15:18:34"
 url: https://p00q.cn/?p=68
-categories: 
-- Flutter
-tags: 
-- Flutter
+categories:
+    - Flutter
+tags:
+    - Flutter
+summary: 这段代码主要是关于使用chewie和video_player库来实现视频播放的。首先定义了_videoPlayerController和_chewieController两个变量，用来控制视频播放。然后在dispose方法中，对这两个控制器进行释放。接下来是_initController方法，初始化_videoPlayerController和_chewieController，并设置相关参数，其中使用了VideoPlayerController和ChewieController类。最后是_loadVideo方法，根据传入的视频链接初始化控制器，如果已经有视频在播放，则先将旧的控制器处理掉。在build方法中，使用Container和Chewie组件来展示视频播放界面。
+id: "68"
 ---
 
 # 依赖

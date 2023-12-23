@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="caddy,ssl"/>
+    <meta name="description" content="Caddy是一个强大的、可扩展的平台，用Go编写，可用于为站点、服务和应用程序提供服务。大多数人将Caddy用作Web服务器或代理。Caddy可以充当长时间运行的进程的角色，可以动态修改配置，也可以使用配置文件进行配置。Caddy可以免费签发SSL证书。通过按照安装步骤安装Caddy，然后修改配置文件，可以启动Caddy并访问服务器。遇到的问题可能是网站根目录权限不正确或者SELinux开启的问题。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>使用 caddy 替换nginx 免费ssl证书 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">使用 caddy 替换nginx 免费ssl证书</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2022-08-30 19:36:22</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">caddy</span>
+                    
+                    <span class="label label-success label-outline">ssl</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>Caddy是一个强大的、可扩展的平台，用Go编写，可用于为站点、服务和应用程序提供服务。大多数人将Caddy用作Web服务器或代理。Caddy可以充当长时间运行的进程的角色，可以动态修改配置，也可以使用配置文件进行配置。Caddy可以免费签发SSL证书。通过按照安装步骤安装Caddy，然后修改配置文件，可以启动Caddy并访问服务器。遇到的问题可能是网站根目录权限不正确或者SELinux开启的问题。</p>
+            </section>
+        </header>
+            <h1 id="caddy-介绍">caddy 介绍</h1>
+
+<p>Caddy 是一个强大的、可扩展的平台，可以为您的站点、服务和应用程序提供服务，用 Go 编写。
+大多数人将Caddy用作Web服务器或代理，但Caddy的本质是诸多服务器的服务器。在安装了必要的模块后，它就可以充当长时间运行的进程的角色！</p>
+
+<p>基于Caddy的API，它的配置能被动态修改，且能导出来。虽然不需要配置文件，但你仍然可以使用它们；大多数人还是最喜欢通过Caddyfile对Caddy进行配置。虽然通过配置适配器可以对Caddy使用多种的配置文件格式，但它的原生配置语言是JSON。
+免费签发ssl证书
+Caddy已经编译好了所有主流平台的版本，且没有运行时依赖项。
+<a href="https://caddyserver.com/docs/" target="_blank">官网</a></p>
+
+<h1 id="安装">安装</h1>
+
+<p>根据 <a href="https://caddyserver.com/docs/install" target="_blank">Install</a> 中的各系统安装步骤完成安装。</p>
+
+<p>安装成功后</p>
+
+<pre><code>root@VM-0-3-ubuntu:~# caddy version
+v2.5.2 h1:eCJdLyEyAGzuQTa5Mh3gETnYWDClo1LjtQm2q9RNZrs=
+</code></pre>
+
+<p>执行</p>
+
+<pre><code>sudo systemctl enable --now caddy
+sudo systemctl start --now caddy
+</code></pre>
+
+<p>访问服务器 <a href="http://1.14.75.115" target="_blank">ip</a> 可以看到
+<img src="../res/img/770-1.jpeg" alt="image-1661859731720" /></p>
+
+<h2 id="修改配置">修改配置</h2>
+
+<p>文件路径 <code>/etc/caddy/Caddyfile</code></p>
+
+<pre><code>:80 {
+	root * /usr/share/caddy
+	file_server
+}
+
+p00q.cn {
+	encode gzip
+	reverse_proxy 127.0.0.1:1001
+}
+</code></pre>
+
+<p>重载或者重启服务</p>
+
+<pre><code>sudo systemctl reload caddy
+sudo systemctl restart caddy
+</code></pre>
+
+<p>通过域名访问即可</p>
+
+<p><a href="https://caddyserver.com/docs/caddyfile-tutorial" target="_blank">配置详解</a></p>
+
+<h1 id="遇到的问题">遇到的问题</h1>
+
+<p>手动执行<code>/usr/bin/caddy run --environ --config /etc/caddy/Caddyfile</code>
+运行后网站是能正常进行访问的。
+但是在使用<code>systemctl start caddy</code> 启动的服务访问返回403</p>
+
+<p>可能的情况是</p>
+
+<ul>
+<li>网站根目录没有权限</li>
+<li>SELinux设置为开启状态</li>
+</ul>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-08-30 19:53:21</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

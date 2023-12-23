@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="java,u2ps"/>
+    <meta name="description" content="U2PS是一款内网穿透平台，用户可以将自己的服务器加入平台，其他用户可以选择节点进行内网传输，并将流量计入节点所属用户的账号。该平台支持TCP、UDP、HTTP和SOCKS5代理，并提供简单的Web操作界面配置。平台还具有热更新功能，无需重启客户端即可更新隧道。近期的开发进展包括完成对节点、客户端和隧道的增删改查功能，对接支付和实名认证系统，将服务端进行分离，通过dubbo调用服务端，完善流量统计功能，并进行容器化部署。接下来的开发重点是实现服务端和前端的对接和通信。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>U2PS开发日志 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">U2PS开发日志</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-08-10 13:09:43</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">java</span>
+                    
+                    <span class="label label-success label-outline">u2ps</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>U2PS是一款内网穿透平台，用户可以将自己的服务器加入平台，其他用户可以选择节点进行内网传输，并将流量计入节点所属用户的账号。该平台支持TCP、UDP、HTTP和SOCKS5代理，并提供简单的Web操作界面配置。平台还具有热更新功能，无需重启客户端即可更新隧道。近期的开发进展包括完成对节点、客户端和隧道的增删改查功能，对接支付和实名认证系统，将服务端进行分离，通过dubbo调用服务端，完善流量统计功能，并进行容器化部署。接下来的开发重点是实现服务端和前端的对接和通信。</p>
+            </section>
+        </header>
+            <h1 id="u2ps">U2PS</h1>
+
+<p>&amp;emsp;&amp;emsp;U2PS内网穿透平台,用户可以将自己的空闲服务器以Node身份加入平台,其他用户则可以选择Node进行内网传统,其他用户在Node上产生的流量将计入Node所属用户的账号。</p>
+
+<ul>
+<li><p>TCP、UDP、HTTP、SOCKS5代理</p></li>
+
+<li><p>Web操作界面配置简单</p></li>
+
+<li><p>热更新无需重启客户端即可更新隧道</p></li>
+
+<li><p>节点多、各国IP,基于Node数。</p>
+
+<h1 id="2020年8月18日">2020年8月18日</h1>
+
+<p>今日U2PS已经上线了.
+<img src="../res/img/137-1.png" alt="" /></p>
+
+<h1 id="2020年8月14日-8月17日">2020年8月14日-8月17日</h1></li>
+
+<li><p>完成了web端对节点、客户端、隧道的增删改查.</p></li>
+
+<li><p>对接了支付和实名认证.</p></li>
+</ul>
+
+<h1 id="2020年8月10日-8月14日">2020年8月10日-8月14日</h1>
+
+<ul>
+<li>将服务端进行分离，把web和服务端分别独立出来。以防修改web端要重启服务端，会影响到node和客户端。</li>
+<li>web端通过dubbo调用服务端。</li>
+<li>流量统计功能完善。</li>
+<li>运行环境试用容器部署（已经完成环境搭建可以直接打包到docker仓库，然后k8s调整版本发布了）。</li>
+</ul>
+
+<h1 id="2020年8月1日-8月10日">2020年8月1日-8月10日</h1>
+
+<ul>
+<li>服务端Api框架,与客户端、Node端通信。</li>
+<li>客户端和Node端基础功能(TCP、UDP、HTTP、SOCKS5)代理,已经大致完成开发现在开始主要开发服务端和前端的对接。</li>
+</ul>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2020-08-24 12:01:16</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

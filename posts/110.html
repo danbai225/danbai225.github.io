@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="MySQL"/>
+    <meta name="description" content="问题描述：在MySQL数据库中，遇到了字段`gktime`不能为null的问题。该字段的表结构如下图所示。为了解决这个问题，可以设置字段`gktime`有默认值。
+
+解决方法：在MySQL 5.6版本中，引入了`explicit_defaults_for_timestamp`参数来控制对timestamp NULL值的处理。如果该参数不开启，插入NULL值到timestamp NOT NULL字段时，不会报错，也不会有警告，插入后的值会被设置为当前时间。如果在my.cnf配置文件中设置`explicit_defaults_for_timestamp=1`，则在插入该字段时会报错，提示该列不可以为null。可以通过执行以下命令来设置该参数为0：`set global explicit_defaults_for_timestamp=0;`，或者在`my.cnf`配置文件中添加`explicit_defaults_for_timestamp = 0`来修改该参数的值。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>MySQL timestamp NOT NULL插入NULL的问题 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">MySQL timestamp NOT NULL插入NULL的问题</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-07-10 14:24:17</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">MySQL</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>问题描述：在MySQL数据库中，遇到了字段`gktime`不能为null的问题。该字段的表结构如下图所示。为了解决这个问题，可以设置字段`gktime`有默认值。
+
+解决方法：在MySQL 5.6版本中，引入了`explicit_defaults_for_timestamp`参数来控制对timestamp NULL值的处理。如果该参数不开启，插入NULL值到timestamp NOT NULL字段时，不会报错，也不会有警告，插入后的值会被设置为当前时间。如果在my.cnf配置文件中设置`explicit_defaults_for_timestamp=1`，则在插入该字段时会报错，提示该列不可以为null。可以通过执行以下命令来设置该参数为0：`set global explicit_defaults_for_timestamp=0;`，或者在`my.cnf`配置文件中添加`explicit_defaults_for_timestamp = 0`来修改该参数的值。</p>
+            </section>
+        </header>
+            <h1 id="遇到如下问题">遇到如下问题</h1>
+
+<p><img src="../res/img/110-1.jpeg" alt="image.png" /></p>
+
+<p>字段<code>gktime</code>不能为null
+这是表结构：
+<img src="../res/img/110-2.jpeg" alt="image.png" />
+设置字段<code>gktime</code>有默认值</p>
+
+<h1 id="解决">解决</h1>
+
+<p>MySQL 5.6版本引入</p>
+
+<p>explicit_defaults_for_timestamp</p>
+
+<p>来控制对timestamp NULL值的处理</p>
+
+<p>如果该参数不开启，则对timestamp NOT NULL插入NULL值，不报错，无warning，插入后的值为当前时间</p>
+
+<p>如果在my.cnf中explicit_defaults_for_timestamp=1</p>
+
+<p>那么插入该值的时候会报错提示该列can not be null</p>
+
+<p>设置该值</p>
+
+<pre><code>set global explicit_defaults_for_timestamp=0;
+</code></pre>
+
+<p>或者修改<code>my.cnf</code></p>
+
+<pre><code>explicit_defaults_for_timestamp = 0
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2021-06-10 15:22:45</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

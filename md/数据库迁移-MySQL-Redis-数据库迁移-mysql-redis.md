@@ -1,13 +1,22 @@
 ---
 title: 数据库迁移-MySQL-Redis
-date: 2020-07-09 09:23:03.034
-updated: 2021-06-10 15:21:25.822
+date: "2020-07-09 09:23:03"
+updated: "2021-06-10 15:21:25"
 url: https://p00q.cn/?p=108
-categories: 
-- 瞎折腾
-tags: 
-- redis
-- MySQL
+categories:
+    - 瞎折腾
+tags:
+    - redis
+    - MySQL
+summary: |-
+    文章提到了迁移准备和MySQL迁移以及Redis迁移。
+
+    在迁移准备部分，作者提到目标服务器已经安装了MySQL和Redis数据库，并指明了源数据库和目标数据库的版本信息。对于MySQL的迁移，作者试过使用SQLyog连接两边的数据库，但觉得比较麻烦需要手动创建数据库和用户。于是作者决定尝试宝塔控制面板的数据迁移API，但遇到了问题，发现不能从Windows服务器迁移到Linux服务器，只能手动迁移。
+
+    对于Redis的迁移，作者使用了redis-shake进行迁移。作者提供了使用RDB文件迁移的方式，并提供了redis-shake工具的下载链接。作者解释了如何修改redis-shake的配置文件，并指出在Linux和Windows下分别如何执行redis-shake命令。最后，作者展示了Redis迁移完成的截图。
+
+    根据文章内容可以得知，文章主要是讲述了作者进行服务器迁移的准备工作以及具体的MySQL和Redis迁移过程。
+id: "108"
 ---
 
 # 迁移准备

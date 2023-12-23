@@ -1,12 +1,14 @@
 ---
 title: idea设置终端docker中的容器为shll
-date: 2022-03-16 17:25:13.341
-updated: 2022-03-16 17:33:18.988
+date: "2022-03-16 17:25:13"
+updated: "2022-03-16 17:33:18"
 url: https://p00q.cn/?p=549
-categories: 
-- 奇技淫巧
-tags: 
-- docker
+categories:
+    - 奇技淫巧
+tags:
+    - docker
+summary: 这段代码是关于使用shell脚本在IntelliJ IDEA中设置终端路径和使用docker实现远程开发的方法。在Windows操作系统中，需要创建一个批处理文件，内容为`docker exec -it ubuntu bash`，并在IntelliJ IDEA的终端设置中将shell路径设置为这个批处理文件。在Unix操作系统中，需要创建一个bash脚本，内容也是`docker exec -it ubuntu bash`。此外，还提到了使用IntelliJ IDEA的代码同步功能和JetBrains Gateway远程开发功能，以及将docker映射到开发工作目录。
+id: "549"
 ---
 
 # shell

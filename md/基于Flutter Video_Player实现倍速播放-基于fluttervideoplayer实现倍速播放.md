@@ -1,12 +1,14 @@
 ---
 title: 基于Flutter Video_Player实现倍速播放
-date: 2020-07-11 00:12:17.006
-updated: 2020-07-11 18:45:53.745
+date: "2020-07-11 00:12:17"
+updated: "2020-07-11 18:45:53"
 url: https://p00q.cn/?p=111
-categories: 
-- Flutter
-tags: 
-- video_player
+categories:
+    - Flutter
+tags:
+    - video_player
+summary: 文章讲述了作者在使用Flutter开发应用过程中的一个问题，即如何实现倍速播放。作者首先介绍了Flutter支持倍速播放的两种播放器，并选择了官方的Video_Player进行开发。接着，作者通过查看Video_Player的源码发现其封装了Exoplayer播放器，并且Exoplayer支持倍速播放。因此，作者通过Flutter与原生的通信，调用Exoplayer的方法来实现倍速播放。最后，作者展示了实现效果，并给出了相关项目的地址。
+id: "111"
 ---
 
 # 为啥要在 Flutter 实现

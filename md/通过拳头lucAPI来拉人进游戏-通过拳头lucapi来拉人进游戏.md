@@ -1,16 +1,18 @@
 ---
 title: 通过拳头lucAPI来拉人进游戏
-date: 2021-06-21 18:08:13.392
-updated: 2021-06-21 18:20:09.779
+date: "2021-06-21 18:08:13"
+updated: "2021-06-21 18:20:09"
 url: https://p00q.cn/?p=327
-categories: 
-- Go
-- 奇技淫巧
-- 游戏娱乐
-tags: 
-- Go
-- luc
-- lol
+categories:
+    - Go
+    - 奇技淫巧
+    - 游戏娱乐
+tags:
+    - Go
+    - luc
+    - lol
+summary: 该文档介绍了拳头官方提供给开发者的LOLApi（LUCApi）。该API可以用来开发各种有趣的工具，包括wegame的天赋配置。文章中提供了相关的参考资料和简单使用方法，以及使用Go代码实现一个LUCA连接器的示例。最后，文章展示了如何使用API调用邀请召唤师的功能。
+id: "327"
 ---
 
 # LUCApi
@@ -130,3 +132,4 @@ func TestLoL(t *testing.T) {
 	log.LogInfo(string(connector.Request("POST",data,`/lol-lobby/v2/lobby/invitations`)))
 }
 ```
+

@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Go,MySQL,gorm"/>
+    <meta name="description" content="MySQL自从5.7版本开始支持JSON数据类型字段。本文介绍了如何使用MySQL和GORM库操作JSON类型的数据。首先，需要自定义数据类型来支持JSON字段，并实现Value和Scan接口。然后，可以通过语句&#34;字段名-&gt;&#39;$.json属性名&#39;&#34;来访问JSON属性，并进行查询和修改操作。此外，还介绍了一些MySQL内置函数用于操作JSON数据。更多详细信息可以参考附带的链接。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>在mysql中使用json数据类型 grom - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">在mysql中使用json数据类型 grom</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2022-03-16 15:01:22</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Go</span>
+                    
+                    <span class="label label-success label-outline">MySQL</span>
+                    
+                    <span class="label label-success label-outline">gorm</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>MySQL自从5.7版本开始支持JSON数据类型字段。本文介绍了如何使用MySQL和GORM库操作JSON类型的数据。首先，需要自定义数据类型来支持JSON字段，并实现Value和Scan接口。然后，可以通过语句&#34;字段名-&gt;&#39;$.json属性名&#39;&#34;来访问JSON属性，并进行查询和修改操作。此外，还介绍了一些MySQL内置函数用于操作JSON数据。更多详细信息可以参考附带的链接。</p>
+            </section>
+        </header>
+            <h1 id="mysql-json类型">mysql json类型</h1>
+
+<p>MySQL 5.7起支持JSON数据类型的字段。JSON作为现在最为流行的数据交互形式，MySQL也不断跟进，在5.7版本开始新增JSON数据类型。本文基于<code>MySQL 8.0.28</code></p>
+
+<h1 id="gorm配置">gorm配置</h1>
+
+<p>目前gorm还不支持json类型需要自己通过<a href="https://gorm.io/docs/data_types.html#Implements-Customized-Data-Type" target="_blank">自定义类型</a>来实现</p>
+
+<pre><code class="language-go">
+type Test struct {
+	ID   int64 
+	Name string
+	Age  int64
+	Data Data `gorm:&quot;type:json&quot;`
+}
+type Data struct {
+	UserInfo UserInfo `json:&quot;user_info&quot;`
+	DataSize int64    `json:&quot;data_size&quot;`
+	Comment  string   `json:&quot;comment&quot;`
+}
+
+func (c Data) Value() (driver.Value, error) {
+	b, err := json.Marshal(c)
+	return string(b), err
+}
+
+func (c *Data) Scan(input interface{}) error {
+	return json.Unmarshal(input.([]byte), c)
+}
+
+type UserInfo struct {
+	Site        string `json:&quot;site&quot;`
+	PhoneNumber string `json:&quot;phone_number&quot;`
+	HeadAddress string `json:&quot;head_address&quot;`
+	Distance    int64  `json:&quot;distance&quot;`
+}
+
+</code></pre>
+
+<h1 id="查询">查询</h1>
+
+<p>通过<code>字段名-&gt;'$.json属性名'</code>来访问json属性</p>
+
+<pre><code>var tests []modle.Test
+	begin.Model(&amp;modle.Test{}).Where(&quot;data-&gt;'$.data_size' &lt; ?&quot;, 100).Find(&amp;tests)
+	log.Println(len(tests))
+</code></pre>
+
+<p>查询json中data_size小于100的数据</p>
+
+<h1 id="修改">修改</h1>
+
+<p>由于没有支持json类型只能靠自己去实现Build接口去实现一些mysql内置函数的拼接<a href="https://github.com/go-gorm/datatypes/blob/master/json.go#L133" target="_blank">接口实现例子</a></p>
+
+<pre><code>	var test modle.Test
+	begin.Model(&amp;modle.Test{}).Where(&quot;data-&gt;'$.user_info.site' = ?&quot;, &quot;khcUTxnAUBNZkAOBXmJnYwHPYtdmKfLRdHwnxfozlYhANGTEXKIbphMyzFoUDJFf&quot;).Find(&amp;test)
+	log.Println(test.ID)
+
+	test.Data.DataSize++
+	begin.Updates(&amp;test)
+</code></pre>
+
+<p>sql</p>
+
+<pre><code>UPDATE `test` SET `name`='BqLpGYaP',`age`=23,`data`='{&quot;user_info&quot;:{&quot;site&quot;:&quot;khcUTxnAUBNZkAOBXmJnYwHPYtdmKfLRdHwnxfozlYhANGTEXKIbphMyzFoUDJFf&quot;,&quot;phone_number&quot;:&quot;padWxlWJrOQ&quot;,&quot;head_address&quot;:&quot;YAZxSORyWOdoXdjvnuixBJU
+PwAvzVXZsuZJPCOhuHzBDMbBGXUvuJPhaLEIYTWrmhRnhzYABtzNDaOSOXwRziKoEUBdZOIOhzZNoncfjFodkYglnqudLUevHrOlAoPki&quot;,&quot;distance&quot;:835},&quot;data_size&quot;:849,&quot;comment&quot;:&quot;ufDErrgfktIVDCbnFinqfUQbWEAMiEEawhlPjWAIOOXYyjqzObjcvFrTBzEzChZlaKpBEpTfzDaJjgicZzdiNWMADdwIFvHzcbylnTKVjwWNUBVpfjdkUlysPtjdZxAk&quot;}' WHERE `id` = 311091
+</code></pre>
+
+<p>通过函数更新</p>
+
+<pre><code class="language-sql">
+update test set `data` = JSON_SET(`data`, '$.user_info.site', &quot;a&quot;) where id =311091;
+</code></pre>
+
+<h1 id="内置函数">内置函数</h1>
+
+<p><img src="../res/img/548-1.jpg" alt="924df2314068a62aad5d439c96e77585.jpg" /></p>
+
+<h1 id="更多">更多</h1>
+
+<p><a href="https://www.51cto.com/article/665187.html" target="_blank">聊聊MySQL 8.0中的Json增强</a>
+<a href="http://mysql.taobao.org/monthly/2017/12/09/" target="_blank">MySQL · 最佳实践 · 如何索引JSON字段</a></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-03-16 15:18:29</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

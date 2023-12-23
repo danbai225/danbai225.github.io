@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="kfc"/>
+    <meta name="description" content="这篇文章描述了作者在编写代码时遇到的一个错误，然后作者发现是钱不够导致的问题。作者通过让另一个有钱的人给他50块解决了问题。代码经过修改后，再次运行就没有问题了。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>golang err:Today is Thursday,please give me 50$ i go to eat KFC - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">golang err:Today is Thursday,please give me 50$ i go to eat KFC</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2022-07-28 12:40:01</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">kfc</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>这篇文章描述了作者在编写代码时遇到的一个错误，然后作者发现是钱不够导致的问题。作者通过让另一个有钱的人给他50块解决了问题。代码经过修改后，再次运行就没有问题了。</p>
+            </section>
+        </header>
+            <p>今天写代码遇到一个奇怪的报错记录一下，对了今天是星期四</p>
+
+<pre><code class="language-golang">package main
+
+var kfc = KFC{}
+
+type KFC struct {
+}
+type people struct {
+	money int
+}
+
+func (k *KFC) Buy(p *people) bool {
+	temp := p.money
+	temp -= 50
+	if temp &lt; 0 {
+		panic(&quot;Today is Thursday,please give me 50$ i go to eat KFC&quot;)
+	}
+	p.money = temp
+	return true
+}
+
+func main() {
+	p := &amp;people{money: 30}
+	println(kfc.Buy(p))
+}
+</code></pre>
+
+<p>run:</p>
+
+<pre><code>panic: Today is Thursday,please give me 50$ i go to eat KFC
+
+goroutine 1 [running]:
+main.(*KFC).Buy(...)
+        /Users/cctc/code/Test/main.go:15
+main.main()
+        /Users/cctc/code/Test/main.go:23 +0x27
+
+
+</code></pre>
+
+<p>想了半天，最后发现是我钱不够。那么找一个有人的人让他给你50块就行了</p>
+
+<pre><code class="language-golang">package main
+
+var kfc = KFC{}
+
+type KFC struct {
+}
+type people struct {
+	money int
+}
+func (p *people) give(p2 *people, num int) {
+	p.money -= num
+	p2.money += num
+}
+func (k *KFC) Buy(p *people) bool {
+	temp := p.money
+	temp -= 50
+	if temp &lt; 0 {
+		panic(&quot;Today is Thursday,please give me 50$ i go to eat KFC&quot;)
+	}
+	p.money = temp
+	return true
+}
+
+func main() {
+	p := &amp;people{money: 30}
+	p2 := &amp;people{money: 100}
+	p2.give(p, 50)
+	println(kfc.Buy(p))
+	println(kfc.Buy(p2))
+}
+</code></pre>
+
+<p>这样就没问题了。</p>
+
+<p>懂我意思吧</p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-07-28 21:52:53</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

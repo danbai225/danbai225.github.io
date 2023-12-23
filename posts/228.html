@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="libreoffice"/>
+    <meta name="description" content="本文介绍了如何在Linux环境下生成Word文档，并且同时生成一份Word文档。作者选择了libreoffice这个库来实现这个需求。首先需要下载libreoffice的安装包，解压并安装。然后添加环境变量，将字体文件复制到指定目录。最后，可以使用soffice命令将Word文档转换为pdf格式。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>word转pdf 实现 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">word转pdf 实现</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-10-17 00:05:16</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">libreoffice</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>本文介绍了如何在Linux环境下生成Word文档，并且同时生成一份Word文档。作者选择了libreoffice这个库来实现这个需求。首先需要下载libreoffice的安装包，解压并安装。然后添加环境变量，将字体文件复制到指定目录。最后，可以使用soffice命令将Word文档转换为pdf格式。</p>
+            </section>
+        </header>
+            <h1 id="需求">需求</h1>
+
+<p>需要在生成word后同时生成一份word文档,由于考虑环境是linux和无外网环境.需本地生成.</p>
+
+<h1 id="实现">实现</h1>
+
+<p>找到以下两种库(都差不多好像libreoffice更兼容微软的office):</p>
+
+<ul>
+<li>OpenOffice</li>
+<li>libreoffice</li>
+<li>还有几种远程调用的 不适用就pass掉了</li>
+</ul>
+
+<h2 id="安装libreoffice">安装libreoffice</h2>
+
+<p>最终经过测试选择了libreoffice这个库
+<a href="https://mirrors.cloud.tencent.com/libreoffice/libreoffice/stable/7.0.2/rpm/x86_64/" target="_blank">下载地址</a>
+需要(版本自定)
+LibreOffice_7.0.2_Linux_x86-64_rpm_sdk.tar.gz
+LibreOffice_7.0.2_Linux_x86-64_rpm.tar.gz
+俩包和字体文件,同时需要安装java环境.
+下载下来后解压两个压缩包,然后进到目录有个<code>RPMS</code>文件夹进去执行 <code>yum localinstall *.rpm</code> 俩文件夹都需要去安装</p>
+
+<p>添加环境变量
+<code>vim /etc/profile </code>
+在最后加入</p>
+
+<pre><code>export LibreOffice_PATH=/opt/libreoffice7.0/program
+export PATH=\$LibreOffice_PATH:$PATH
+</code></pre>
+
+<p>然后保存,执行生效命令
+<code>source /etc/profile</code></p>
+
+<h2 id="添加字体">添加字体</h2>
+
+<p>把字体复制到 <code>/usr/share/fonts/Fonts</code></p>
+
+<h2 id="dockerfile">dockerfile</h2>
+
+<pre><code>FROM adoptopenjdk/openjdk11:jdk-11.0.8_10-centos-slim
+#添加libreoffice包
+RUN echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone
+ADD /LibreOffice /usr/libreoffice
+ADD /LibreOfficeSdk /usr/libreoffice/sdk
+WORKDIR /usr/libreoffice/RPMS
+#安装依赖和libreoffice
+RUN yum localinstall *.rpm -y
+WORKDIR /usr/libreoffice/sdk/RPMS
+RUN yum localinstall *.rpm -y
+ENV LibreOffice_PATH=/opt/libreoffice7.0/program
+ENV PATH=$LibreOffice_PATH:$PATH
+RUN yum update -y
+RUN yum install ibus -y 
+#安装字体
+ADD ./Fonts /usr/share/fonts/Fonts
+WORKDIR /usr/libreoffice
+</code></pre>
+
+<h2 id="转换命令">转换命令</h2>
+
+<p>把当前目录的1.docx转换成pdf
+<code>soffice --headless --convert-to pdf 1.docx</code></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2020-10-17 00:09:24</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

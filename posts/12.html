@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Beego,Go"/>
+    <meta name="description" content="这篇文章介绍了一个临时网盘项目，用于测试和临时存放json文件。用户可以通过主域名和路径访问文件，也可以通过子域名的方式访问文件。项目还可以进一步完善功能，如权限管理、统计、协同等。文章还提到了注意事项，即在前端页面传入的路径参数和用户名中不得出现 &#34;..&#34;。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>golang项目练习-临时云 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">golang项目练习-临时云</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2019-12-14 16:09:54</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Beego</span>
+                    
+                    <span class="label label-success label-outline">Go</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>这篇文章介绍了一个临时网盘项目，用于测试和临时存放json文件。用户可以通过主域名和路径访问文件，也可以通过子域名的方式访问文件。项目还可以进一步完善功能，如权限管理、统计、协同等。文章还提到了注意事项，即在前端页面传入的路径参数和用户名中不得出现 &#34;..&#34;。</p>
+            </section>
+        </header>
+            <p>前几天看了个帖子有人在问有没有 临时网上放json的网盘并且能直连访问的 用于测试. 加之这两天学了golang于是就写了这么个小项目</p>
+
+<h1 id="项目">项目</h1>
+
+<p><img src="https://img.hacpai.com/file/2019/12/logo-c4e1c8ed.png" alt="logo.png" /></p>
+
+<p><a href="https://github.com/danbai225/tempyun" target="_blank">项目地址</a><br>
+还有很多功能可以完善,感兴趣的朋友可以去扩展<br>
+例如 权限、统计、协同、等等(学完go可以用来练练手项目很小很容易修改)</p>
+
+<p><a href="http://tempyun.com" target="_blank">线上地址</a></p>
+
+<h1 id="用途">用途</h1>
+
+<p>前端页面测试,json测试,临时网盘</p>
+
+<h1 id="子域名访问实现">子域名访问实现</h1>
+
+<p>域名:tempyun.com
+文件:a.txt
+通过主域名访问路径如下:
+<a href="http://tempyun.com/service/files/{用户名}/a.txt" target="_blank">http://tempyun.com/service/files/{用户名}/a.txt</a></p>
+
+<p>实现访问路径:
+http://{用户名}.tempyun.com/a.txt</p>
+
+<p>实现:
+将域名泛解析到服务器ip *.tempyun.com   192.168.1.1</p>
+
+<p>通过过滤器将子域名(用户名)提取</p>
+
+<p>服务代理访问路径并返回</p>
+
+<pre><code>func Ymfilter() {
+	var Filter = func(ctx *context.Context) {
+		doamin := beego.AppConfig.String(&quot;doamin&quot;)
+		if ctx.Input.Host() != doamin {
+			req := httplib.Get(strings.Replace(ctx.Input.Site(), ctx.Input.Host(), doamin, -1) + &quot;:&quot; + strconv.Itoa(ctx.Input.Port()) + &quot;/&quot; + strings.Replace(ctx.Input.Host(), &quot;.&quot;+doamin, &quot;&quot;, -1) + ctx.Input.URL())
+			bytes, _ := req.Bytes()
+			ctx.ResponseWriter.Write(bytes)
+		}
+	}
+	beego.InsertFilter(&quot;/*&quot;, beego.BeforeRouter, Filter)
+}
+</code></pre>
+
+<h1 id="注意">注意</h1>
+
+<p>记得检测前端页面传来的路径参数和用户名不得出现 &ldquo;..&rdquo;</p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-03-29 21:35:10</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

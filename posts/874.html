@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="html,模拟输入"/>
+    <meta name="description" content="这个例子模拟了逐个字符输入文本的过程。首先获取了一个文本输入框元素，并定义了要输入的字符串和当前输入字符的索引。然后定义了一个 `simulateInput` 函数用于模拟逐个字符输入。在函数内部，检查是否还有字符需要输入，如果有，则获取当前要输入的字符，并创建一个 `InputEvent` 对象，将字符添加到文本输入框中，并分派 `inputEvent` 事件。然后增加当前输入字符的索引，并使用 `setTimeout` 函数在 100 毫秒后模拟下一个字符的输入。最后调用 `simulateInput` 函数开始模拟输入。
+
+整个过程模拟了文本逐个字符输入的效果。可以根据需要调整输入速度，通过调整 `setTimeout` 函数的延迟时间来实现。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>原生js模拟输入字符串 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">原生js模拟输入字符串</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2023-05-22 17:29:52</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">html</span>
+                    
+                    <span class="label label-success label-outline">模拟输入</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>这个例子模拟了逐个字符输入文本的过程。首先获取了一个文本输入框元素，并定义了要输入的字符串和当前输入字符的索引。然后定义了一个 `simulateInput` 函数用于模拟逐个字符输入。在函数内部，检查是否还有字符需要输入，如果有，则获取当前要输入的字符，并创建一个 `InputEvent` 对象，将字符添加到文本输入框中，并分派 `inputEvent` 事件。然后增加当前输入字符的索引，并使用 `setTimeout` 函数在 100 毫秒后模拟下一个字符的输入。最后调用 `simulateInput` 函数开始模拟输入。
+
+整个过程模拟了文本逐个字符输入的效果。可以根据需要调整输入速度，通过调整 `setTimeout` 函数的延迟时间来实现。</p>
+            </section>
+        </header>
+            <p>在这个例子中，我们首先获取了一个文本输入框元素，并定义了要输入的字符串和当前输入字符的索引。然后，我们定义了一个 <code>simulateInput</code> 函数，该函数用于模拟逐个字符输入。在 <code>simulateInput</code> 函数中，我们首先检查是否还有字符需要输入，如果有，就获取当前要输入的字符，并创建一个 <code>InputEvent</code> 对象，将当前字符添加到文本输入框中，并将 <code>inputEvent</code> 分派到该元素上。然后，我们增加当前输入字符的索引，并使用 <code>setTimeout</code> 函数在 100 毫秒后模拟下一个字符的输入。最后，我们调用 <code>simulateInput</code> 函数开始模拟输入。</p>
+
+<p>这个例子中的输入速度是固定的，每个字符之间间隔 100 毫秒。如果需要模拟不同的输入速度，可以根据需要调整 <code>setTimeout</code> 函数的延迟时间。</p>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;input id=&quot;test-i&quot; class=&quot;iii&quot; type=&quot;text&quot; /&gt;
+    &lt;script src=&quot;https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;script&gt;
+
+    $(&quot;#test-i&quot;).on(&quot;input propertychange&quot;, function () {
+        console.log($(&quot;#test-i&quot;).val())
+    })
+
+    function test() {
+        const inputElement = document.getElementById('test-i'); // 获取文本输入框元素
+        const inputString = 'Hello, world!'; // 要输入的字符串
+        let index = 0; // 当前输入字符的索引
+        function simulateInput() {
+            if (index &lt; inputString.length) { // 如果还有字符需要输入
+                const char = inputString.charAt(index); // 获取当前要输入的字符
+                const inputEvent = new InputEvent('input', { // 创建 input 事件
+                    inputType: 'insertText',
+                    data: char,
+                    dataTransfer: null,
+                    isComposing: false
+                });
+                inputElement.value += char; // 将当前字符添加到文本输入框中
+                inputElement.dispatchEvent(inputEvent); // 分派 input 事件
+                index++; // 增加当前输入字符的索引
+                setTimeout(simulateInput, 100); // 100 毫秒后模拟下一个字符的输入
+            }
+        }
+        simulateInput(); // 开始模拟输入
+    }
+&lt;/script&gt;
+
+&lt;/html&gt;
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2023-05-22 17:29:52</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

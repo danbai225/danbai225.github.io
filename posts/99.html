@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="lintcode"/>
+    <meta name="description" content="这篇文章包含了三个题目的代码和解题思路。首先是39-恢复旋转排序数组，这个题目要求将一个旋转排序数组恢复成原来的排序数组。代码中使用了寻找最小值的方法来确定旋转的起点，并将数组重新排列。接下来是2-尾部的零，这个题目要求给定一个整数n，计算n的阶乘末尾零的个数。代码中使用了分解因子的方法来计算零的个数。最后是44-最小子数组，这个题目要求找到一个数组中和最小的子数组。代码中使用了动态规划的方法来找到最小子数组。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>Lintcode记录 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">Lintcode记录</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-05-13 18:39:01</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">lintcode</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>这篇文章包含了三个题目的代码和解题思路。首先是39-恢复旋转排序数组，这个题目要求将一个旋转排序数组恢复成原来的排序数组。代码中使用了寻找最小值的方法来确定旋转的起点，并将数组重新排列。接下来是2-尾部的零，这个题目要求给定一个整数n，计算n的阶乘末尾零的个数。代码中使用了分解因子的方法来计算零的个数。最后是44-最小子数组，这个题目要求找到一个数组中和最小的子数组。代码中使用了动态规划的方法来找到最小子数组。</p>
+            </section>
+        </header>
+            <p><a href="https://www.lintcode.com" target="_blank">Lintcode</a>
+<a href="https://www.lintcode.com/user/w2671641895" target="_blank">我的Lintcode</a></p>
+
+<details>
+<summary>39-恢复旋转排序数组</summary>
+<pre><code>
+public static void recoverRotatedSortedArray(List<Integer> nums) {
+		if(nums!=null&&nums.size()>1){
+			//长度2直接调换
+			if(nums.size()==2){
+				if(nums.get(0)>nums.get(1)){
+					nums.add(0,nums.get(0)+nums.get(1));
+					nums.add(1,nums.get(0)-nums.get(1));
+					nums.add(0,nums.get(0)-nums.get(1));
+				}
+				return;
+			}
+			int f=nums.get(0);
+			int l=nums.get(nums.size()-1);
+			int m=nums.get(nums.size()/2);
+			int min=nums.get(0);
+			int index=0;
+			int size=nums.size();
+			//判断循环起点
+			if(f>l){
+				if(f<m){
+					for (int i=0;i<nums.size();i++){
+						if(nums.get(i)<min){
+							min=nums.get(i);
+							index=i;
+						}
+					}
+				}else {
+					for (int i=nums.size()/2;i<nums.size();i++){
+						if(nums.get(i)<min){
+							min=nums.get(i);
+							index=i;
+						}
+					}
+				}
+
+			}else {
+				if(l<m){
+					for (int i=nums.size()/2;i<nums.size();i++){
+						if(nums.get(i)<min){
+							min=nums.get(i);
+							index=i;
+						}
+					}
+				}else {
+					for (int i=nums.size()-1;i>=0;i--){
+						if(nums.get(i)<min){
+							min=nums.get(i);
+							index=i;
+						}
+					}
+				}
+			}
+			//从最小位置开始
+			List temp=new ArrayList<Integer>();
+			for (int i=index;i<size;i++){
+				temp.add(nums.get(i));
+			}
+			for (int i=0;i<index;i++){
+				temp.add(nums.get(i));
+			}
+			nums.clear();
+			nums.addAll(temp);
+		}
+	}
+  </code></pre>
+</details>
+<details>
+<summary>2-尾部的零</summary>
+<pre><code>
+//这题我原来是算出递归,却发现在遇到非常大的数时通过不了,后来看了解答,才知道可以通过分解因子来实现
+//可以将每个数拆分成其素因子的乘积，可以发现，0是由2*5产生的，而5的数量一定小于2的数量，因此5的个数决定了结尾0的个数。
+//只要计算n的阶乘中，5这个素因子出现多少次即可。
+public static long trailingZeros(long n) {
+        long sum = 0;
+        while (n != 0) {
+            sum += n / 5;
+            n /= 5;
+        }
+        return sum;
+    }
+  </code></pre>
+</details>
+<details>
+<summary>44. 最小子数组</summary>
+<pre>
+<code>
+
+    public static int minSubArray(final List<Integer> nums) {
+        // 空判断
+        if (nums == null || nums.size() == 0) {
+            return 0;
+        }
+        // 初始值
+        int sum = nums.get(0);
+        int min = nums.get(0);
+        // 循环list
+        for (int i = 1; i < nums.size(); i++) {
+            // 为啥是大于0 因为本函数取值是最小连续数组以0为分界线
+            if (sum > 0) {
+                sum = nums.get(i);
+            } else {
+                sum += nums.get(i);
+            }
+            // 当前子数组和是否小于最小值
+            if (sum < min) {
+                min = sum;
+            }
+        }
+        return min;
+    }
+  </code>
+
+</pre>
+</details>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2020-06-30 20:13:43</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

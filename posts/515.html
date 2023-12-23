@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="IDEA,插件开发"/>
+    <meta name="description" content="这段代码实现了在 IntelliJ IDEA 插件中发送通知的功能。首先，通过 `NotificationGroupManager.getInstance().getNotificationGroup(&#34;com.github.danbai225.pwlchat.notify&#34;)` 获取到通知组，并使用 `createNotification()` 创建一个通知实例。然后，通过 `setTitle()` 设置通知的标题，并使用 `notify()` 方法发送通知。
+
+在 `plugin.xml` 中，需要添加一个通知组的注册，例如：
+```xml
+&lt;notificationGroup id=&#34;com.github.danbai225.pwlchat.notify&#34; displayType=&#34;NONE&#34;/&gt;
+```
+其中，`displayType` 属性可以决定通知的显示方式。
+
+你可以在[这里](https://github.com/danbai225/pwl-chat/blob/main/src/main/kotlin/com/github/danbai225/pwlchat/notify/Notification.kt)找到完整的代码。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>IDEA插件开发-发送事件日志(eventLog) - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">IDEA插件开发-发送事件日志(eventLog)</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2021-11-28 18:32:05</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">IDEA</span>
+                    
+                    <span class="label label-success label-outline">插件开发</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>这段代码实现了在 IntelliJ IDEA 插件中发送通知的功能。首先，通过 `NotificationGroupManager.getInstance().getNotificationGroup(&#34;com.github.danbai225.pwlchat.notify&#34;)` 获取到通知组，并使用 `createNotification()` 创建一个通知实例。然后，通过 `setTitle()` 设置通知的标题，并使用 `notify()` 方法发送通知。
+
+在 `plugin.xml` 中，需要添加一个通知组的注册，例如：
+```xml
+&lt;notificationGroup id=&#34;com.github.danbai225.pwlchat.notify&#34; displayType=&#34;NONE&#34;/&gt;
+```
+其中，`displayType` 属性可以决定通知的显示方式。
+
+你可以在[这里](https://github.com/danbai225/pwl-chat/blob/main/src/main/kotlin/com/github/danbai225/pwlchat/notify/Notification.kt)找到完整的代码。</p>
+            </section>
+        </header>
+            <p>想把文字展示到这个位置，但是没有找到直接的方法。
+<img src="../res/img/515.jpeg" alt="image.png" />
+后发现用过事件日志可以实现，于是把消息写入事件日志。
+代码如下:</p>
+
+<pre><code>fun sendNotify(project: Project, title: String?, content: String?, type: NotificationType?) {
+    NotificationGroupManager.getInstance().getNotificationGroup(&quot;com.github.danbai225.pwlchat.notify&quot;)
+        .createNotification(content!!, type!!)
+        .setTitle(title)
+        .notify(project)
+}
+</code></pre>
+
+<p>需要注册一个组
+在<code>plugin.xml</code>下添加</p>
+
+<pre><code>   &lt;notificationGroup id=&quot;com.github.danbai225.pwlchat.notify&quot; displayType=&quot;NONE&quot;/&gt;
+</code></pre>
+
+<p><code>displayType</code>类型可以决定消息出现的方式</p>
+
+<p><a href="https://github.com/danbai225/pwl-chat/blob/main/src/main/kotlin/com/github/danbai225/pwlchat/notify/Notification.kt" target="_blank">代码</a></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2021-11-29 19:41:59</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

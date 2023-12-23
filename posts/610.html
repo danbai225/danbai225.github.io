@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Go,MySQL,sql,antlr"/>
+    <meta name="description" content="ANTLR是一个用Java语言编写的识别器工具，可以自动生成解析器。它支持生成Java、Go、C等语言的解析器客户端。可以通过下载ANTLR的jar包和mysql的语法规则文件，使用ANTLR来生成解析器。通过覆盖`BaseMySqlParserListener`的`EnterTableName`接口，可以收集解析过程中的表名。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>golang解析sql从中获取表名 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">golang解析sql从中获取表名</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2022-04-24 20:34:12</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Go</span>
+                    
+                    <span class="label label-success label-outline">MySQL</span>
+                    
+                    <span class="label label-success label-outline">sql</span>
+                    
+                    <span class="label label-success label-outline">antlr</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>ANTLR是一个用Java语言编写的识别器工具，可以自动生成解析器。它支持生成Java、Go、C等语言的解析器客户端。可以通过下载ANTLR的jar包和mysql的语法规则文件，使用ANTLR来生成解析器。通过覆盖`BaseMySqlParserListener`的`EnterTableName`接口，可以收集解析过程中的表名。</p>
+            </section>
+        </header>
+            <h1 id="antlr">antlr</h1>
+
+<p>ANTLR是Another Tool for Language Recognition的简写，是一个用Java语言编写的识别器工具。它能够自动生成解析器，并将用户编写的ANTLR语法规则直接生成目标语言的解析器，它能够生成Java、Go、C等语言的解析器客户端。
+作者还维护了很多语法规则其中就有<a href="https://github.com/antlr/grammars-v4/tree/master/sql/mysql" target="_blank">mysql规则</a></p>
+
+<h1 id="使用">使用</h1>
+
+<p>下载最新的jar包<a href="https://www.antlr.org/download/antlr-4.10.1-complete.jar" target="_blank">https://www.antlr.org/download/antlr-4.10.1-complete.jar</a>
+从github中下载<code>MySqlLexer.g4</code>和<code>MySqlParser.g4</code></p>
+
+<p>执行命令生成go文件 (需要java环境)
+<code>java -jar antlr-4.10.1-complete.jar -visitor -Dlanguage=Go -o parser MySqlLexer.g4</code></p>
+
+<p><code>java -jar antlr-4.10.1-complete.jar -visitor -Dlanguage=Go -o parser MySqlParser.g4</code></p>
+
+<p>目录结构如下：</p>
+
+<pre><code>├── MySqlLexer.g4
+├── MySqlParser.g4
+├── antlr-4.10.1-complete.jar
+├── antlr.go
+└── parser
+    ├── MySqlLexer.interp
+    ├── MySqlLexer.tokens
+    ├── MySqlParser.interp
+    ├── MySqlParser.tokens
+    ├── mysql_lexer.go
+    ├── mysql_parser.go
+    ├── mysqlparser_base_listener.go
+    └── mysqlparser_listener.go
+
+</code></pre>
+
+<p><code>antlr.go</code>:</p>
+
+<pre><code>package antlr
+
+import (
+	&quot;github.com/antlr/antlr4/runtime/Go/antlr&quot;
+	logs &quot;github.com/danbai225/go-logs&quot;
+	&quot;strings&quot;
+	&quot;test/antlr/parser&quot;
+)
+
+type Ml struct {
+	*parser.BaseMySqlParserListener
+	tableNames map[string]struct{}
+}
+
+func (m *Ml) EnterTableName(ctx *parser.TableNameContext) {
+	if m.tableNames == nil {
+		m.tableNames = make(map[string]struct{})
+	}
+	m.tableNames[ctx.GetText()] = struct{}{}
+}
+func (m *Ml) GetTableNames() []string {
+	arr := make([]string, 0)
+	if m.tableNames != nil {
+		for k := range m.tableNames {
+			arr = append(arr, k)
+		}
+	}
+	return arr
+}
+func GetTableNames(sql string, sqlType string) []string {
+	tokenStream := antlr.NewCommonTokenStream(parser.NewMySqlLexer(antlr.NewInputStream(strings.ToUpper(sql))), antlr.TokenDefaultChannel)
+	sqlParser := parser.NewMySqlParser(tokenStream)
+	ml := Ml{}
+	switch sqlType {
+	case &quot;dml&quot;:
+		antlr.ParseTreeWalkerDefault.Walk(&amp;ml, sqlParser.DmlStatement())
+	case &quot;ddl&quot;:
+		antlr.ParseTreeWalkerDefault.Walk(&amp;ml, sqlParser.DdlStatement())
+	}
+	return ml.GetTableNames()
+}
+
+func Antlr() {
+	sql := &quot;SELECT without FROM fails&quot;
+	logs.Info(GetTableNames(sql, &quot;dml&quot;))
+}
+</code></pre>
+
+<p>通过覆盖实现<code>BaseMySqlParserListener</code>的<code>EnterTableName</code>接口
+再解析的过程中每个表名节点都将调用这个方法收集表名。</p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-04-24 20:37:30</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

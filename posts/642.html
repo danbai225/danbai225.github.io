@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="编程小记"/>
+    <meta name="description" content="本文介绍了几种方法来处理不同的打包和文本提取问题。
+
+对于Angular打包时内存占用过高的问题，可以使用`node`命令来限制内存大小。使用`node --max_old_space_size=600 ./node_modules/@angular/cli/bin/ng build`，可以将内存限制在600MB以内。
+
+对于Golang打包时压缩体积的问题，可以使用`go build`命令，并结合`-ldflags &#39;-w -s&#39;`参数。例如，`go build -ldflags &#39;-w -s&#39; -o main`可以在打包时去除调试信息和符号表，从而减小可执行文件的体积。然后，可以使用UPX工具进行进一步压缩。可以使用`upx main`命令来使用UPX工具，需要先安装[UPX](https://github.com/upx/upx)。
+
+对于提取页面文本内容的问题，可以使用JavaScript来实现。通过`document.documentElement.innerText`可以获取整个页面的文本内容。可以使用该方法来提取页面的纯文本内容。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>编程小记-22.4.24 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">编程小记-22.4.24</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2022-04-24 22:09:22</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">编程小记</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>本文介绍了几种方法来处理不同的打包和文本提取问题。
+
+对于Angular打包时内存占用过高的问题，可以使用`node`命令来限制内存大小。使用`node --max_old_space_size=600 ./node_modules/@angular/cli/bin/ng build`，可以将内存限制在600MB以内。
+
+对于Golang打包时压缩体积的问题，可以使用`go build`命令，并结合`-ldflags &#39;-w -s&#39;`参数。例如，`go build -ldflags &#39;-w -s&#39; -o main`可以在打包时去除调试信息和符号表，从而减小可执行文件的体积。然后，可以使用UPX工具进行进一步压缩。可以使用`upx main`命令来使用UPX工具，需要先安装[UPX](https://github.com/upx/upx)。
+
+对于提取页面文本内容的问题，可以使用JavaScript来实现。通过`document.documentElement.innerText`可以获取整个页面的文本内容。可以使用该方法来提取页面的纯文本内容。</p>
+            </section>
+        </header>
+            <h1 id="angular打包内存占用过高">angular打包内存占用过高</h1>
+
+<p>通过如下命令限制
+<code>node --max_old_space_size=600 ./node_modules/@angular/cli/bin/ng build</code></p>
+
+<h1 id="golang打包压缩体积">golang打包压缩体积</h1>
+
+<p><code>go build -ldflags '-w -s' -o main</code>
+<code>upx main</code>(需要先安装<a href="https://github.com/upx/upx" target="_blank">upx</a>)</p>
+
+<h1 id="js提取页面文本内容">js提取页面文本内容</h1>
+
+<p><code>document.documentElement.innerText</code></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-06-28 17:21:39</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

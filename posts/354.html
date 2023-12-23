@@ -1,0 +1,525 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="socks5,协议实现"/>
+    <meta name="description" content="本文介绍了Socks5协议及其Go语言的相关实现。Socks5是Socks4协议的升级版，相比Socks4，Socks5协议支持了UDP代理，并且比HTTP协议更低层次、支持TCP代理。作者提供了一个基本的Socks5客户端和服务端的实现示例，可以用于建立Socks5代理连接。
+
+在客户端部分，作者使用了Go语言编写了一个Socks5客户端，实现了连接、认证和请求功能。该客户端可以发送连接请求到服务端，并进行认证，然后通过服务端访问目标网站并返回数据。作者还提供了获取HTTP代理客户端的方法，方便在HTTP客户端中使用Socks5代理。
+
+在服务端部分，作者使用Go语言编写了一个Socks5服务端。该服务端可以监听客户端连接，并进行客户端的认证。一旦认证成功，服务端可以根据客户端的请求类型进行不同处理，比如建立TCP连接或者UDP连接。
+
+总的来说，本文提供了一个基础的Socks5的实现示例，对了解Socks5协议及其Go语言实现有一定帮助。同时，作者还在GitHub上提供了代码的仓库，方便查看和使用。可以从中学习和进一步扩展实现。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>socks5协议Go实现 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">socks5协议Go实现</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2021-08-07 14:34:18</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">socks5</span>
+                    
+                    <span class="label label-success label-outline">协议实现</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>本文介绍了Socks5协议及其Go语言的相关实现。Socks5是Socks4协议的升级版，相比Socks4，Socks5协议支持了UDP代理，并且比HTTP协议更低层次、支持TCP代理。作者提供了一个基本的Socks5客户端和服务端的实现示例，可以用于建立Socks5代理连接。
+
+在客户端部分，作者使用了Go语言编写了一个Socks5客户端，实现了连接、认证和请求功能。该客户端可以发送连接请求到服务端，并进行认证，然后通过服务端访问目标网站并返回数据。作者还提供了获取HTTP代理客户端的方法，方便在HTTP客户端中使用Socks5代理。
+
+在服务端部分，作者使用Go语言编写了一个Socks5服务端。该服务端可以监听客户端连接，并进行客户端的认证。一旦认证成功，服务端可以根据客户端的请求类型进行不同处理，比如建立TCP连接或者UDP连接。
+
+总的来说，本文提供了一个基础的Socks5的实现示例，对了解Socks5协议及其Go语言实现有一定帮助。同时，作者还在GitHub上提供了代码的仓库，方便查看和使用。可以从中学习和进一步扩展实现。</p>
+            </section>
+        </header>
+            <h1 id="socks5协议介绍">Socks5协议介绍</h1>
+
+<p>socks5 是 socks4 升级版的协议相比 4，本代协议版本多了 udp 代理。
+socks5 代理比 http 协议更低层次并且支持 tcp 代理。更多内容详见<a href="https://zh.wikipedia.org/wiki/SOCKS" target="_blank">百科</a>。</p>
+
+<h1 id="go的相关实现">Go的相关实现</h1>
+
+<p>下面是一些 github 上的协议实现</p>
+
+<ul>
+<li><a href="https://github.com/armon/go-socks5" target="_blank">armon/go-socks5</a></li>
+<li><a href="https://github.com/txthinking/socks5" target="_blank">txthinking/socks5</a></li>
+</ul>
+
+<h1 id="协议基本代理流程">协议基本代理流程</h1>
+
+<p>客户端-&gt;建立连接-&gt;服务端
+客户端&lt;-验证成功&lt;-服务端
+客户端-&gt;我要访问百度-&gt;服务端-&gt;访问百度-&gt;百度
+客户端&lt;-给你百度数据&lt;-服务端&lt;-返回数据&lt;-百度</p>
+
+<h1 id="自己动手开撸">自己动手开撸</h1>
+
+<p>为了更熟悉协议，自己用 go 写一下基础功能</p>
+
+<h2 id="客户端">客户端</h2>
+
+<pre><code class="language-GO">package socks5
+
+import (
+	&quot;bytes&quot;
+	&quot;context&quot;
+	&quot;errors&quot;
+	&quot;fmt&quot;
+	&quot;net&quot;
+	&quot;net/http&quot;
+	&quot;strconv&quot;
+	&quot;strings&quot;
+	&quot;time&quot;
+)
+
+type Client struct {
+	Host     string
+	Port     string
+	UserName string
+	Password string
+}
+
+//连接
+func (c *Client) conn() (net.Conn, error) {
+	conn, err := net.Dial(&quot;tcp&quot;, fmt.Sprintf(&quot;%s:%s&quot;, c.Host, c.Port))
+	if err != nil {
+		return nil, err
+	}
+	err = c.auth(conn)
+	if err != nil {
+		return nil, err
+	}
+	return conn, nil
+}
+
+//认证
+func (c *Client) auth(conn net.Conn) error {
+	//组织发送支持的认证方法
+	authPackage := AuthPackage{}
+	if c.UserName != &quot;&quot; &amp;&amp; c.Password != &quot;&quot; {
+		authPackage.addMethod(AccountPasswordAuthentication)
+	}
+	authPackage.addMethod(NoAuthenticationRequired)
+	_, err := conn.Write(authPackage.toData())
+	if err != nil {
+		return err
+	}
+	data := make([]byte, 2)
+	l, err := conn.Read(data)
+	if err != nil {
+		return err
+	}
+	if l != 2 {
+		return errors.New(&quot;返回数据有误非两个字节&quot;)
+	}
+	if data[0] != Version {
+		return errors.New(&quot;当前协议Socks5与服务端协议不匹配&quot;)
+	}
+	buffer := bytes.Buffer{}
+	switch data[1] {
+	case NoAuthenticationRequired:
+		return nil
+	case AccountPasswordAuthentication:
+		//认证协议 0x01
+		buffer.WriteByte(0x01)
+		//用户名长度
+		buffer.WriteByte(byte(len(c.UserName)))
+		//用户名
+		buffer.WriteString(c.UserName)
+		//密码长度
+		buffer.WriteByte(byte(len(c.Password)))
+		//密码
+		buffer.WriteString(c.Password)
+	}
+	_, err = conn.Write(buffer.Bytes())
+	if err != nil {
+		return err
+	}
+	l, err = conn.Read(data)
+	if err != nil {
+		return err
+	}
+	if l != 2 {
+		return errors.New(&quot;返回数据有误非两个字节&quot;)
+	}
+	if data[0] != 0x01 {
+		return errors.New(&quot;当前认证协议Socks5与服务端协议不匹配&quot;)
+	}
+	if data[1] &gt; 0 {
+		return errors.New(&quot;认证失败&quot;)
+	}
+	return nil
+}
+
+//向服务器发送连接请求
+func (c *Client) requisition(conn net.Conn, host string, port uint16, cmd uint8) (net.Conn, error) {
+	Type, addr, err := addressResolution(host)
+	if err != nil {
+		return nil, err
+	}
+	buffer := bytes.Buffer{}
+	buffer.Write([]byte{Version, cmd, Zero, Type})
+	buffer.Write(addr)
+	//写入端口
+	buffer.Write(portToBytes(port))
+	_, err = conn.Write(buffer.Bytes())
+	if err != nil {
+		return nil, err
+	}
+	read, err := conn.Read(addr)
+	if err != nil {
+		return nil, err
+	}
+	rdata := addr[:read]
+	if rdata[1] != Zero {
+		return nil, errors.New(fmt.Sprintf(&quot;请求错误:%x&quot;, rdata[1]))
+	}
+	if cmd == UDP {
+		ipdata := make([]byte, 1024)
+		if len(rdata) == 4 {
+			n, err := conn.Read(ipdata)
+			if err != nil {
+				return nil, err
+			}
+			ipdata = ipdata[:n]
+		} else {
+			ipdata = rdata[4:]
+		}
+		addr, err := addressResolutionFormByteArray(ipdata, rdata[3])
+		if err != nil {
+			if conn != nil {
+				conn.Close()
+			}
+			return nil, err
+		}
+		dial, err := net.Dial(&quot;udp&quot;, addr)
+		if err != nil {
+			conn.Close()
+			return nil, err
+		}
+		return dial, nil
+	}
+	return nil, nil
+}
+func (c *Client) udp(conn net.Conn, host string, port uint16) (net.Conn, error) {
+	return c.requisition(conn, host, port, UDP)
+}
+func (c *Client) bind(conn net.Conn, host string, port uint16) error {
+	_, err := c.requisition(conn, host, port, Bind)
+	return err
+}
+func (c *Client) tcp(conn net.Conn, host string, port uint16) error {
+	_, err := c.requisition(conn, host, port, Connect)
+	return err
+}
+func (c *Client) TcpProxy(host string, port uint16) (net.Conn, error) {
+	conn, err := c.conn()
+	if err != nil {
+		return nil, err
+	}
+	return conn, c.tcp(conn, host, port)
+}
+func (c *Client) GetHttpProxyClient() *http.Client {
+	httpTransport := &amp;http.Transport{}
+	httpTransport.DialContext = func(ctx context.Context, network, addr string) (net.Conn, error) {
+		split := strings.Split(addr, &quot;:&quot;)
+		if len(split) &lt; 2 {
+			return c.TcpProxy(split[0], 80)
+		}
+		port, err := strconv.Atoi(split[1])
+		if err != nil {
+			return nil, err
+		}
+		return c.TcpProxy(split[0], uint16(port))
+	}
+	return &amp;http.Client{Transport: httpTransport}
+}
+func (c *Client) GetHttpProxyClientSpecify(transport *http.Transport, jar http.CookieJar, CheckRedirect func(req *http.Request, via []*http.Request) error, Timeout time.Duration) *http.Client {
+	transport.DialContext = func(ctx context.Context, network, addr string) (net.Conn, error) {
+		split := strings.Split(addr, &quot;:&quot;)
+		if len(split) &lt; 2 {
+			return c.TcpProxy(split[0], 80)
+		}
+		port, err := strconv.Atoi(split[1])
+		if err != nil {
+			return nil, err
+		}
+		return c.TcpProxy(split[0], uint16(port))
+	}
+	return &amp;http.Client{Transport: transport, Jar: jar, CheckRedirect: CheckRedirect, Timeout: Timeout}
+}
+func (c *Client) UdpProxy(host string, port uint16) (*UdpProxy, error) {
+	conn, err := c.conn()
+	if err != nil {
+		return nil, err
+	}
+	udp, err := c.udp(conn, &quot;0.0.0.0&quot;, 0)
+	if err != nil {
+		return nil, err
+	}
+	proxy := UdpProxy{udp, host, port}
+	return &amp;proxy, nil
+}
+
+</code></pre>
+
+<h2 id="服务端">服务端</h2>
+
+<pre><code class="language-GO">package socks5
+
+import (
+	&quot;encoding/binary&quot;
+	&quot;errors&quot;
+	&quot;fmt&quot;
+	&quot;log&quot;
+	&quot;net&quot;
+	&quot;strconv&quot;
+	&quot;strings&quot;
+)
+
+type Server struct {
+	listen  net.Listener
+	Config  Config
+	UserMap map[string]string
+}
+type User struct {
+	Name     []byte
+	Password []byte
+}
+type Config struct {
+	host      string
+	port      uint16
+	BlackList []string
+	AuthList  []uint8
+}
+
+func (s *Server) Start() (err error) {
+	s.listen, err = net.Listen(&quot;tcp&quot;, fmt.Sprintf(&quot;%s:%d&quot;, s.Config.host, s.Config.port))
+	if err != nil {
+		return err
+	}
+	for s.listen != nil {
+		accept, err := s.listen.Accept()
+		if err == nil {
+			go s.newConn(accept)
+		}
+	}
+	return nil
+}
+func (s *Server) newConn(conn net.Conn) {
+	defer func() {
+		if conn != nil {
+			conn.Close()
+		}
+	}()
+	err2 := s.auth(conn)
+	if err2 != nil {
+		log.Println(err2)
+		return
+	}
+	bytes := make([]byte, 1024)
+	read, err := conn.Read(bytes)
+	if err != nil {
+		return
+	}
+	bytes = bytes[:read]
+	if len(bytes) &lt; 5 {
+		return
+	}
+	cmd := bytes[1]
+	array, err2 := addressResolutionFormByteArray(bytes[4:], bytes[3])
+	if err2 != nil {
+		return
+	}
+
+	switch cmd {
+	case Connect:
+		dial, err2 := net.Dial(&quot;tcp&quot;, array)
+		if err2 != nil {
+			return
+		}
+		addr := dial.LocalAddr().String()
+		split := strings.Split(addr, &quot;:&quot;)
+		port := split[len(split)-1]
+		parseUint, _ := strconv.ParseUint(port, 10, 16)
+		Type, host, _ := addressResolution(strings.Join(split[:len(split)-1], &quot;:&quot;))
+		p := make([]byte, 2)
+		binary.BigEndian.PutUint16(p, uint16(parseUint))
+		data := []byte{Version, Zero, Zero, Type}
+		data = append(data, host...)
+		data = append(data, p...)
+		conn.Write(data)
+		ioCopy(conn, dial)
+	case Bind:
+	case UDP:
+	}
+}
+func (s *Server) auth(conn net.Conn) error {
+	bytes := make([]byte, 16)
+	read, err := conn.Read(bytes)
+	if err != nil {
+		return err
+	}
+	bytes = bytes[:read]
+	if len(bytes) &lt; 3 {
+		return errors.New(&quot;认证数据长度不符&quot;)
+	}
+	if bytes[0] != Version {
+		return errors.New(&quot;协议不符合&quot;)
+	}
+	//支持的认证方法
+	moth := uint8(Zero)
+	for _, u := range s.Config.AuthList {
+		for _, b := range bytes[2:] {
+			if u == b {
+				moth = u
+				if moth == Zero {
+					conn.Write([]byte{Version, Zero})
+					return nil
+				}
+				break
+			}
+		}
+	}
+	if moth == Zero {
+		return errors.New(&quot;没有支持的认证方法&quot;)
+	}
+	_, err = conn.Write([]byte{Version, moth})
+	if err != nil {
+		return err
+	}
+	switch moth {
+	case NoAuthenticationRequired:
+		return nil
+	case AccountPasswordAuthentication:
+		bytes = make([]byte, 1024)
+		n, err := conn.Read(bytes)
+		if err != nil {
+			return err
+		}
+		bytes = bytes[:n]
+		if len(bytes) &lt; 3 {
+			return errors.New(&quot;认证数据长度不符&quot;)
+		}
+		if bytes[0] != 0x01 {
+			return errors.New(&quot;认证协议不符合&quot;)
+		}
+		username := bytes[2 : 2+bytes[1]]
+		password := bytes[3+bytes[1]:]
+		if pas, has := s.UserMap[string(username)]; has {
+			if pas == string(password) {
+				conn.Write([]byte{0x01, Zero})
+				return nil
+			}
+		}
+	}
+	return nil
+}
+
+</code></pre>
+
+<h1 id="github">Github</h1>
+
+<p><a href="https://github.com/danbai225/socks5" target="_blank">socks5</a></p>
+
+<h1 id="参考资料">参考资料</h1>
+
+<p><a href="https://luyuhuang.tech/2020/08/27/rfc1928.html#7-%E5%9F%BA%E4%BA%8E-udp-%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%BF%87%E7%A8%8B" target="_blank">[翻译] RFC 1928: SOCKS 协议第 5 版</a></p>
+
+<p><a href="https://zh.wikipedia.org/wiki/SOCKS" target="_blank">维基百科-SOCKS</a></p>
+
+<p><a href="https://juejin.cn/post/6844903923518537741" target="_blank">Socks5代理协议</a></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2021-08-07 14:42:22</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

@@ -1,14 +1,16 @@
 ---
 title: Spring Cloud Alibaba 整合Nacos和Dubbo
-date: 2020-06-04 16:18:25.78
-updated: 2021-06-10 15:19:58.982
+date: "2020-06-04 16:18:25"
+updated: "2021-06-10 15:19:58"
 url: https://p00q.cn/?p=103
-categories: 
-- Java
-tags: 
-- Spring Cloud Alibaba
-- nacos
-- dubbo
+categories:
+    - Java
+tags:
+    - Spring Cloud Alibaba
+    - nacos
+    - dubbo
+summary: Spring Cloud Alibaba是一个提供微服务开发解决方案的项目，包含了分布式应用微服务开发所需要的组件。它基于Spring Cloud编程模型，通过添加一些注解和配置，可以将Spring Cloud应用接入阿里微服务解决方案，快速搭建分布式应用系统。其中，Nacos是一种服务发现、配置和管理的工具，而Apache Dubbo是一款高性能的Java RPC框架。在搭建项目时，需要创建多个模块，包括API模块、服务提供者模块和消费者模块。具体的配置包括根POM.xml配置、Nacos依赖配置、Dubbo依赖配置、起始依赖（spring-cloud-alibaba-starter）配置，以及各个模块的POM.xml和配置文件的配置。使用Nacos作为配置中心，可以在Nacos的配置列表中上传配置文件，并在消费者和提供者模块中添加bootstrap.yaml文件进行配置。可以通过访问http://localhost:8002/demo来测试项目的功能。
+id: "103"
 ---
 
 # Spring Cloud Alibaba

@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="unioffice"/>
+    <meta name="description" content="该文章介绍了使用go处理office文档的开源库unioffice，并讨论了在处理word文档时遇到的问题。问题是如何将图片设置为封面背景时不挤压文字。作者发现了一种解决方案，通过修改文档的xml结构来实现。作者将两个文档进行了对比，找到了影响图片布局的属性，并通过unioffice库的API来修改这些属性，最终解决了问题。文章还给出了相关代码示例。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>使用go unioffice让图片衬于文字下方 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">使用go unioffice让图片衬于文字下方</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-10-11 12:45:48</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">unioffice</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>该文章介绍了使用go处理office文档的开源库unioffice，并讨论了在处理word文档时遇到的问题。问题是如何将图片设置为封面背景时不挤压文字。作者发现了一种解决方案，通过修改文档的xml结构来实现。作者将两个文档进行了对比，找到了影响图片布局的属性，并通过unioffice库的API来修改这些属性，最终解决了问题。文章还给出了相关代码示例。</p>
+            </section>
+        </header>
+            <h1 id="unioffice">unioffice</h1>
+
+<p>使用go处理offce是一个开源库,不过这个库需要付费授权<a href="https://unidoc.io/unioffice/" target="_blank">unioffice</a>
+没有相关文档只有github上的几个例子</p>
+
+<h1 id="遇到的问题">遇到的问题</h1>
+
+<p>在处理word的时候需求是将图片设为封面背景,但是当图片添加进去后放大到页面大小会挤压文字
+<img src="../res/img/227-1.jpeg" alt="image.png" />
+我想实现的效果:
+<img src="../res/img/227-2.jpeg" alt="image.png" />|<img src="../res/img/227-3.jpeg" alt="image.png" />
+没有文档我只找到了这个API<code>t.SetTextWrapSquare()</code>设置文字环绕图片,但是没有用还是解决不了.</p>
+
+<h1 id="尝试查看docx文件结构">尝试查看docx文件结构</h1>
+
+<p>据了解,word内部其实就是xml.
+我首先直接用vscode打开查看,发现是个二进制文件.
+后有发现原来可以解压处出来:
+<img src="../res/img/227-4.jpeg" alt="image.png" />
+在<code>word</code>文件夹下的<code>document.xml</code>就是主要文档内容
+我首先将同一文档一个通过wps手动实现图片衬于文字下方,一个没有实现.
+然后分别对比xml(需要先格式化一下不然压缩了的不好看)</p>
+
+<h2 id="原文档">原文档:</h2>
+
+<pre><code>&lt;w:p&gt;
+            &lt;w:r&gt;
+                &lt;w:drawing&gt;
+                    &lt;wp:anchor
+                        xmlns=&quot;http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing&quot;
+                        xmlns:a=&quot;http://schemas.openxmlformats.org/drawingml/2006/main&quot;
+                        xmlns:pic=&quot;http://schemas.openxmlformats.org/drawingml/2006/picture&quot;
+                        xmlns:r=&quot;http://schemas.openxmlformats.org/officeDocument/2006/relationships&quot;
+                        xmlns:w=&quot;http://schemas.openxmlformats.org/wordprocessingml/2006/main&quot;
+                        xmlns:wp=&quot;http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing&quot;
+                        xmlns:xml=&quot;http://www.w3.org/XML/1998/namespace&quot; simplePos=&quot;0&quot; relativeHeight=&quot;0&quot; behindDoc=&quot;1&quot; locked=&quot;0&quot; layoutInCell=&quot;0&quot; allowOverlap=&quot;1&quot;&gt;
+                        &lt;wp:simplePos x=&quot;0&quot; y=&quot;0&quot;/&gt;
+                        &lt;wp:positionH relativeFrom=&quot;page&quot;&gt;
+                            &lt;wp:align&gt;center&lt;/wp:align&gt;
+                        &lt;/wp:positionH&gt;
+                        &lt;wp:positionV relativeFrom=&quot;page&quot;&gt;
+                            &lt;wp:align&gt;bottom&lt;/wp:align&gt;
+                        &lt;/wp:positionV&gt;
+                        &lt;wp:extent cx=&quot;7574411&quot; cy=&quot;3074404&quot;/&gt;
+                        &lt;wp:wrapNone/&gt;
+                        &lt;wp:docPr id=&quot;116590931&quot; name=&quot;&quot;/&gt;
+                        &lt;wp:cNvGraphicFramePr/&gt;
+                        &lt;a:graphic&gt;
+                            &lt;a:graphicData uri=&quot;http://schemas.openxmlformats.org/drawingml/2006/picture&quot;&gt;
+                                &lt;pic:pic
+                                    xmlns=&quot;http://schemas.openxmlformats.org/drawingml/2006/picture&quot;
+                                    xmlns:pic=&quot;http://schemas.openxmlformats.org/drawingml/2006/picture&quot;
+                                    xmlns:xml=&quot;http://www.w3.org/XML/1998/namespace&quot;&gt;
+                                    &lt;pic:nvPicPr&gt;
+                                        &lt;pic:cNvPr id=&quot;116590931&quot; name=&quot;&quot;/&gt;
+                                        &lt;pic:cNvPicPr/&gt;
+                                    &lt;/pic:nvPicPr&gt;
+                                    &lt;pic:blipFill&gt;
+                                        &lt;a:blip r:embed=&quot;rId5&quot;/&gt;
+                                        &lt;a:stretch&gt;
+                                            &lt;a:fillRect/&gt;
+                                        &lt;/a:stretch&gt;
+                                    &lt;/pic:blipFill&gt;
+                                    &lt;pic:spPr&gt;
+                                        &lt;a:xfrm&gt;
+                                            &lt;a:off x=&quot;0&quot; y=&quot;0&quot;/&gt;
+                                            &lt;a:ext cx=&quot;1876&quot; cy=&quot;740&quot;/&gt;
+                                        &lt;/a:xfrm&gt;
+                                        &lt;a:prstGeom prst=&quot;rect&quot;/&gt;
+                                    &lt;/pic:spPr&gt;
+                                &lt;/pic:pic&gt;
+                            &lt;/a:graphicData&gt;
+                        &lt;/a:graphic&gt;
+                    &lt;/wp:anchor&gt;
+                &lt;/w:drawing&gt;
+            &lt;/w:r&gt;
+        &lt;/w:p&gt;
+</code></pre>
+
+<h2 id="修改过">修改过</h2>
+
+<pre><code>&lt;w:p&gt;
+            &lt;w:bookmarkStart w:id=&quot;0&quot; w:name=&quot;_GoBack&quot;/&gt;
+            &lt;w:r&gt;
+                &lt;w:drawing&gt;
+                    &lt;wp:anchor distT=&quot;0&quot; distB=&quot;0&quot; distL=&quot;114935&quot; distR=&quot;114935&quot; simplePos=&quot;0&quot; relativeHeight=&quot;0&quot; behindDoc=&quot;1&quot; locked=&quot;0&quot; layoutInCell=&quot;0&quot; allowOverlap=&quot;1&quot;&gt;
+                        &lt;wp:simplePos x=&quot;0&quot; y=&quot;0&quot;/&gt;
+                        &lt;wp:positionH relativeFrom=&quot;page&quot;&gt;
+                            &lt;wp:align&gt;center&lt;/wp:align&gt;
+                        &lt;/wp:positionH&gt;
+                        &lt;wp:positionV relativeFrom=&quot;page&quot;&gt;
+                            &lt;wp:align&gt;bottom&lt;/wp:align&gt;
+                        &lt;/wp:positionV&gt;
+                        &lt;wp:extent cx=&quot;7574280&quot; cy=&quot;3074670&quot;/&gt;
+                        &lt;wp:effectExtent l=&quot;0&quot; t=&quot;0&quot; r=&quot;7620&quot; b=&quot;11430&quot;/&gt;
+                        &lt;wp:wrapNone/&gt;
+                        &lt;wp:docPr id=&quot;116590931&quot; name=&quot;图片 116590931&quot;/&gt;
+                        &lt;wp:cNvGraphicFramePr/&gt;
+                        &lt;a:graphic
+                            xmlns:a=&quot;http://schemas.openxmlformats.org/drawingml/2006/main&quot;&gt;
+                            &lt;a:graphicData uri=&quot;http://schemas.openxmlformats.org/drawingml/2006/picture&quot;&gt;
+                                &lt;pic:pic
+                                    xmlns:pic=&quot;http://schemas.openxmlformats.org/drawingml/2006/picture&quot;&gt;
+                                    &lt;pic:nvPicPr&gt;
+                                        &lt;pic:cNvPr id=&quot;116590931&quot; name=&quot;图片 116590931&quot;/&gt;
+                                        &lt;pic:cNvPicPr/&gt;
+                                    &lt;/pic:nvPicPr&gt;
+                                    &lt;pic:blipFill&gt;
+                                        &lt;a:blip r:embed=&quot;rId7&quot;/&gt;
+                                        &lt;a:stretch&gt;
+                                            &lt;a:fillRect/&gt;
+                                        &lt;/a:stretch&gt;
+                                    &lt;/pic:blipFill&gt;
+                                    &lt;pic:spPr&gt;
+                                        &lt;a:xfrm&gt;
+                                            &lt;a:off x=&quot;0&quot; y=&quot;0&quot;/&gt;
+                                            &lt;a:ext cx=&quot;1876&quot; cy=&quot;740&quot;/&gt;
+                                        &lt;/a:xfrm&gt;
+                                        &lt;a:prstGeom prst=&quot;rect&quot;&gt;
+                                            &lt;a:avLst/&gt;
+                                        &lt;/a:prstGeom&gt;
+                                    &lt;/pic:spPr&gt;
+                                &lt;/pic:pic&gt;
+                            &lt;/a:graphicData&gt;
+                        &lt;/a:graphic&gt;
+                    &lt;/wp:anchor&gt;
+                &lt;/w:drawing&gt;
+            &lt;/w:r&gt;
+            &lt;w:bookmarkEnd w:id=&quot;0&quot;/&gt;
+        &lt;/w:p&gt;
+</code></pre>
+
+<h2 id="发现">发现</h2>
+
+<p>在经过几次反复对照修改后
+发现决定图片衬于文字下方的属性<code>behindDoc=&quot;1&quot;</code>同时 <code>&lt;wp:wrapNone/&gt;</code>(图片不挤兑文字)</p>
+
+<p>通过以下代码修改</p>
+
+<pre><code>t.SetTextWrapNone()
+t.X().BehindDocAttr=true
+</code></pre>
+
+<p>大致代码如下:</p>
+
+<pre><code>	bgImg, err := common.ImageFromFile(bgPath)
+	if err != nil {
+		logger.Error(err)
+	}
+	//向文档添加图片
+	imgRef, err := doc.AddImage(bgImg)
+	//绘制图片
+	t, err := doc.AddParagraph().AddRun().AddDrawingAnchored(imgRef)
+	if err != nil {
+		logger.Error(err)
+	}
+	//设置图片在文档中心
+	t.SetAlignment(wml.WdST_AlignHCenter, wml.WdST_AlignVCenter)
+	//设置大小为页面大小
+	t.SetSize(21*measurement.Centimeter, 29.7*measurement.Centimeter)
+	//文字不环绕图片
+	t.SetTextWrapNone()
+	//图片衬于文字下方
+	t.X().BehindDocAttr=true
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2020-10-17 00:10:45</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

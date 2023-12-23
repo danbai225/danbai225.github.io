@@ -1,0 +1,726 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Go,docker,微信,机器人"/>
+    <meta name="description" content="该文章介绍了如何使用镜像 `danbai225/wechat-bot` 来创建一个微信机器人。文章提供了一个 Dockerfile 和 Docker Compose 文件，用于构建和运行该微信机器人。镜像包含了一个基于 iPad 协议的机器人，并提供了几个端口用于不同的功能：
+
+- 8080 端口用于访问 web-vnc 文件以通过 VNC 访问图像界面
+- 5555 端口用于机器人的 WebSocket 连接
+- 5556 端口提供了获取微信二维码和上传下载文件的 HTTP 接口
+- 5900 端口用于 VNC 连接
+
+文章还提供了一个 Go 客户端的示例代码，用于与机器人进行交互。可以使用该客户端发送文本、图片和文件消息，获取联系人列表和个人信息等。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>运行在docker里的微信机器人 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">运行在docker里的微信机器人</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2023-04-29 09:38:34</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Go</span>
+                    
+                    <span class="label label-success label-outline">docker</span>
+                    
+                    <span class="label label-success label-outline">微信</span>
+                    
+                    <span class="label label-success label-outline">机器人</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>该文章介绍了如何使用镜像 `danbai225/wechat-bot` 来创建一个微信机器人。文章提供了一个 Dockerfile 和 Docker Compose 文件，用于构建和运行该微信机器人。镜像包含了一个基于 iPad 协议的机器人，并提供了几个端口用于不同的功能：
+
+- 8080 端口用于访问 web-vnc 文件以通过 VNC 访问图像界面
+- 5555 端口用于机器人的 WebSocket 连接
+- 5556 端口提供了获取微信二维码和上传下载文件的 HTTP 接口
+- 5900 端口用于 VNC 连接
+
+文章还提供了一个 Go 客户端的示例代码，用于与机器人进行交互。可以使用该客户端发送文本、图片和文件消息，获取联系人列表和个人信息等。</p>
+            </section>
+        </header>
+            <p>因为有需要微信机器人，而基于ipad协议的机器人要一个月一月200。后面从网上找了些开源的资源，进行整合。实现了我们要的需求。
+请直接使用镜像<code>https://hub.docker.com/r/danbai225/wechat-bot</code></p>
+
+<h1 id="dockerfile">dockerFile</h1>
+
+<pre><code>FROM chisbread/wechat-service:latest
+COPY target/root/ /
+RUN sudo rm -r /payloads
+COPY root/ /
+ADD qr-server /home/app/
+RUN sudo chmod +x /home/app/qr-server
+ADD proxy.sh /home/app/
+RUN sudo chmod +x /home/app/proxy.sh
+RUN sudo chown -R app:app /drive_c &amp;&amp; cp -r /drive_c/* /home/app/.wine/drive_c/
+RUN sudo rm -rf /WeChatSetup*
+RUN mkdir /home/app/data
+RUN sudo ln -s /home/app/data /home/app/.wine/dosdevices/c:/data
+ENV HOOK_PROC_NAME=WeChat
+ENV TARGET_AUTO_RESTART=yes
+ENV TARGET_CMD=wechat-start
+ENV INJ_CONDITION='[ &quot;`ps -aux | grep funtool | grep -v grep`&quot; != &quot;&quot; ] &amp;&amp; exit 0'
+ENTRYPOINT [&quot;/inj-entrypoint.sh&quot;]
+</code></pre>
+
+<h1 id="docker-compose">docker-compose</h1>
+
+<pre><code>version: &quot;2.4&quot;
+services:
+  wechat-bot:
+    image: danbai225/wechat-bot:latest
+    container_name: wechat-bot
+    restart: always
+    ports:
+      - &quot;8080:8080&quot;
+      - &quot;5555:5555&quot;
+      - &quot;5556:5556&quot;
+      - &quot;5900:5900&quot;
+    extra_hosts:
+      - &quot;dldir1.qq.com:127.0.0.1&quot;
+    volumes:
+      - &quot;./data:/home/app/data&quot;
+      - &quot;./wxFiles:/home/app/WeChat Files&quot;
+    environment:
+      #- PROXY_IP=1.14.75.115 #如果设置则使用代理
+      - PROXY_PORT=7777
+      - PROXY_USER=user
+      - PROXY_PASS=pass
+</code></pre>
+
+<h1 id="端口介绍">端口介绍</h1>
+
+<ul>
+<li>8080 是web接口里面有web-vnc的文件可以通过这个端口访问vnc</li>
+<li>5555 机器人ws的端口</li>
+<li>5556 获取微信qr码的http接口 包括上传、下载文件</li>
+<li>5900 vnc端口</li>
+</ul>
+
+<h2 id="5555端口">5555端口</h2>
+
+<p>js客户端:<a href="https://github.com/cixingguangming55555/wechat-bot/blob/master/funtool/client-3.2.1.121.js" target="_blank">client-3.2.1.121.js</a>
+go 客户端</p>
+
+<pre><code>package wechat_bot
+
+import (
+	&quot;bytes&quot;
+	&quot;crypto/md5&quot;
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;github.com/gofrs/uuid&quot;
+	&quot;github.com/lxzan/gws&quot;
+	&quot;io&quot;
+	&quot;mime/multipart&quot;
+	&quot;net/http&quot;
+	&quot;os&quot;
+	&quot;path/filepath&quot;
+	&quot;strings&quot;
+	&quot;sync&quot;
+	&quot;time&quot;
+)
+
+const HeartBeat = 5005
+const RecvTxtMsg = 1
+const RecvPicMsg = 3
+const UserList = 5000
+const TxtMsg = 555
+const PicMsg = 500
+const AtMsg = 550
+const PersonalDetail = 6550
+const AttatchFile = 5003
+const RecvFileMsg = 49
+const PersonalInfo = 6500
+const ChatroomMemberNick = 5020
+
+func gid() string {
+	u, _ := uuid.NewV4()
+	return u.String()
+}
+
+func NewClient(ws, qrHttp string) (*Client, error) {
+	c := new(Client)
+	c.handler = handler{
+		Client: c,
+	}
+	socket, _, err := gws.NewClient(&amp;c.handler, &amp;gws.ClientOption{
+		Addr: ws,
+	})
+	c.socket = socket
+	c.addr = ws
+	c.qrAddr = qrHttp
+	c.contactListChan = make(chan []*Contact, 0)
+	c.infoChan = make(chan *Info, 0)
+	go socket.Listen()
+	return c, err
+}
+
+type Client struct {
+	handler         handler
+	socket          *gws.Conn
+	addr            string
+	qrAddr          string
+	onMsg           func(msg []byte, Type int, reply *Reply) //type 1是文本 2是图片 3是文件
+	contactListChan chan []*Contact
+	infoChan        chan *Info
+	lastTime        int64 //最后心跳时间
+	lock            sync.Mutex
+}
+type handler struct {
+	Client *Client
+	gws.BuiltinEventHandler
+}
+
+// Reply 快速回复
+type Reply struct {
+	c     *Client
+	wId   string
+	wxId1 string
+	id    string
+	nick  string
+}
+
+func (r *Reply) GetMsgID() string {
+	return r.id
+}
+func (r *Reply) Msg(content string) error {
+	return r.c.SendTxt(content, r.wId)
+}
+func (r *Reply) GetNick() string {
+	if r.nick == &quot;&quot; {
+		r.nick, _ = r.c.GetNickFormRoom(r.wxId1, r.wId)
+	}
+	return r.nick
+}
+func (r *Reply) AtMsg(content string) error {
+	return r.c.SendAtMsg(content, r.wxId1, r.wId, r.GetNick())
+}
+func (r *Reply) PrivateChat(content string) error {
+	return r.c.SendTxt(content, r.wxId1)
+}
+func (r *Reply) PicMsg(path string) error {
+	return r.c.SendPicMsg(path, r.wId)
+}
+func (r *Reply) PrivatePicMsg(path string) error {
+	return r.c.SendPicMsg(path, r.wxId1)
+}
+func (r *Reply) File(path string) error {
+	return r.c.SendFile(path, r.wId)
+}
+func (r *Reply) PrivateFile(path string) error {
+	return r.c.SendFile(path, r.wxId1)
+}
+func (r *Reply) Bytes2Path(data []byte) (string, error) {
+	sum := md5.Sum(data)
+	md5str := fmt.Sprintf(&quot;%x&quot;, sum)
+	path := fmt.Sprintf(&quot;%s%c%s&quot;, os.TempDir(), os.PathSeparator, md5str)
+	err := os.WriteFile(path, data, 0666)
+	return path, err
+}
+
+// IsSendByFriend 来自私聊
+func (r *Reply) IsSendByFriend() bool {
+	if strings.Contains(r.wId, &quot;@chatroom&quot;) {
+		return false
+	} else {
+		return true
+	}
+}
+func (r *Reply) IsSendByGroup() bool {
+	if strings.Contains(r.wId, &quot;@chatroom&quot;) {
+		return true
+	} else {
+		return false
+	}
+}
+
+// GetWxID 如果是群消息，返回群ID，如果是私聊消息，返回用户ID
+func (r *Reply) GetWxID() string {
+	return r.wId
+}
+
+// GetPrivateWxID 返回用户ID
+func (r *Reply) GetPrivateWxID() string {
+	if r.IsSendByGroup() {
+		return r.wxId1
+	} else {
+		return r.wId
+	}
+}
+
+type msg struct {
+	Id       string      `json:&quot;id&quot;`
+	Type     int         `json:&quot;type&quot;`
+	Wxid     interface{} `json:&quot;wxid&quot;`
+	Roomid   interface{} `json:&quot;roomid&quot;`
+	Content  interface{} `json:&quot;content&quot;`
+	Nickname interface{} `json:&quot;nickname&quot;`
+	Ext      interface{} `json:&quot;ext&quot;`
+}
+type ImgMsg struct {
+	Content string `json:&quot;content&quot;`
+	Detail  string `json:&quot;detail&quot;`
+	Id1     string `json:&quot;id1&quot;`
+	Id2     string `json:&quot;id2&quot;`
+	Thumb   string `json:&quot;thumb&quot;`
+}
+
+func ParsePictureMessage(msg []byte) *ImgMsg {
+	im := &amp;ImgMsg{}
+	_ = json.Unmarshal(msg, im)
+	return im
+}
+
+type Dic struct {
+	name       string //名称
+	firstIndex uint8  //第一个字节
+	lastIndex  uint8  //第二个字节
+}
+
+var dicList = []Dic{{&quot;.jpg&quot;, 0xff, 0xd8},
+	{&quot;.png&quot;, 0x89, 0x50},
+	{&quot;.gif&quot;, 0x47, 0x49},
+	{&quot;error&quot;, 0x00, 0x00}}
+
+func parseData(data []byte) {
+	var addCode uint8
+	for _, dic := range dicList {
+		addCode = data[0] ^ dic.firstIndex
+		if data[1]^addCode == dic.lastIndex {
+			break
+		}
+	}
+	//对字节切片每个字节异或
+	for i, v := range data {
+		data[i] = v ^ addCode
+	}
+}
+
+func (im *ImgMsg) GetData(client *Client) ([]byte, error) {
+	time.Sleep(time.Second)
+	file, err := client.getFile(strings.ReplaceAll(im.Detail, &quot;\\&quot;, &quot;/&quot;))
+	if err != nil {
+		return nil, err
+	}
+	parseData(file)
+	return file, nil
+}
+
+// SetOnWXmsg type 1是文本 2是图片 3是文件
+func (c *Client) SetOnWXmsg(onMsg func(msg []byte, Type int, reply *Reply)) {
+	c.onMsg = onMsg
+}
+func (c *Client) LastHeartbeatTime() int64 {
+	return c.lastTime
+}
+func (c *handler) OnMessage(socket *gws.Conn, message *gws.Message) {
+	//fmt.Printf(&quot;recv: %s\n&quot;, message.Data.String())
+	m := &amp;rMsg{}
+	_ = json.Unmarshal(message.Data.Bytes(), m)
+	switch m.Type {
+	case UserList:
+		contacts := make([]*Contact, 0)
+		marshal, _ := json.Marshal(m.Content)
+		_ = json.Unmarshal(marshal, &amp;contacts)
+		c.Client.contactListChan &lt;- contacts
+	case HeartBeat:
+		_ = c.Client.send(&amp;msg{Id: gid(), Type: PicMsg, Wxid: &quot;null&quot;, Roomid: &quot;null&quot;, Content: &quot;null&quot;, Nickname: &quot;null&quot;, Ext: &quot;null&quot;})
+		c.Client.lastTime = time.Now().Unix()
+	case RecvTxtMsg:
+		if c.Client.onMsg != nil {
+			go c.Client.onMsg([]byte(m.Content.(string)), 1, &amp;Reply{id: m.Id, c: c.Client, wId: m.WxID, wxId1: m.ID1})
+		}
+	case RecvPicMsg:
+		if c.Client.onMsg != nil {
+			marshal, _ := json.Marshal(m.Content)
+			go c.Client.onMsg(marshal, 2, &amp;Reply{id: m.Id, c: c.Client, wId: m.WxID})
+		}
+	case RecvFileMsg:
+		if c.Client.onMsg != nil {
+			marshal, _ := json.Marshal(m.Content)
+			go c.Client.onMsg(marshal, 3, &amp;Reply{id: m.Id, c: c.Client, wId: m.WxID})
+		}
+	case PersonalDetail:
+		marshal, _ := json.Marshal(m.Content)
+		info := &amp;Info{}
+		_ = json.Unmarshal(marshal, &amp;info)
+		c.Client.infoChan &lt;- info
+	case PersonalInfo:
+		info := &amp;Info{}
+		_ = json.Unmarshal([]byte(m.Content.(string)), &amp;info)
+		c.Client.infoChan &lt;- info
+
+	case ChatroomMemberNick:
+		info := &amp;Info{}
+		_ = json.Unmarshal([]byte(m.Content.(string)), &amp;info)
+		c.Client.infoChan &lt;- info
+	}
+}
+func (c *Client) send(msg *msg) error {
+	marshal, err := json.Marshal(msg)
+	if err != nil {
+		return err
+	}
+	return c.socket.WriteString(string(marshal))
+}
+
+/*QR
+* 获取扫描登录二维码
+ */
+func (c *Client) QR() ([]byte, error) {
+	resp, _ := http.Get(c.qrAddr + &quot;/qr&quot;)
+	return io.ReadAll(resp.Body)
+}
+func (c *Client) upFile(data []byte, filename string) error {
+	// 创建multipart writer
+	body := &amp;bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+	// 创建文件数据部分
+	part, err := writer.CreateFormFile(&quot;file&quot;, filename)
+	if err != nil {
+		return err
+	}
+	_, err = part.Write(data)
+	if err != nil {
+		return err
+	}
+	// 写入multipart部分数据（文件名等）
+	if err = writer.WriteField(&quot;filename&quot;, filename); err != nil {
+		return err
+	}
+	if err = writer.Close(); err != nil {
+		return err
+	}
+	// 创建HTTP请求并设置multipart数据
+	req, err := http.NewRequest(&quot;POST&quot;, c.qrAddr+&quot;/file&quot;, body)
+	if err != nil {
+		return err
+	}
+	req.Header.Set(&quot;Content-Type&quot;, writer.FormDataContentType())
+
+	// 发送HTTP请求
+	client := &amp;http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	return nil
+}
+func (c *Client) getFile(path string) ([]byte, error) {
+	resp, err := http.Get(c.qrAddr + &quot;/download?path=&quot; + path)
+	if err != nil {
+		return nil, err
+	}
+	return io.ReadAll(resp.Body)
+}
+
+/*SendTxt
+*发送文本消息
+*content:消息内容
+*to:接收者的wxid 个人消息为个人wxid 群消息为群wxid
+ */
+func (c *Client) SendTxt(content string, to string) error {
+	return c.send(&amp;msg{
+		Id:       &quot;&quot;,
+		Type:     TxtMsg,
+		Wxid:     to,
+		Roomid:   &quot;null&quot;,
+		Content:  content,
+		Nickname: &quot;null&quot;,
+		Ext:      &quot;null&quot;,
+	})
+}
+
+/*
+SendAtMsg
+*发送@消息
+*content:消息内容
+*atWXid:被@的人的wxid
+*to:群wxid
+*nickname:被@的人的昵称
+*/
+func (c *Client) SendAtMsg(content string, atWXid, to, nickname string) error {
+	return c.send(&amp;msg{
+		Id:       gid(),
+		Type:     AtMsg,
+		Wxid:     atWXid,
+		Roomid:   to,
+		Content:  content,
+		Nickname: nickname,
+		Ext:      &quot;null&quot;,
+	})
+}
+
+/*
+SendPicMsg
+*发送图片信息
+*content:消息内容
+*atWXid:被@的人的wxid
+*to:群wxid
+*nickname:被@的人的昵称
+*/
+func (c *Client) SendPicMsg(path, wxid string) error {
+	file, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+	name := filepath.Base(path)
+	err = c.upFile(file, name)
+	if err != nil {
+		return err
+	}
+	return c.send(&amp;msg{
+		Id:       gid(),
+		Type:     PicMsg,
+		Wxid:     wxid,
+		Roomid:   &quot;null&quot;,
+		Content:  &quot;c:\\data\\&quot; + name,
+		Nickname: &quot;null&quot;,
+		Ext:      &quot;null&quot;,
+	})
+}
+
+/*
+SendFile
+*发送文件
+*content:消息内容
+*atWXid:被@的人的wxid
+*to:群wxid
+*nickname:被@的人的昵称
+*/
+func (c *Client) SendFile(path, wxid string) error {
+	file, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+	name := filepath.Base(path)
+	err = c.upFile(file, name)
+	if err != nil {
+		return err
+	}
+	return c.send(&amp;msg{
+		Id:       gid(),
+		Type:     AttatchFile,
+		Wxid:     wxid,
+		Roomid:   &quot;null&quot;,
+		Content:  &quot;c:\\data\\&quot; + name,
+		Nickname: &quot;null&quot;,
+		Ext:      &quot;null&quot;,
+	})
+}
+func (c *Client) GetContactList() ([]*Contact, error) {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+	err := c.send(&amp;msg{
+		Id:       gid(),
+		Type:     UserList,
+		Wxid:     &quot;null&quot;,
+		Roomid:   &quot;null&quot;,
+		Content:  &quot;null&quot;,
+		Nickname: &quot;null&quot;,
+		Ext:      &quot;null&quot;,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &lt;-c.contactListChan, nil
+}
+func (c *Client) GetPersonalDetail(wxid string) (*Info, error) {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+	err := c.send(&amp;msg{
+		Id:       gid(),
+		Type:     PersonalDetail,
+		Wxid:     wxid,
+		Roomid:   &quot;null&quot;,
+		Content:  &quot;op:personal detail&quot;,
+		Nickname: &quot;null&quot;,
+		Ext:      &quot;null&quot;,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &lt;-c.infoChan, nil
+}
+func (c *Client) GetPersonal() (*Info, error) {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+	err := c.send(&amp;msg{
+		Id:       gid(),
+		Type:     PersonalInfo,
+		Wxid:     &quot;ROOT&quot;,
+		Roomid:   &quot;null&quot;,
+		Content:  &quot;op:personal info&quot;,
+		Nickname: &quot;null&quot;,
+		Ext:      &quot;null&quot;,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &lt;-c.infoChan, nil
+}
+func (c *Client) GetNickFormRoom(wxid, roomid string) (string, error) {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+	err := c.send(&amp;msg{
+		Id:       gid(),
+		Type:     ChatroomMemberNick,
+		Wxid:     wxid,
+		Roomid:   roomid,
+		Content:  &quot;null&quot;,
+		Nickname: &quot;null&quot;,
+		Ext:      &quot;null&quot;,
+	})
+	if err != nil {
+		return &quot;&quot;, err
+	}
+	i := &lt;-c.infoChan
+	return i.Nick, nil
+}
+
+type rMsg struct {
+	Content  interface{} `json:&quot;content&quot;`
+	Id       string      `json:&quot;id&quot;`
+	Receiver string      `json:&quot;receiver&quot;`
+	WxID     string      `json:&quot;wxid&quot;`
+	ID1      string      `json:&quot;id1&quot;`
+	Sender   string      `json:&quot;sender&quot;`
+	Srvid    int         `json:&quot;srvid&quot;`
+	Status   string      `json:&quot;status&quot;`
+	Time     string      `json:&quot;time&quot;`
+	Type     int         `json:&quot;type&quot;`
+}
+
+// Contact 联系人
+type Contact struct {
+	Headimg string `json:&quot;headimg&quot;`
+	Name    string `json:&quot;name&quot;`
+	Node    int    `json:&quot;node&quot;`
+	Remarks string `json:&quot;remarks&quot;`
+	Wxcode  string `json:&quot;wxcode&quot;`
+	Wxid    string `json:&quot;wxid&quot;`
+}
+
+// Info 该结构体多个返回结果在公用不保证所有字段都有，自行判断
+type Info struct {
+	BigHeadimg    string `json:&quot;big_headimg&quot;`
+	Cover         string `json:&quot;cover&quot;`
+	LittleHeadimg string `json:&quot;little_headimg&quot;`
+	Signature     string `json:&quot;signature&quot;`
+	WxCode        string `json:&quot;wx_code&quot;`
+	WxHeadImage   string `json:&quot;wx_head_image&quot;`
+	WxId          string `json:&quot;wx_id&quot;`
+	WxName        string `json:&quot;wx_name&quot;`
+	Nick          string `json:&quot;nick&quot;`
+}
+
+</code></pre>
+
+<h2 id="5556端口">5556端口</h2>
+
+<p>接口：
+<code>/qr</code> GET 无参数 返回QR码（刚开始可能未加载完成所以返回的可能不是qr码需要多请求几次看看能不能解析出二维码）
+<code>/file</code> POST FORM表单 参数 file 上传文件 路径保存在<code>/home/app/data</code>
+<code>/download</code> GET 参数 path 下载文件 起始路径是<code>/home/app/WeChat Files</code>也就是微信存储目录</p>
+
+<hr>
+
+<p>参考 <a href="https://github.com/cixingguangming55555/wechat-bot" target="_blank">wechat-bot</a>
+参考 <a href="https://github.com/ChisBread/wechat-service" target="_blank">wechat-service</a></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2023-05-05 13:38:25</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

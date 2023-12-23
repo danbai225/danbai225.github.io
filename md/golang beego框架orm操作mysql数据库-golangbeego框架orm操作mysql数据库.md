@@ -1,13 +1,15 @@
 ---
 title: golang beego框架orm操作mysql数据库
-date: 2019-12-12 16:08:54.119
-updated: 2022-03-29 21:34:16.253
+date: "2019-12-12 16:08:54"
+updated: "2022-03-29 21:34:16"
 url: https://p00q.cn/?p=11
-categories: 
-- Go
-tags: 
-- Beego
-- Go
+categories:
+    - Go
+tags:
+    - Beego
+    - Go
+summary: 本文介绍了在GoLang中使用beego框架进行ORM（对象关系映射）操作的基本知识。首先，文章介绍了如何连接数据库，然后说明了如何创建模型。在查询方面，文章展示了使用原始SQL查询和根据主键查询的例子。在插入和更新方面，文章展示了插入新数据和更新已有数据的例子。最后，文章总结了学习beego框架的一些感受，并提供了相关中文文档和参考链接。
+id: "11"
 ---
 
 上周学完了GoLang基础部分知识,这周学习下beego框架.
@@ -101,3 +103,4 @@ func Ut1()  {
 接下来就开始边做边学了,加油!
 
 [beego中文文档](https://beego.me/docs/intro/)
+

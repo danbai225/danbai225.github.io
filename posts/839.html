@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="windows,注册表"/>
+    <meta name="description" content="本文介绍了如何去除Windows快捷方式图标上的小箭头。有两种方法可以实现：使用第三方软件或手动修改注册表。
+
+使用第三方软件是最简单的方法之一，例如&#34;Ultimate Windows Tweaker&#34;，在&#34;Personalization&#34;选项卡中选择“Remove Shortcut Arrows”选项即可去除小箭头。
+
+如果你想手动修改注册表，请按照以下步骤操作：
+1. 打开注册表编辑器，并导航到`HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons`。
+2. 右键点击空白处，选择新建字符串值（REG_SZ），并将其命名为&#34;29&#34;，将数值数据设置为&#34;%systemroot%\system32\imageres.dll,197&#34;。
+3. 打开任务管理器，找到并结束&#34;explorer.exe&#34;进程。
+4. 打开命令提示符（cmd）窗口，输入命令`attrib -s -r -h &#34;%userprofile%\AppData\Local\iconcache.db&#34;`，去除&#34;iconcache.db&#34;文件的系统、只读和隐藏属性。
+5. 输入命令`del &#34;%userprofile%\AppData\Local\iconcache.db&#34; /f /q`，删除&#34;iconcache.db&#34;文件（如果存在）。
+
+以上是去除Windows快捷方式图标上小箭头的方法。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>通过修改windows注册表隐藏快捷方式小箭头 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">通过修改windows注册表隐藏快捷方式小箭头</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2023-04-05 10:26:18</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">windows</span>
+                    
+                    <span class="label label-success label-outline">注册表</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>本文介绍了如何去除Windows快捷方式图标上的小箭头。有两种方法可以实现：使用第三方软件或手动修改注册表。
+
+使用第三方软件是最简单的方法之一，例如&#34;Ultimate Windows Tweaker&#34;，在&#34;Personalization&#34;选项卡中选择“Remove Shortcut Arrows”选项即可去除小箭头。
+
+如果你想手动修改注册表，请按照以下步骤操作：
+1. 打开注册表编辑器，并导航到`HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons`。
+2. 右键点击空白处，选择新建字符串值（REG_SZ），并将其命名为&#34;29&#34;，将数值数据设置为&#34;%systemroot%\system32\imageres.dll,197&#34;。
+3. 打开任务管理器，找到并结束&#34;explorer.exe&#34;进程。
+4. 打开命令提示符（cmd）窗口，输入命令`attrib -s -r -h &#34;%userprofile%\AppData\Local\iconcache.db&#34;`，去除&#34;iconcache.db&#34;文件的系统、只读和隐藏属性。
+5. 输入命令`del &#34;%userprofile%\AppData\Local\iconcache.db&#34; /f /q`，删除&#34;iconcache.db&#34;文件（如果存在）。
+
+以上是去除Windows快捷方式图标上小箭头的方法。</p>
+            </section>
+        </header>
+            <h1 id="去除windows快捷方式小箭头">去除windows快捷方式小箭头</h1>
+
+<p>对于这种快捷方式有个小箭头是可以去掉的。
+<img src="../res/img/839-1.png" alt="image-1680661447179" /></p>
+
+<p>可以使用免费的第三方软件或手动修改Windows注册表来去除快捷方式小箭头。</p>
+
+<h2 id="第三方软件">第三方软件</h2>
+
+<p>使用免费的第三方软件（如&rdquo;Ultimate Windows Tweaker&rdquo;），您可以在&rdquo;Personalization&rdquo;选项卡中选择“Remove Shortcut Arrows”选项来去除小箭头。</p>
+
+<h2 id="手动修改注册表">手动修改注册表</h2>
+
+<ol>
+<li>打开注册表编辑器，浏览到<code>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons</code>，右键新建字符串值（REG_SZ），命名为<code>29</code>，将数值数据设置为<code>%systemroot%\system32\imageres.dll,197</code>。</li>
+<li>打开任务管理器，找到并结束<code>explorer.exe</code>进程。</li>
+<li>打开命令提示符（cmd）窗口，输入<code>attrib -s -r -h &quot;%userprofile%\AppData\Local\iconcache.db&quot;</code>命令，去掉iconcache.db文件的系统、只读、隐藏属性。</li>
+<li>输入<code>del &quot;%userprofile%\AppData\Local\iconcache.db&quot; /f /q</code>命令删除iconcache.db文件（如果存在）。</li>
+</ol>
+
+<p><img src="../res/img/839-2.png" alt="image-1680662265063" /></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2023-04-05 10:38:15</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

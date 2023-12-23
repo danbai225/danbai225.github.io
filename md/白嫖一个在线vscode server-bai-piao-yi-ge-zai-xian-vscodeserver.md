@@ -1,13 +1,15 @@
 ---
 title: 白嫖一个在线vscode server
-date: 2021-09-18 14:38:39.768
-updated: 2021-09-18 14:38:39.768
+date: "2021-09-18 14:38:39"
+updated: "2021-09-18 14:38:39"
 url: https://p00q.cn/?p=483
-categories: 
-- 推荐分享
-tags: 
-- vscode
-- 白嫖
+categories:
+    - 推荐分享
+tags:
+    - vscode
+    - 白嫖
+summary: 本文介绍了通过railway提供的无服务器部署服务来免费部署和托管应用程序。每个月用户可以获得5美元的免费额度来使用该服务。
+id: "483"
 ---
 
 [教程原文](https://justyy.com/archives/45744)

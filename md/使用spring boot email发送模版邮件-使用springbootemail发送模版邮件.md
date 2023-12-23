@@ -1,12 +1,14 @@
 ---
 title: 使用spring boot email发送模版邮件
-date: 2020-08-03 11:38:25.862
-updated: 2021-06-10 15:25:41.848
+date: "2020-08-03 11:38:25"
+updated: "2021-06-10 15:25:41"
 url: https://p00q.cn/?p=135
-categories: 
-- Java
-tags: 
-- email
+categories:
+    - Java
+tags:
+    - email
+summary: 本文介绍了在项目中发送邮件时的两种方式：使用原始的javax.mail发送简单邮件和使用html模板发送邮件。原始方式发送的邮件容易被识别成垃圾邮件，而使用html模板发送能够更好地呈现邮件内容。使用模板发送邮件的步骤包括添加相关依赖、设置模板内容、创建MimeMessage对象并设置相关信息，最后发送邮件。给出了具体的代码示例，方便读者参考。
+id: "135"
 ---
 
 # 缘由

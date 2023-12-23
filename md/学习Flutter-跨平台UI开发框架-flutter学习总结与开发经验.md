@@ -1,14 +1,16 @@
 ---
 title: 学习Flutter-跨平台UI开发框架
-date: 2020-04-18 22:07:00.912
-updated: 2020-06-08 17:58:21.64
+date: "2020-04-18 22:07:00"
+updated: "2020-06-08 17:58:21"
 url: https://p00q.cn/?p=66
-categories: 
-- Flutter
-tags: 
-- Flutter
-- 跨平台
-- Dart
+categories:
+    - Flutter
+tags:
+    - Flutter
+    - 跨平台
+    - Dart
+summary: 本文介绍了Flutter跨平台UI开发框架以及学习和使用Flutter的一些基本要点。首先介绍了Flutter所采用的开发语言Dart的特性和基本语法。然后介绍了Flutter的运行环境安装和常用组件的使用，推荐了一个组件Demo项目和一个Flutter项目示例地址。最后，展示了一个简单的启动动画的实现，并总结了Flutter的优势和不足。总体而言，Flutter是一个快速上手的跨平台UI开发框架，特点是UI性能强大，开发效率高。然而，还存在一些坑需要填，且在调用硬件和系统API时仍需依靠原生平台。但作为一个学习和掌握的技术，Flutter仍然是值得一学的。
+id: "66"
 ---
 
 # 开篇
@@ -154,5 +156,6 @@ class _BootAnimation extends State<BootAnimation>
 Flutter虽然跨平台和ui性能比较强,单终究是要运行在安卓和ios上的.如果需要调用硬件和系统api就得依靠原生.
 
 Flutter的优势主要还是在UI方面.其次就是开发上手比较快.前端后端学起来都比较容易.还是值得一学.
+
 
 

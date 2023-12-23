@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="spring boot"/>
+    <meta name="description" content="这段代码是一个Spring MVC的配置类。它通过实现WebMvcConfigurer接口来自定义资源处理器，实现了addResourceHandlers方法。在这个方法中，它首先获取了应用的classpath路径，并拼接上自定义的路径/images。然后通过addResourceHandler方法将访问路径/images/**映射到实际文件的路径file:gitPath上。
+
+在运行这个jar包的时候，可以通过访问http://127.0.0.1:8081/images/1.png来访问到D:\TEST\images\1.png这个文件。也就是说，这个配置类为指定路径下的文件提供了访问的接口。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>spring boot映射所在目录下的静态资源 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">spring boot映射所在目录下的静态资源</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-05-14 15:48:10</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">spring boot</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>这段代码是一个Spring MVC的配置类。它通过实现WebMvcConfigurer接口来自定义资源处理器，实现了addResourceHandlers方法。在这个方法中，它首先获取了应用的classpath路径，并拼接上自定义的路径/images。然后通过addResourceHandler方法将访问路径/images/**映射到实际文件的路径file:gitPath上。
+
+在运行这个jar包的时候，可以通过访问http://127.0.0.1:8081/images/1.png来访问到D:\TEST\images\1.png这个文件。也就是说，这个配置类为指定路径下的文件提供了访问的接口。</p>
+            </section>
+        </header>
+            <h1 id="springmvcconfig">SpringMvcConfig</h1>
+
+<pre><code class="language-java">@Configuration
+public class MyWebMvcConfigurer implements WebMvcConfigurer {
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        //获取classpath
+        ApplicationHome h = new ApplicationHome(getClass());
+        File jarF = h.getSource();
+        //拼接path classpath的上级+自定义的images
+        String gitPath=jarF.getParentFile()+ File.separator+&quot;images&quot;+File.separator;
+        //添加映射  (idea打包会映射在target目录)
+        registry.addResourceHandler(&quot;/images/**&quot;).addResourceLocations(&quot;file:&quot;+gitPath);
+    }
+
+}
+
+</code></pre>
+
+<p>jar包放在D:\TEST,目录下运行
+访问:
+<a href="http://127.0.0.1:8081/images/1.png" target="_blank">http://127.0.0.1:8081/images/1.png</a>
+即可访问到:
+D:\TEST\images\1.png</p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2020-06-08 17:58:02</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

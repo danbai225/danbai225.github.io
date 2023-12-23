@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="ICMP,协议,IP"/>
+    <meta name="description" content="本文主要介绍了关于网络知识中的ping命令和其中的ICMP协议。ping命令使用ICMP协议来进行网络连接测试，在ping命令中，发送的数据包中包含了校验和字段。校验和的计算过程是将每两个字节相加，直到最后得出结果，并与前面的结果相加，然后取结果的反码作为最终的校验和。文章还给出了一个Go语言代码示例，展示了如何计算校验和。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>网际校验和算法ICMP校验位计算 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">网际校验和算法ICMP校验位计算</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2021-06-10 14:19:34</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">ICMP</span>
+                    
+                    <span class="label label-success label-outline">协议</span>
+                    
+                    <span class="label label-success label-outline">IP</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>本文主要介绍了关于网络知识中的ping命令和其中的ICMP协议。ping命令使用ICMP协议来进行网络连接测试，在ping命令中，发送的数据包中包含了校验和字段。校验和的计算过程是将每两个字节相加，直到最后得出结果，并与前面的结果相加，然后取结果的反码作为最终的校验和。文章还给出了一个Go语言代码示例，展示了如何计算校验和。</p>
+            </section>
+        </header>
+            <p>面试时聊到了一些网络知识。其中ping这个东西，是我经常用到的但似乎对它又不是很了解，于是去看了下相关协议的介绍。它使用了一种协议叫<a href="https://baike.baidu.com/item/ICMP" target="_blank">ICMP（Internet Control Message Protocol）Internet控制报文协议</a>。
+报文结构：<img src="../res/img/326-1.png" alt="image.png" />
+其中校验和计算：</p>
+
+<ol>
+<li>将校验和字段置为0。</li>
+<li>将每两个字节（16位）相加（二进制求和）直到最后得出结果，若出现最后还剩一个字节继续与前面结果相加。
+(溢出)将高16位与低16位相加，直到高16位为0为止。</li>
+<li>将最后的结果（二进制）取反。</li>
+</ol>
+
+<pre><code class="language-Go">func CheckSum(data []byte) uint16 {
+	var sum uint32 //uint32符合校验位站2字节
+	var length = len(data)
+	var index int
+	for index &lt;= length-2{
+		//对每两个字节相加 其中对每两字节中的第一个字节左移8位再加上后面一位 组成一个16位数加到结果中
+		sum += uint32(data[index]) &lt;&lt; 8 + uint32(data[index+1])
+		index += 2
+	}
+	//如果有单独一个字节也按照16位进行相加
+	if length%2==1{
+		sum += uint32(data[length-1])&lt;&lt;8
+	}
+	//sum &gt;&gt; 16 高16位的值加32位的sum 取32位中低16位的值再取反
+	sum += sum &gt;&gt; 16
+	return uint16(^sum)
+}
+</code></pre>
+
+<p>参考：
+<a href="https://blog.csdn.net/zhj082/article/details/80518322" target="_blank">https://blog.csdn.net/zhj082/article/details/80518322</a></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2021-06-10 15:06:06</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

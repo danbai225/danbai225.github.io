@@ -1,12 +1,14 @@
 ---
 title: word转pdf 实现
-date: 2020-10-17 00:05:16.292
-updated: 2020-10-17 00:09:24.841
+date: "2020-10-17 00:05:16"
+updated: "2020-10-17 00:09:24"
 url: https://p00q.cn/?p=228
-categories: 
-- 瞎折腾
-tags: 
-- libreoffice
+categories:
+    - 瞎折腾
+tags:
+    - libreoffice
+summary: 本文介绍了如何在Linux环境下生成Word文档，并且同时生成一份Word文档。作者选择了libreoffice这个库来实现这个需求。首先需要下载libreoffice的安装包，解压并安装。然后添加环境变量，将字体文件复制到指定目录。最后，可以使用soffice命令将Word文档转换为pdf格式。
+id: "228"
 ---
 
 # 需求

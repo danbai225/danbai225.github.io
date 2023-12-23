@@ -1,16 +1,18 @@
 ---
 title: 使用 caddy 替换nginx 免费ssl证书
-date: 2022-08-30 19:36:22.666
-updated: 2022-08-30 19:53:21.295
+date: "2022-08-30 19:36:22"
+updated: "2022-08-30 19:53:21"
 url: https://p00q.cn/?p=770
-categories: 
-- Go
-- 瞎折腾
-- 好物分享
-- 解决办法
-tags: 
-- caddy
-- ssl
+categories:
+    - Go
+    - 瞎折腾
+    - 好物分享
+    - 解决办法
+tags:
+    - caddy
+    - ssl
+summary: Caddy是一个强大的、可扩展的平台，用Go编写，可用于为站点、服务和应用程序提供服务。大多数人将Caddy用作Web服务器或代理。Caddy可以充当长时间运行的进程的角色，可以动态修改配置，也可以使用配置文件进行配置。Caddy可以免费签发SSL证书。通过按照安装步骤安装Caddy，然后修改配置文件，可以启动Caddy并访问服务器。遇到的问题可能是网站根目录权限不正确或者SELinux开启的问题。
+id: "770"
 ---
 
 # caddy 介绍

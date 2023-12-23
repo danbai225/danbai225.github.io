@@ -1,0 +1,582 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="影视网站,websocket"/>
+    <meta name="description" content="该功能是一个影视观看平台，用户可以创建房间并邀请好友一同观看影视，同时支持房间语音。具体流程是用户创建房间后，生成一个房间ID，然后通过邀请好友加入房间。前端页面使用DPlayer播放器播放影视，使用cdnbye进行p2p加速，并使用声网Agora处理房间语音。后端使用淡白影视作为基础进行开发，使用socket进行实时通信。具体实现包括前端页面和后端socket类，后端socket管理类用于处理各种操作，例如加入房间、创建房间、发送消息等。整个流程的效果图可以参考文章中的图片。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>使用java websocket&#43;agora.io实现影视同步一起观看和语音功能 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">使用java websocket&#43;agora.io实现影视同步一起观看和语音功能</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-03-21 19:06:56</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">影视网站</span>
+                    
+                    <span class="label label-success label-outline">websocket</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>该功能是一个影视观看平台，用户可以创建房间并邀请好友一同观看影视，同时支持房间语音。具体流程是用户创建房间后，生成一个房间ID，然后通过邀请好友加入房间。前端页面使用DPlayer播放器播放影视，使用cdnbye进行p2p加速，并使用声网Agora处理房间语音。后端使用淡白影视作为基础进行开发，使用socket进行实时通信。具体实现包括前端页面和后端socket类，后端socket管理类用于处理各种操作，例如加入房间、创建房间、发送消息等。整个流程的效果图可以参考文章中的图片。</p>
+            </section>
+        </header>
+            <h1 id="功能介绍">功能介绍</h1>
+
+<p>用户创建房间后可邀请好友一同观看影视并支持房间语音.
+<a href="https://dbys.vip/yiqikan" target="_blank">线上体验地址</a>
+最后效果图:
+<img src="../res/img/33-1.png" alt="image.png" />
+地址:<a href="https://dbys.vip/yiqikan" target="_blank">一起看</a></p>
+
+<h1 id="用到的东西">用到的东西</h1>
+
+<p>播放器:<a href="https://github.com/MoePlayer/DPlayer" target="_blank">DPlayer</a>
+p2p加速:<a href="http://www.cdnbye.com/" target="_blank">cdnbye</a>
+语音:<a href="https://agora.io/" target="_blank">声网Agora</a>
+前端页面使用jq完成的单页应用.
+后端基于<a href="https://github.com/Programming-With-Love/dbys" target="_blank">淡白影视</a>继续开发 socket服务</p>
+
+<h1 id="服务大致流程">服务大致流程</h1>
+
+<p><img src="../res/img/33-2.png" alt="未命名文件.png" /></p>
+
+<h1 id="实现源码">实现源码</h1>
+
+<h2 id="前端">前端</h2>
+
+<p><a href="https://github.com/Programming-With-Love/dbys/blob/master/src/main/resources/templates/yiqikan/index.html" target="_blank">前端单页源码</a></p>
+
+<h2 id="后端">后端</h2>
+
+<p>socket类</p>
+
+<pre><code class="language-java">/**
+ * @author DanBai
+ * @create 2020-03-10 22:57
+ * @desc 同步影院sk
+ **/
+package com.danbai.ys.websocket;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+import com.danbai.ys.entity.CinemaRoom;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import javax.websocket.*;
+import javax.websocket.server.PathParam;
+import javax.websocket.server.ServerEndpoint;
+
+import java.util.concurrent.ConcurrentHashMap;
+
+@ServerEndpoint(&quot;/cinema/socket/{username}&quot;)
+@Component
+public class CinemaSocket {
+    /**
+     * 用户名
+     */
+    private String username;
+    /**
+     * 房间id 0为大厅
+     */
+    private int roomId=0;
+    /**
+     *  连接池
+     */
+    public static ConcurrentHashMap&lt;String, CinemaSocket&gt; POOL = new ConcurrentHashMap&lt;&gt;();
+    /**
+     * 房间池
+     */
+    public static ConcurrentHashMap&lt;Integer, CinemaRoom&gt; ROOM_POOL = new ConcurrentHashMap&lt;&gt;();
+    public static ConcurrentHashMap&lt;String, Integer&gt; DELETE_P00L =new ConcurrentHashMap&lt;&gt;();
+    /**
+     * 与某个客户端的连接会话，需要通过它来给客户端发送数据
+     */
+    private Session session;
+
+    private static Logger log = LoggerFactory.getLogger(CinemaSocket.class);
+
+    /**
+     * 连接建立成功调用的方法
+     */
+    @OnOpen
+    public void onOpen(Session session, @PathParam(&quot;username&quot;) String username) {
+        this.session = session;
+        this.username=username;
+        if(DELETE_P00L.containsKey(username)){
+            this.roomId=DELETE_P00L.get(username);
+        }
+        //加入POOL中
+        POOL.put(session.getId(),this);
+        //断线重连加房间
+        if(roomId!=0){
+            CinemaRoom room= ROOM_POOL.get(roomId);
+            if(room!=null){
+                ROOM_POOL.get(roomId).getSockets().add(session.getId());
+            }
+        }
+        //在线数加1
+        log.info(&quot;有新连接加入！当前在线人数为&quot; + POOL.size());
+        CinemaSocketManagement.info(session.getId());
+    }
+
+    /**
+     * 连接关闭调用的方法
+     */
+    @OnClose
+    public void onClose(Session session) {
+        //从POOL中删除
+        CinemaSocket cinemaSocket = POOL.get(session.getId());
+        if(cinemaSocket!=null){
+            DELETE_P00L.put(cinemaSocket.getUsername(),cinemaSocket.roomId);
+        if(cinemaSocket.roomId!=0){
+            CinemaSocketManagement.exitRoom(session.getId());
+        }
+        }
+        POOL.remove(session.getId());
+        log.info(&quot;有一连接关闭！当前在线人数为&quot; + POOL.size());
+        log.info(&quot;房间数&quot; + ROOM_POOL.size());
+    }
+
+    /**
+     * 收到客户端消息后调用的方法
+     *
+     * @param message 客户端发送过来的消息
+     */
+    @OnMessage
+    public void onMessage(String message,Session session) {
+        String id=session.getId();
+        CinemaSocket cinemaSocket = POOL.get(id);
+        if(cinemaSocket!=null){
+            try {
+                JSONObject jsonObject = JSON.parseObject(message);
+            String type = jsonObject.getString(&quot;type&quot;);
+            if(jsonObject!=null&amp;&amp;type!=null){
+
+                    switch (type){
+                        case &quot;info&quot;:CinemaSocketManagement.info(id);break;
+                        case &quot;join&quot;:CinemaSocketManagement.joinRoom(id,jsonObject.getInteger(&quot;roomId&quot;),jsonObject.getString(&quot;pass&quot;));break;
+                        case &quot;newRoom&quot;:CinemaSocketManagement.newRoom(id,jsonObject.getString(&quot;name&quot;),jsonObject.getString(&quot;pass&quot;));break;
+                        case &quot;exitRoom&quot;:CinemaSocketManagement.exitRoom(id);break;
+                        case &quot;roomInfo&quot;:CinemaSocketManagement.roomInfo(id);break;
+                        case  &quot;sendChat&quot;:CinemaSocketManagement.sendChat(id,jsonObject.getString(&quot;msg&quot;));break;
+                        case  &quot;sendUrl&quot;:CinemaSocketManagement.sendUrl(id,jsonObject.getString(&quot;url&quot;));break;
+                        case  &quot;sendTime&quot;:CinemaSocketManagement.sendTime(id,jsonObject.getDouble(&quot;time&quot;));break;
+                        case &quot;transfer&quot;:CinemaSocketManagement.transfer(id,jsonObject.getString(&quot;id&quot;));break;
+                        default:log.info(message);
+                    }}
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }catch (JSONException e){
+                    log.info(message);
+                    e.printStackTrace();
+                }
+            }
+
+    }
+
+    /**
+     * 发生错误时调用
+     *
+     * @OnError 错误消息
+     * @param session session
+     **/
+    @OnError
+    public void onError(Session session, Throwable error) {
+        log.error(&quot;onMessage方法异常&quot; + error.toString());
+        error.printStackTrace();
+    }
+
+
+    /**
+     * 发送消息需注意方法加锁synchronized，避免阻塞报错
+     * 注意session.getBasicRemote()与session.getAsyncRemote()的区别
+     *
+     * @param message 消息
+     */
+    public void sendMessage(String message){
+        synchronized (session) {
+            if (session.isOpen()) {
+                this.session.getAsyncRemote().sendText(message);
+            }
+        }
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
+        this.session = session;
+    }
+    @Scheduled(cron=&quot;0 */1 * * * ?&quot;)
+    public void examine(){
+        DELETE_P00L.clear();
+        //删除断开的链接
+        POOL.forEach((id,e)-&gt;{
+            if(!e.session.isOpen()){
+                POOL.remove(id);
+            }
+        });
+        ROOM_POOL.forEach((id,room)-&gt;{
+            if(POOL.get(room.getAuthorId())==null){
+                if(room.getSockets().size()&lt;2){
+                    ROOM_POOL.remove(id);
+                }else {
+                    //新房主
+                    String newId = CinemaSocket.ROOM_POOL.get(id).getSockets().iterator().next();
+                    //转让
+                    if (newId != null) {
+                        CinemaSocket.ROOM_POOL.get(roomId).setAuthorId(newId);
+                    }
+                }
+            }
+        });
+    }
+}
+
+</code></pre>
+
+<p>socket管理类</p>
+
+<pre><code class="language-java">/**
+ * @author DanBai
+ * @create 2020-03-11 0:22
+ * @desc socket管理
+ **/
+package com.danbai.ys.websocket;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.danbai.ys.async.CinemaSocketAsync;
+import com.danbai.ys.entity.CinemaRoom;
+import com.danbai.ys.utils.Md5;
+import com.danbai.ys.utils.SpringUtil;
+
+import io.agora.media.RtcTokenBuilder;
+import io.agora.sample.RtcTokenBuilderSample;
+import org.springframework.stereotype.Component;
+
+@Component
+public class CinemaSocketManagement {
+    /**
+     * 加入房间
+     *
+     * @param socketId socketId
+     * @param roomId   房间id
+     * @param pass     房间密码
+     */
+    public static void joinRoom(String socketId, int roomId, String pass) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(&quot;type&quot;, &quot;join&quot;);
+        boolean ok = false;
+        CinemaRoom cinemaRoom = CinemaSocket.ROOM_POOL.get(roomId);
+        //是否需要密码
+        if (cinemaRoom != null &amp;&amp; cinemaRoom.getPass() != null) {
+            if (cinemaRoom.getPass().equals(pass)) {
+                //密码正确
+                CinemaSocket.ROOM_POOL.get(roomId).getSockets().add(socketId);
+                CinemaSocket.POOL.get(socketId).setRoomId(roomId);
+                ok = true;
+            }
+        } else {
+            CinemaSocket.ROOM_POOL.get(roomId).getSockets().add(socketId);
+            CinemaSocket.POOL.get(socketId).setRoomId(roomId);
+            ok = true;
+        }
+        jsonObject.put(&quot;ok&quot;, ok);
+        if(ok){
+            //语音token
+            RtcTokenBuilder token = new RtcTokenBuilder();
+            int timestamp = (int)(System.currentTimeMillis() / 1000 + 3600);
+            String result = token.buildTokenWithUid(RtcTokenBuilderSample.appId, RtcTokenBuilderSample.appCertificate,
+                    Md5.getMD5LowerCase(cinemaRoom.getName()+cinemaRoom.getId()), Integer.parseInt(socketId,16), RtcTokenBuilder.Role.Role_Publisher, timestamp);
+            jsonObject.put(&quot;token&quot;,result);
+            jsonObject.put(&quot;channel&quot;,Md5.getMD5LowerCase(cinemaRoom.getName()+cinemaRoom.getId()));
+            jsonObject.put(&quot;id&quot;,String.valueOf(cinemaRoom.getId()));
+            jsonObject.put(&quot;name&quot;,cinemaRoom.getName());
+            jsonObject.put(&quot;uid&quot;,Integer.parseInt(socketId,16));
+        }
+        CinemaSocket.POOL.get(socketId).sendMessage(jsonObject.toJSONString());
+    }
+
+    /**
+     * 创建房间
+     *
+     * @param socketId socketId
+     * @param name     房间名字
+     * @param pass     密码
+     */
+    public static void newRoom(String socketId, String name, String pass) {
+        if(name!=null){
+            int id = CinemaSocket.ROOM_POOL.size() + 1;
+            if(pass.equals(&quot;&quot;)){
+                pass=null;
+            }
+            CinemaRoom cinemaRoom = new CinemaRoom(id, name, pass, socketId);
+            CinemaSocket.ROOM_POOL.put(cinemaRoom.getId(), cinemaRoom);
+            joinRoom(socketId, id, pass);
+        }
+    }
+
+    /**
+     * 发送大厅消息
+     *
+     * @param msg 消息
+     */
+    public static void sendLobby(String msg) {
+        CinemaSocket.POOL.forEach((id, socket) -&gt; {
+            if (socket.getRoomId() == 0) {
+                socket.sendMessage(msg);
+            }
+        });
+    }
+
+    /**
+     * 退出房间
+     *
+     * @param socketId socketId
+     */
+    public static void exitRoom(String socketId) {
+        int roomId = CinemaSocket.POOL.get(socketId).getRoomId();
+        //房主判断
+        CinemaRoom room = CinemaSocket.ROOM_POOL.get(roomId);
+        if (room != null) {
+            if (room.getAuthorId().equals(socketId)) {
+                System.out.println(&quot;是房主&quot;);
+                //大于1人转让房主
+                if (room.getSockets().size() &gt; 1) {
+                    System.out.println(&quot;转让&quot;);
+                    //退出房间
+                    CinemaSocket.ROOM_POOL.get(roomId).getSockets().remove(socketId);
+                    //新房主
+                    String newId = CinemaSocket.ROOM_POOL.get(roomId).getSockets().iterator().next();
+                    //转让
+                    if (newId != null) {
+                        CinemaSocket.ROOM_POOL.get(roomId).setAuthorId(newId);
+                    }
+
+                } else {
+                    //删除房间
+                    CinemaSocket.ROOM_POOL.remove(roomId);
+                }
+            } else {
+                //退出
+                System.out.println(&quot;房客退出&quot;);
+                CinemaSocket.ROOM_POOL.get(roomId).getSockets().remove(socketId);
+            }
+        }
+    }
+
+    /**
+     * 获取大厅房间信息
+     *
+     * @param socketId socketId
+     * @return
+     */
+    public static void info(String socketId) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(&quot;type&quot;, &quot;info&quot;);
+        //在线人数
+        jsonObject.put(&quot;online&quot;, CinemaSocket.POOL.size());
+        //遍历添加房间信息
+        JSONArray rooms = new JSONArray();
+        CinemaSocket.ROOM_POOL.forEach((id, room) -&gt; {
+            JSONObject roomJson = new JSONObject();
+            roomJson.put(&quot;id&quot;, id);
+            roomJson.put(&quot;name&quot;, room.getName());
+            roomJson.put(&quot;online&quot;, room.getSockets().size());
+            roomJson.put(&quot;author&quot;, CinemaSocket.POOL.get(room.getAuthorId()).getUsername());
+            roomJson.put(&quot;needPass&quot;, room.getPass() == null ? false : true);
+            rooms.add(roomJson);
+        });
+        jsonObject.put(&quot;rooms&quot;, rooms);
+        CinemaSocket.POOL.get(socketId).sendMessage(jsonObject.toJSONString());
+
+    }
+
+    /**
+     * 房间信息
+     *
+     * @param socketId
+     */
+    public static void roomInfo(String socketId) {
+        JSONObject roomJson = new JSONObject();
+        roomJson.put(&quot;type&quot;, &quot;roomInfo&quot;);
+        CinemaSocket cinemaSocket = CinemaSocket.POOL.get(socketId);
+        CinemaRoom room = CinemaSocket.ROOM_POOL.get(cinemaSocket.getRoomId());
+        roomJson.put(&quot;id&quot;, room.getId());
+        roomJson.put(&quot;name&quot;, room.getName());
+        roomJson.put(&quot;online&quot;, room.getSockets().size());
+        roomJson.put(&quot;url&quot;,room.getUrl());
+        roomJson.put(&quot;time&quot;,room.getTime());
+        roomJson.put(&quot;author&quot;, CinemaSocket.POOL.get(room.getAuthorId()).getUsername());
+        JSONArray users = new JSONArray();
+        room.getSockets().forEach(id -&gt; {
+            JSONObject user = new JSONObject();
+            user.put(&quot;id&quot;, id);
+            user.put(&quot;username&quot;, CinemaSocket.POOL.get(id).getUsername());
+            users.add(user);
+        });
+        roomJson.put(&quot;users&quot;,users);
+
+        CinemaSocket.POOL.get(socketId).sendMessage(roomJson.toJSONString());
+    }
+    public static void sendChat(String socketId,String msg){
+        CinemaSocket cinemaSocket = CinemaSocket.POOL.get(socketId);
+        CinemaRoom room = CinemaSocket.ROOM_POOL.get(cinemaSocket.getRoomId());
+        JSONObject sendMsg = new JSONObject();
+        sendMsg.put(&quot;type&quot;,&quot;sendChat&quot;);
+        sendMsg.put(&quot;id&quot;,socketId);
+        sendMsg.put(&quot;roomId&quot;,room.getId());
+        sendMsg.put(&quot;username&quot;,cinemaSocket.getUsername());
+        sendMsg.put(&quot;msg&quot;,msg);
+        SpringUtil.getBean(CinemaSocketAsync.class).sendRoomMsg(room.getId(),sendMsg.toJSONString());
+    }
+    public static void sendUrl(String socketId,String url){
+        CinemaSocket cinemaSocket = CinemaSocket.POOL.get(socketId);
+        CinemaRoom room = CinemaSocket.ROOM_POOL.get(cinemaSocket.getRoomId());
+        if(room.getAuthorId().equals(socketId)){
+            CinemaSocket.ROOM_POOL.get(cinemaSocket.getRoomId()).setUrl(url);
+            JSONObject sendMsg = new JSONObject();
+            sendMsg.put(&quot;type&quot;,&quot;sendUrl&quot;);
+            sendMsg.put(&quot;url&quot;,url);
+            SpringUtil.getBean(CinemaSocketAsync.class).sendRoomMsgPassAuthor(room.getId(),sendMsg.toJSONString());
+        }
+    }
+    public static void sendTime(String socketId,double time){
+        CinemaSocket cinemaSocket = CinemaSocket.POOL.get(socketId);
+        CinemaRoom room = CinemaSocket.ROOM_POOL.get(cinemaSocket.getRoomId());
+        if(room.getAuthorId().equals(socketId)){
+            CinemaSocket.ROOM_POOL.get(cinemaSocket.getRoomId()).setTime(time);
+            JSONObject sendMsg = new JSONObject();
+            sendMsg.put(&quot;type&quot;,&quot;sendTime&quot;);
+            sendMsg.put(&quot;time&quot;,time);
+            SpringUtil.getBean(CinemaSocketAsync.class).sendRoomMsgPassAuthor(room.getId(),sendMsg.toJSONString());
+        }
+    }
+    public static void transfer(String socketId,String transferId){
+        CinemaSocket cinemaSocket = CinemaSocket.POOL.get(socketId);
+        CinemaRoom room = CinemaSocket.ROOM_POOL.get(cinemaSocket.getRoomId());
+        if(room.getAuthorId().equals(socketId)){
+            CinemaSocket.ROOM_POOL.get(cinemaSocket.getRoomId()).setAuthorId(transferId);
+        }
+    }
+}
+
+</code></pre>
+
+<h1 id="完感">完感</h1>
+
+<p>通过实现这个功能,还收获了一些其他的知识,nginx代理websocket、java多线程map、web语音.</p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2020-03-21 19:07:44</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

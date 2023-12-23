@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="插件开发,jcef"/>
+    <meta name="description" content="该文档介绍了如何使用CefBrowser类来修改请求头和实现和JavaScript的交互。首先，在实现CefContextMenuHandler接口的类中，可以通过onBeforeContextMenu方法清除默认的菜单项，并添加自定义菜单项。然后，可以在onContextMenuCommand方法中根据菜单项的ID执行相应的操作。接下来，在初始化时，可以通过addRequestHandler方法添加实现的处理方法。另外，在加载网页后，可以使用executeJavaScript方法加载JavaScript代码，并将方法注册到window对象中，以实现与JavaScript的交互。最后，可以通过JBCefJSQuery类的相关方法来处理JavaScript方法的调用，并在回调中返回调用结果。
+
+参考链接：[CefBrowser文档](http://www.xuanyimao.com/doc/jcef/202011/org/cef/browser/CefBrowser.html) [帮助文档](http://www.xuanyimao.com/jcef/index.html)" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>jbcef修改请求头和js交互 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">jbcef修改请求头和js交互</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2021-11-29 19:59:09</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">插件开发</span>
+                    
+                    <span class="label label-success label-outline">jcef</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>该文档介绍了如何使用CefBrowser类来修改请求头和实现和JavaScript的交互。首先，在实现CefContextMenuHandler接口的类中，可以通过onBeforeContextMenu方法清除默认的菜单项，并添加自定义菜单项。然后，可以在onContextMenuCommand方法中根据菜单项的ID执行相应的操作。接下来，在初始化时，可以通过addRequestHandler方法添加实现的处理方法。另外，在加载网页后，可以使用executeJavaScript方法加载JavaScript代码，并将方法注册到window对象中，以实现与JavaScript的交互。最后，可以通过JBCefJSQuery类的相关方法来处理JavaScript方法的调用，并在回调中返回调用结果。
+
+参考链接：[CefBrowser文档](http://www.xuanyimao.com/doc/jcef/202011/org/cef/browser/CefBrowser.html) [帮助文档](http://www.xuanyimao.com/jcef/index.html)</p>
+            </section>
+        </header>
+            <p><a href="http://www.xuanyimao.com/doc/jcef/202011/org/cef/browser/CefBrowser.html" target="_blank">CefBrowser文档</a> <a href="http://www.xuanyimao.com/jcef/index.html" target="_blank">帮助文档</a></p>
+
+<h1 id="修改请求头">修改请求头</h1>
+
+<h2 id="实现cefcontextmenuhandler">实现CefContextMenuHandler</h2>
+
+<pre><code>package com.github.danbai225.pwlchat.handler
+
+import com.github.danbai225.pwlchat.component.WebChat
+import org.cef.browser.CefBrowser
+import org.cef.browser.CefFrame
+import org.cef.callback.CefContextMenuParams
+import org.cef.callback.CefMenuModel
+import org.cef.handler.CefContextMenuHandler
+
+
+class PwlContextMenuHandler() : CefContextMenuHandler {
+    private var wb :WebChat?=null
+
+    constructor(w:WebChat) : this() {
+       wb=w
+    }
+    override fun onBeforeContextMenu(p0: CefBrowser?, p1: CefFrame?, p2: CefContextMenuParams?, p3: CefMenuModel?) {
+        p3?.clear();//清除默认的菜单项
+        p3?.addItem(CefMenuModel.MenuId.MENU_ID_USER_LAST, &quot;Open DevTools&quot;)
+        p3?.addItem(RefreshEmptyID, &quot;RefreshEmpty&quot;)
+    }
+
+    override fun onContextMenuCommand(
+        p0: CefBrowser?,
+        p1: CefFrame?,
+        p2: CefContextMenuParams?,
+        p3: Int,
+        p4: Int
+    ): Boolean {
+        when(p3){
+            CefMenuModel.MenuId.MENU_ID_USER_LAST-&gt;{
+                wb?.openDevtools()
+                return true
+            }
+            RefreshEmptyID-&gt;{
+                wb?.loadChatPage()
+                return true
+            }
+        }
+      return false
+    }
+
+    override fun onContextMenuDismissed(p0: CefBrowser?, p1: CefFrame?) {
+    }
+    companion object {
+        private const val RefreshEmptyID=29101
+    }
+}
+</code></pre>
+
+<p>我是继承了JBCefBrowser类来实现功能的。
+在初始化时通过<code>addRequestHandler</code>添加刚才实现的处理方法</p>
+
+<pre><code>        jbCefClient.addRequestHandler(PwlCefResourceRequestHandler(), cefBrowser)
+</code></pre>
+
+<h1 id="和js交互">和js交互</h1>
+
+<p>在加载之后加载js代码</p>
+
+<pre><code>        val openRedPacket=JBCefJSQuery.create(this)
+        openRedPacket.addHandler { args: String -&gt;
+            clientApi?.openPacket(args)
+            JBCefJSQuery.Response(&quot;ok&quot;)
+        }
+        jbCefClient.addLoadHandler(object : CefLoadHandlerAdapter() {
+            override fun onLoadEnd(browser: CefBrowser, frame: CefFrame, httpStatusCode: Int) {
+                clientApi?.more(1)
+                browser.executeJavaScript(
+                    &quot;window.openRedPacket = function(arg) {${openRedPacket.inject(
+                        &quot;arg&quot;,
+                        &quot;response =&gt; console.log('调用成功', response)&quot;,
+                        &quot;(error_code, error_message) =&gt; console.log('调用失败', error_code, error_message)&quot;
+                    )}};&quot;,
+                    &quot;https://exp.com/js/openRedPacket.js&quot;, 0
+                )
+            }
+        }, cefBrowser)
+</code></pre>
+
+<p>把js方法注册到<code>window.openRedPacket</code>调用这个方法就会调用到上面添加的<code>Handler</code>在回掉中通过<code>JBCefJSQuery.Response(&quot;ok&quot;)</code>返回调用结果。
+<code>executeJavaScript</code>中的第二个参数是虚拟一个加载url
+<a href="https://github.com/danbai225/pwl-chat" target="_blank">代码</a></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2021-11-29 19:59:09</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

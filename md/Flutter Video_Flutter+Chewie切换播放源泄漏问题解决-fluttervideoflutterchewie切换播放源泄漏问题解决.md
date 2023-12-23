@@ -1,13 +1,15 @@
 ---
 title: Flutter Video_Flutter+Chewie切换播放源泄漏问题解决
-date: 2020-09-24 16:09:34.147
-updated: 2020-10-17 00:14:35.947
+date: "2020-09-24 16:09:34"
+updated: "2020-10-17 00:14:35"
 url: https://p00q.cn/?p=194
-categories: 
-- Flutter
-tags: 
-- Flutter
-- video_player
+categories:
+    - Flutter
+tags:
+    - Flutter
+    - video_player
+summary: 本文介绍了在切换播放源时可能出现的后台播放问题，并提供了一种解决方案。在切换播放源之前，先将新的`VideoPlayerController`保存在一个变量中，待其初始化完成后再销毁上一个控制器。具体操作通过判断当前控制器是否为空，如果为空则直接初始化新的控制器；如果不为空，则先保存当前控制器到一个变量，在下一次刷新时销毁之前的控制器，并初始化新的控制器。控制器初始化的过程是先初始化`VideoPlayerController`，然后使用其初始化完成的回调来初始化`ChewieController`。在页面销毁时，需要先销毁播放器以避免泄漏。
+id: "194"
 ---
 
 # 切换播放

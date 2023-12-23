@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="lal,rtsp,flv,onvif"/>
+    <meta name="description" content="本文介绍了使用ONVIF协议连接摄像头获取RTSP流地址，并使用lal流媒体服务器播放。主要步骤包括使用ONVIF Client工具连接摄像头获取RTSP流地址，然后将流地址添加到lal流媒体服务器，并通过API获取播放地址进行播放。如果遇到无法播放的情况，可以尝试更换视频编码为H.264或检查音频编码是否支持。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>从监控摄像头拿视频流 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">从监控摄像头拿视频流</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2022-08-13 10:08:28</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">lal</span>
+                    
+                    <span class="label label-success label-outline">rtsp</span>
+                    
+                    <span class="label label-success label-outline">flv</span>
+                    
+                    <span class="label label-success label-outline">onvif</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>本文介绍了使用ONVIF协议连接摄像头获取RTSP流地址，并使用lal流媒体服务器播放。主要步骤包括使用ONVIF Client工具连接摄像头获取RTSP流地址，然后将流地址添加到lal流媒体服务器，并通过API获取播放地址进行播放。如果遇到无法播放的情况，可以尝试更换视频编码为H.264或检查音频编码是否支持。</p>
+            </section>
+        </header>
+            <p>首先了解两个相关协议</p>
+
+<h1 id="onvif">onvif</h1>
+
+<p>ONVIF是一个开放的安防行业组织，致力于为安防行业提供和促进标准化开放接口，
+以实现IP网络安防产品的有效互操作性。
+<a href="http://www.onvif.org/" target="_blank">官网</a></p>
+
+<h1 id="rtsp">RTSP</h1>
+
+<p>实时流协议（Real Time Streaming Protocol，RTSP）是一种网络应用协议，专为娱乐和通信系统的使用，以控制流媒体服务器。该协议用于创建和控制终端之间的媒体会话。媒体服务器的客户端发布VCR命令，例如播放，录制和暂停，以便于实时控制从服务器到客户端（视频点播）或从客户端到服务器（语音录音）的媒体流。</p>
+
+<p>流数据本身的传输不是RTSP的任务。大多数RTSP服务器使用实时传输协议（RTP）和实时传输控制协议（RTCP）结合媒体流传输。然而，一些供应商实现专有传输协议。例如，RealNetworks公司的RTSP服务器软件也使用RealNetworks的专有实时数据传输（RDT）。</p>
+
+<p>RTSP由RealNetworks公司，Netscape公司和哥伦比亚大学开发，第一稿于1996年提交给IETF。由互联网工程任务组（IETF）的多方多媒体会话控制工作组（MMUSIC WG）进行了标准化，并于1998年发布为RFC 2326。 RTSP 2.0 于2016年发布为RFC 7826，作为RTSP 1.0的替代品。RTSP 2.0基于RTSP 1.0，但除了基本的版本协商机制之外不向后兼容。</p>
+
+<p><a href="https://zh.wikipedia.org/zh-cn/%E5%8D%B3%E6%99%82%E4%B8%B2%E6%B5%81%E5%8D%94%E5%AE%9A" target="_blank">维基</a></p>
+
+<h1 id="用到的一些网站">用到的一些网站</h1>
+
+<ul>
+<li><p><a href="https://www.happytimesoft.com/" target="_blank">happytimesoft</a> 一些测试工具</p></li>
+
+<li><p><a href="https://www.dnsdizhi.com/391.html" target="_blank">常见网络摄像机默认使用的端口，RTSP地址等</a></p></li>
+
+<li><p><a href="https://pengrl.com/lal/#/README" target="_blank">lal-流媒体服务器</a></p></li>
+</ul>
+
+<h1 id="主要流程">主要流程</h1>
+
+<p>通过onvif协议连接登陆摄像头，这样就可以设置一些音视频参数和查看rtsp流地址。
+部署lal流媒体服务器，调用 lal API接口拉取rtsp流，用户再从 lal 拉取所需的播放格式。</p>
+
+<h2 id="需要条件">需要条件</h2>
+
+<ul>
+<li><p>服务器能访问到摄像头ip</p></li>
+
+<li><p>摄像头支持rtsp、rtmp等视频流</p></li>
+</ul>
+
+<h2 id="使用onvif-client连接摄像头-拿到rtsp流地址">使用ONVIF Client连接摄像头 拿到rtsp流地址</h2>
+
+<p><a href="https://www.happytimesoft.com/products/onvif-client/index.html" target="_blank">工具下载地址</a></p>
+
+<p>运行工具如下：
+<img src="../res/img/739.jpeg" alt="image-1660359585560" /></p>
+
+<p>左栏右击，添加摄像头。默认如果在一个网段下是会直接扫描出来的。</p>
+
+<p><img src="../res/img/739-1.jpeg" alt="image-1660359677188" /></p>
+
+<p>设置它的登陆信息。可能的默认密码 admin</p>
+
+<p>认证后双击会出现在右侧播放。</p>
+
+<p><img src="../res/img/739-2.jpeg" alt="image-1660359765636" /></p>
+
+<p>复制url，这就是rtsp流地址。</p>
+
+<h2 id="添加流地址到lal流媒体服务器">添加流地址到lal流媒体服务器</h2>
+
+<p>根据官方文档或者拉下<a href="https://github.com/q191201771/lal" target="_blank">源代码</a>运行服务器</p>
+
+<p>我以源代码运行默认api端口是8083
+访问<code>http://127.0.0.1:8083/api/stat/all_group</code>
+返回</p>
+
+<pre><code>{
+    &quot;error_code&quot;: 0,
+    &quot;desp&quot;: &quot;succ&quot;,
+    &quot;data&quot;: {
+        &quot;groups&quot;: null
+    }
+}
+</code></pre>
+
+<h3 id="通过接口添加流地址">通过接口添加流地址</h3>
+
+<p><img src="../res/img/739-4.jpeg" alt="image-1660360262945" /></p>
+
+<p>再访问<code>http://127.0.0.1:8083/api/stat/all_group</code></p>
+
+<pre><code>{
+    &quot;error_code&quot;: 0,
+    &quot;desp&quot;: &quot;succ&quot;,
+    &quot;data&quot;: {
+        &quot;groups&quot;: [
+            {
+                &quot;stream_name&quot;: &quot;test&quot;,
+                &quot;audio_codec&quot;: &quot;&quot;,
+                &quot;video_codec&quot;: &quot;H264&quot;,
+                &quot;video_width&quot;: 1280,
+                &quot;video_height&quot;: 720,
+                &quot;pub&quot;: {
+                    &quot;session_id&quot;: &quot;&quot;,
+                    &quot;protocol&quot;: &quot;&quot;,
+                    &quot;base_type&quot;: &quot;&quot;,
+                    &quot;start_time&quot;: &quot;&quot;,
+                    &quot;remote_addr&quot;: &quot;&quot;,
+                    &quot;read_bytes_sum&quot;: 0,
+                    &quot;wrote_bytes_sum&quot;: 0,
+                    &quot;bitrate&quot;: 0,
+                    &quot;read_bitrate&quot;: 0,
+                    &quot;write_bitrate&quot;: 0
+                },
+                &quot;subs&quot;: null,
+                &quot;pull&quot;: {
+                    &quot;session_id&quot;: &quot;RTSPPULL1&quot;,
+                    &quot;protocol&quot;: &quot;RTSP&quot;,
+                    &quot;base_type&quot;: &quot;PULL&quot;,
+                    &quot;start_time&quot;: &quot;2022-08-13 11:15:33.226&quot;,
+                    &quot;remote_addr&quot;: &quot;10.211.55.5:554&quot;,
+                    &quot;read_bytes_sum&quot;: 1552868,
+                    &quot;wrote_bytes_sum&quot;: 0,
+                    &quot;bitrate&quot;: 866,
+                    &quot;read_bitrate&quot;: 866,
+                    &quot;write_bitrate&quot;: 0
+                }
+            }
+        ]
+    }
+}
+</code></pre>
+
+<h3 id="播放">播放</h3>
+
+<p>根据需要从下面个地址获取播放地址
+<a href="https://pengrl.com/lal/#/streamurllist" target="_blank">lalserver 各协议推拉流url地址列表</a></p>
+
+<p>通过flv.js 播放http-flv</p>
+
+<p><img src="../res/img/739-5.jpeg" alt="image-1660360830533" /></p>
+
+<h3 id="鉴权">鉴权</h3>
+
+<p>通过通知和api调用来达到自定义鉴权
+<a href="https://pengrl.com/lal/#/HTTPNotify" target="_blank">通知事件</a></p>
+
+<h1 id="其他情况">其他情况</h1>
+
+<p>如果遇到无法播放的情况可以看下视频编码是不是h265 尝试更换为h264
+或者音频编码是不支持的</p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2022-08-13 11:39:11</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

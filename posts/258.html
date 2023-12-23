@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Go"/>
+    <meta name="description" content="本文介绍了在Go语言中对数组切片进行传递时的一些注意事项。在Go语言中，数组的传递是采用引用传递的方式，即传递的是数组的内存地址。因此，即使重新赋值，也只是复制了一份内存地址。如果要解决这个问题，可以使用copy()函数来进行复制。此外，在遇到多维数组时，使用copy()函数无法解决子元素数组的复制问题，需要进行二次复制来解决。此外，本文还介绍了一个通用的深拷贝函数Clone()，可以用来对任意结构进行深拷贝。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>golang数组切片拷贝问题 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">golang数组切片拷贝问题</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2020-11-08 19:31:37</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">Go</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>本文介绍了在Go语言中对数组切片进行传递时的一些注意事项。在Go语言中，数组的传递是采用引用传递的方式，即传递的是数组的内存地址。因此，即使重新赋值，也只是复制了一份内存地址。如果要解决这个问题，可以使用copy()函数来进行复制。此外，在遇到多维数组时，使用copy()函数无法解决子元素数组的复制问题，需要进行二次复制来解决。此外，本文还介绍了一个通用的深拷贝函数Clone()，可以用来对任意结构进行深拷贝。</p>
+            </section>
+        </header>
+            <h1 id="数组切片传递">数组切片传递</h1>
+
+<p>数组在传递中采用引用传递,即使重新赋值也是只是复制他的一份内存地址
+例如:</p>
+
+<pre><code>func main() {
+	array1:=[]string{&quot;00&quot;,&quot;01&quot;}
+	array2:=array1
+	array1[0]=&quot;asd&quot;
+	fmt.Println(array1)
+	fmt.Println(array2)
+}
+</code></pre>
+
+<p>输出:</p>
+
+<pre><code>[asd 01]
+[asd 01]
+</code></pre>
+
+<h2 id="使用copy来解决这个问题">使用COPY来解决这个问题</h2>
+
+<p>注意初始化时的长度要和拷贝数组长度&gt;=</p>
+
+<pre><code>func main() {
+	array1:=[]string{&quot;00&quot;,&quot;01&quot;}
+	array2:=make([]string, len(array1))
+	copy(array2,array1)
+	array1[0]=&quot;asd&quot;
+	fmt.Println(array1)
+	fmt.Println(array2)
+}
+</code></pre>
+
+<p>输出:</p>
+
+<pre><code>[asd 01]
+[00 01]
+</code></pre>
+
+<h1 id="当遇到多维数组的时候">当遇到多维数组的时候</h1>
+
+<p>在多维数组的情况下COPY貌似也不行了,在拷贝数组的时候并没有拷贝子元素数组</p>
+
+<pre><code>func main() {
+	array1:=[][]string{
+		{&quot;00&quot;,&quot;01&quot;},
+		{&quot;10&quot;,&quot;11&quot;},
+	}
+	array2:=make([][]string, len(array1), len(array1[0]))
+	copy(array2,array1)
+	array1[0][0]=&quot;asd&quot;
+	fmt.Println(array1)
+	fmt.Println(array2)
+}
+</code></pre>
+
+<p>输出:</p>
+
+<pre><code>[[asd 01] [10 11]]
+[[asd 01] [10 11]]
+
+</code></pre>
+
+<h2 id="在改变子元素数组的时候再copy一次">在改变子元素数组的时候再copy一次</h2>
+
+<pre><code>func main() {
+	array1:=[][]string{
+		{&quot;00&quot;,&quot;01&quot;},
+		{&quot;10&quot;,&quot;11&quot;},
+	}
+	array2:=make([][]string, len(array1), len(array1[0]))
+	copy(array2,array1)
+	as := make([]string, 2)
+	copy(as,array2[0])
+	as[0]=&quot;asd&quot;
+	array1[0]=as
+	fmt.Println(array1)
+	fmt.Println(array2)
+
+}
+</code></pre>
+
+<p>输出:</p>
+
+<pre><code>[[asd 01] [10 11]]
+[[00 01] [10 11]]
+</code></pre>
+
+<h1 id="golang深拷贝任意结构代码">golang深拷贝任意结构代码</h1>
+
+<p><a href="https://www.cnblogs.com/ayanmw/p/8666378.html" target="_blank">来源</a></p>
+
+<pre><code>func Clone(a, b interface{}) error {
+	buff := new(bytes.Buffer)
+	enc := gob.NewEncoder(buff)
+	dec := gob.NewDecoder(buff)
+	if err := enc.Encode(a); err != nil {
+		return err
+	}
+	if err := dec.Decode(b); err != nil {
+		return err
+	}
+	return nil
+}
+</code></pre>
+
+<p>再试试</p>
+
+<pre><code>func main() {
+	array1:=[][]string{
+		{&quot;00&quot;,&quot;01&quot;},
+		{&quot;10&quot;,&quot;11&quot;},
+	}
+	array2:=make([][]string, len(array1), len(array1[0]))
+	Clone(&amp;array1,&amp;array2)
+	array1[0][0]=&quot;asd&quot;
+	fmt.Println(array1)
+	fmt.Println(array2)
+}
+</code></pre>
+
+<p>输出:</p>
+
+<pre><code>[[asd 01] [10 11]]
+[[00 01] [10 11]]
+</code></pre>
+
+<p>最近刚遇到了多维数组切片拷贝的问题所有记录一下&hellip;.</p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2020-11-08 19:42:31</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>
