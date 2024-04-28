@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="临时邮箱,email,golang"/>
+    <meta name="description" content="本文介绍了临时邮箱的概念，并提供了一个支持在线和api提供调用的临时邮箱服务https://mail.tm/。此外，还提供了多种语言的SDK供开发者使用，例如.NET、Dart、Golang、Java、JavaScript、PHP、Python、Rust和Swift等。其中，以Golang为例，给出了使用mail.tm提供的Golang SDK的示例代码，展示了如何创建一个账号并查看邮件。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>api获取临时邮箱，收邮件 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links.html">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">api获取临时邮箱，收邮件</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2024-04-28 19:13:00</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">临时邮箱</span>
+                    
+                    <span class="label label-success label-outline">email</span>
+                    
+                    <span class="label label-success label-outline">golang</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>本文介绍了临时邮箱的概念，并提供了一个支持在线和api提供调用的临时邮箱服务https://mail.tm/。此外，还提供了多种语言的SDK供开发者使用，例如.NET、Dart、Golang、Java、JavaScript、PHP、Python、Rust和Swift等。其中，以Golang为例，给出了使用mail.tm提供的Golang SDK的示例代码，展示了如何创建一个账号并查看邮件。</p>
+            </section>
+        </header>
+            <h1 id="临时邮箱">临时邮箱</h1>
+
+<p>通过google搜索可以搜索到许多临时邮箱的服务。其中 <a href="https://mail.tm/" target="_blank">https://mail.tm/</a> 支持在线和api提供调用。</p>
+
+<p>并且提供了许多语言的sdk</p>
+
+<pre><code>Language	Link
+.NET	https://github.com/SmorcIRL/mail.tm
+Dart	https://pub.dev/packages/mailtm_client
+Golang	https://github.com/felixstrobel/mailtm
+Java	https://github.com/shivam1608/JMailTM
+JavaScript	https://github.com/cemalgnlts/Mailjs
+PHP	https://github.com/heithemmoumni/mail.tm
+Python	https://github.com/CarloDePieri/pymailtm, https://github.com/prtolem/MailTM, https://github.com/RPwnage/MailTMClient
+Rust	https://github.com/AwesomeIbex/mail-tm-rs
+Swift	https://github.com/devwaseem/MailTMSwift
+</code></pre>
+
+<h1 id="golang-sdk">golang sdk</h1>
+
+<p>这里采用他们提供的golang sdk进行简单的实现。</p>
+
+<pre><code class="language-golang">package main
+
+import (
+	&quot;fmt&quot;
+	&quot;github.com/felixstrobel/mailtm&quot;
+)
+
+func main() {
+	client, err := mailtm.New() //获取一个客户端
+	if err != nil {
+		panic(err)
+	}
+	account, err := client.NewAccount() //创建一个账号
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(account.Address) //输出邮箱地址
+	//查看邮件
+	messages, err := client.GetMessages(account, 1)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(messages)
+}
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2024-04-28 19:13:00</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>
