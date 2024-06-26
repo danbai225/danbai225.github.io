@@ -1,7 +1,11 @@
 github.com/gomarkdown/markdown v0.0.0-20231222211730-1d6d20845b47 h1:k4Tw0nt6lwro3Uin8eqoET7MDA4JnT8YgbCjc/g5E3k=
 github.com/gomarkdown/markdown v0.0.0-20231222211730-1d6d20845b47/go.mod h1:JDGcbDT52eL4fju3sZ4TeHGsQwhG9nbDV21aMyhwPoA=
+github.com/gomarkdown/markdown v0.0.0-20240625204355-a4f7c57820cb h1:Dd2hSmZ5t6BTQtbESqy6EbuAnamQVJt5jgiKLRctl1s=
+github.com/gomarkdown/markdown v0.0.0-20240625204355-a4f7c57820cb/go.mod h1:JDGcbDT52eL4fju3sZ4TeHGsQwhG9nbDV21aMyhwPoA=
 github.com/sashabaranov/go-openai v1.17.9 h1:QEoBiGKWW68W79YIfXWEFZ7l5cEgZBV4/Ow3uy+5hNY=
 github.com/sashabaranov/go-openai v1.17.9/go.mod h1:lj5b/K+zjTSFxVLijLSTDZuP7adOgerWeFyZLUhAKRg=
+github.com/sashabaranov/go-openai v1.26.0 h1:upM565hxdqvCxNzuAcEBZ1XsfGehH0/9kgk9rFVpDxQ=
+github.com/sashabaranov/go-openai v1.26.0/go.mod h1:lj5b/K+zjTSFxVLijLSTDZuP7adOgerWeFyZLUhAKRg=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
