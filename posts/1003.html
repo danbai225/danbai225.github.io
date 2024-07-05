@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="ddns,shell,西部数码"/>
+    <meta name="description" content="这是一个用于动态更新域名解析记录的脚本，使用的是西部数码提供的DDNS API。脚本首先获取当前的IP地址，然后生成Token，构建API请求URL，并根据是否设置代理服务器而构建不同的curl命令。最后执行curl命令，将当前IP地址更新到指定的域名解析记录中。执行完毕后，输出API的响应结果。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>api获取临时邮箱，收邮件 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links.html">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">api获取临时邮箱，收邮件</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2024-07-05 21:13:00</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">ddns</span>
+                    
+                    <span class="label label-success label-outline">shell</span>
+                    
+                    <span class="label label-success label-outline">西部数码</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>这是一个用于动态更新域名解析记录的脚本，使用的是西部数码提供的DDNS API。脚本首先获取当前的IP地址，然后生成Token，构建API请求URL，并根据是否设置代理服务器而构建不同的curl命令。最后执行curl命令，将当前IP地址更新到指定的域名解析记录中。执行完毕后，输出API的响应结果。</p>
+            </section>
+        </header>
+            <h1 id="ddns">DDNS</h1>
+
+<p>有个tw小鸡是是动态ip所以需要ddns我的域名是从西部数码买的。他也有提供api需要代理等级。
+搞了一个小脚本</p>
+
+<pre><code class="language-bash">#!/bin/bash
+
+# 获取当前IP地址函数
+get_current_ip() {
+  curl -s ifconfig.me
+}
+
+# 对错误进行处理
+handle_error() {
+  local err_msg=&quot;\$1&quot;
+  echo &quot;Error: $err_msg&quot; &gt;&amp;2
+  exit 1
+}
+
+# 直接在脚本中定义固定参数
+USERNAME=&quot;&quot;                  # 替换为您的西部数码用户名
+API_PASSWORD=&quot;&quot;                # 替换为您的API密码
+DOMAIN=&quot;&quot;                        # 替换为您的域名
+DNS_ID=&quot;&quot;                      # 替换为您的解析记录编号 可以从页面打开控制台 修改域名解析看到
+TTL=&quot;60&quot;                                # 生效时间值
+HOST=&quot;&quot;                               # 主机头
+LEVEL=&quot;10&quot;                              # 优先级MX记录有效
+ACT=&quot;moddnsrecord&quot;                      # 请求动作，修改域名解析
+PROXY_SERVER=&quot;&quot;  # 代理服务器地址，如果为空则不使用代理
+
+# 获取当前IP地址
+current_ip=$(get_current_ip)
+[ -z &quot;$current_ip&quot; ] &amp;&amp; handle_error &quot;无法获取当前IP地址&quot;
+
+# 输出当前IP地址
+echo &quot;当前IP地址是: $current_ip&quot;
+
+# 生成时间戳（毫秒级时间戳）
+TIMESTAMP=$(($(date +%s%N)/1000000))
+
+# 生成Token
+RAW_TOKEN=&quot;${USERNAME}${API_PASSWORD}${TIMESTAMP}&quot;
+TOKEN=$(echo -n &quot;${RAW_TOKEN}&quot; | md5sum | cut -d ' ' -f 1)
+
+# API请求URL
+API_URL=&quot;https://api.west.cn/api/v2/domain/&quot;
+
+# 判断是否设置代理服务器，构建curl命令
+if [ -z &quot;$PROXY_SERVER&quot; ]; then
+  CURL_CMD=&quot;curl -s -X POST $API_URL \
+    -H \&quot;Content-Type: application/x-www-form-urlencoded\&quot; \
+    -d \&quot;username=${USERNAME}\&quot; \
+    -d \&quot;time=${TIMESTAMP}\&quot; \
+    -d \&quot;token=${TOKEN}\&quot; \
+    -d \&quot;act=${ACT}\&quot; \
+    -d \&quot;domain=${DOMAIN}\&quot; \
+    -d \&quot;id=${DNS_ID}\&quot; \
+    -d \&quot;value=${current_ip}\&quot; \
+    -d \&quot;ttl=${TTL}\&quot; \
+    -d \&quot;host=${HOST}\&quot; \
+    -d \&quot;level=${LEVEL}\&quot;&quot;
+else
+  CURL_CMD=&quot;curl -x $PROXY_SERVER -s -X POST $API_URL \
+    -H \&quot;Content-Type: application/x-www-form-urlencoded\&quot; \
+    -d \&quot;username=${USERNAME}\&quot; \
+    -d \&quot;time=${TIMESTAMP}\&quot; \
+    -d \&quot;token=${TOKEN}\&quot; \
+    -d \&quot;act=${ACT}\&quot; \
+    -d \&quot;domain=${DOMAIN}\&quot; \
+    -d \&quot;id=${DNS_ID}\&quot; \
+    -d \&quot;value=${current_ip}\&quot; \
+    -d \&quot;ttl=${TTL}\&quot; \
+    -d \&quot;host=${HOST}\&quot; \
+    -d \&quot;level=${LEVEL}\&quot;&quot;
+fi
+
+# 执行curl命令并处理错误
+RESPONSE=$(eval $CURL_CMD) || handle_error &quot;API请求失败&quot;
+
+# 打印响应
+echo &quot;API Response: $RESPONSE&quot;
+</code></pre>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2024-04-28 21:15:00</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>
