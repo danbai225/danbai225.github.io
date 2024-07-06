@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="游戏加速器,sing-box,golang"/>
+    <meta name="description" content="本文是关于如何搭建和使用GPP加速器的教程。GPP是一款基于sing-box开发的加速器，通过tun模式接管应用程序的网络流量，并将其转发到服务端出口，从而实现加速的效果。需要注意的是，GPP本身并不提供加速线路，需要自行选择具有良好线路质量的服务端。
+
+在搭建服务端方面，作者提供了一些服务器选择的建议，并且给出了一些用过的商家的服务端推荐。然后，文章介绍了如何使用GPP的安装脚本来进行服务端的安装。安装的过程包括输入安装路径、监听地址和端口等信息，以及选择加速协议。安装完成后，可以使用`/usr/local/gpp/run.sh start`命令来启动服务端。
+
+在客户端方面，需要从GPP的发布页面下载对应系统的客户端，并以管理员身份运行。然后，在客户端页面上点击`Game`或`Http`字样，弹出节点列表窗口，并粘贴服务端的链接以导入节点。之后，在节点列表中选择加速节点，就可以开始使用加速功能。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>自建GPP游戏加速器 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links.html">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">自建GPP游戏加速器</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2024-07-06 10:36:00</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">游戏加速器</span>
+                    
+                    <span class="label label-success label-outline">sing-box</span>
+                    
+                    <span class="label label-success label-outline">golang</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>本文是关于如何搭建和使用GPP加速器的教程。GPP是一款基于sing-box开发的加速器，通过tun模式接管应用程序的网络流量，并将其转发到服务端出口，从而实现加速的效果。需要注意的是，GPP本身并不提供加速线路，需要自行选择具有良好线路质量的服务端。
+
+在搭建服务端方面，作者提供了一些服务器选择的建议，并且给出了一些用过的商家的服务端推荐。然后，文章介绍了如何使用GPP的安装脚本来进行服务端的安装。安装的过程包括输入安装路径、监听地址和端口等信息，以及选择加速协议。安装完成后，可以使用`/usr/local/gpp/run.sh start`命令来启动服务端。
+
+在客户端方面，需要从GPP的发布页面下载对应系统的客户端，并以管理员身份运行。然后，在客户端页面上点击`Game`或`Http`字样，弹出节点列表窗口，并粘贴服务端的链接以导入节点。之后，在节点列表中选择加速节点，就可以开始使用加速功能。</p>
+            </section>
+        </header>
+            <h1 id="gpp">GPP</h1>
+
+<p>本文是从0到1搭建使用<a href="https://github.com/danbai225/gpp" target="_blank">GPP</a>加速器的教程</p>
+
+<p>该加速基于sing-box开发的套gui程序，加速原理是通过tun模式接管应用程序网络流量转发到服务端出口,只是提供了一个快捷使用的方式，本身不提供加速线路。</p>
+
+<h1 id="服务端搭建">服务端搭建</h1>
+
+<h2 id="服务器选择">服务器选择</h2>
+
+<p>因为要加速游戏所以服务器的线路质量要好，简单一点可以直接购买阿里云香港的轻量云应该勉强能用。</p>
+
+<p>下面有我用过的其他商家的服务端</p>
+
+<ul>
+<li><a href="https://ocent.net/shop/server?type=traffic&amp;areaId=12&amp;nodeId=108&amp;planId=653&amp;aff_code=febe317e-92fa-408e-9c2f-7d923a582c3d" target="_blank">SZHK-200G/月-¥25.88/月</a></li>
+<li><a href="https://bigchick.xyz/aff.php?aff=206" target="_blank">GZHK-20G/月-¥120/年优惠码114514</a></li>
+<li><a href="https://ocent.net/shop/turbox?aff_code=febe317e-92fa-408e-9c2f-7d923a582c3d" target="_blank">IPLE转发-100G/季-20/季</a></li>
+<li><a href="https://iplc.best/" target="_blank">其他参考</a></li>
+</ul>
+
+<h2 id="服务端安装">服务端安装</h2>
+
+<p>进入正题使用仓库中提到的安装脚本linux适用</p>
+
+<pre><code class="language-bash">bash &lt;(curl -sL https://raw.githubusercontent.com/danbai225/gpp/main/server/install.sh)
+</code></pre>
+
+<p>安装流程如下:</p>
+
+<pre><code class="language-bash">root@hkg7-20240515005653f71f78:~# bash &lt;(curl -sL https://raw.githubusercontent.com/danbai225/gpp/main/server/install.sh)
+欢迎使用 gpp 服务端安装脚本
+输入安装路径 (默认是 /usr/local/gpp): 
+请输入监听地址（默认0.0.0.0）: 
+请输入监听端口（默认5123）: 
+请输入你的客户端入口地址(有中转就是中转地址不填默认当前服务器ip+端口): hk.p00q.cn:12334
+请选择一个选项：
+1) shadowsocks
+2) socks
+3) vless
+4) hysteria2
+输入选项 (1-3): 3
+您选择的协议为: vless
+您输入的监听地址为: 0.0.0.0
+您输入的监听端口为: 5123
+安装路径为: /usr/local/gpp
+您的入口地址: hk.p00q.cn:12334
+Changed to directory: /usr/local/gpp
+检测系统架构...
+下载服务端 。。。
+Downloading file: gpp_1.3.0_linux_amd64.tar.gz
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100 5539k  100 5539k    0     0  4268k      0  0:00:01  0:00:01 --:--:-- 6411k
+Download complete
+Extracting files
+Extraction complete
+安装完成,请执行 /usr/local/gpp/run.sh start 启动服务端,执行 /usr/local/gpp/run.sh stop 停止服务端
+请为您的节点取一个名字: hk
+入口地址是: hk.p00q.cn:12334
+导入链接：Z3BwOi8vdmxlc3NAaGsucDAwcS5jbjoxMjMzNC9mMDQ0NzZiYi00NWY3LTQzZDgtOTU1OC0yNDFiNWYwYjNhZTM=#hk
+</code></pre>
+
+<p>其中需要注意的是<code>客户端入口地址</code>如果你是要走中转那么这个就填你中转的地址</p>
+
+<p>然后执行<code>/usr/local/gpp/run.sh start</code>启动服务端</p>
+
+<h1 id="客户端">客户端</h1>
+
+<p>从<a href="https://github.com/danbai225/gpp/releases" target="_blank">releases</a>下载对应系统的客户端
+安装后以管理员身份运行,点击页面上的<code>Game</code>或<code>Http</code>字样弹出节点列表窗口，在下方粘贴服务端的链接完成节点导入。
+在节点列表选择你的加速节点，如何开始加速。
+<img src="../res/img/1004-1.png" alt="img_1.png" /></p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2024-04-28 10:45:00</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>
