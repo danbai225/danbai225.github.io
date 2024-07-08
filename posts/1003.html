@@ -75,7 +75,7 @@
 
 # 获取当前IP地址函数
 get_current_ip() {
-  curl -s ifconfig.me
+  curl -s -4 ifconfig.me
 }
 
 # 对错误进行处理
