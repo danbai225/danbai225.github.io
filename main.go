@@ -33,6 +33,7 @@ type rssItem struct {
 type rss struct {
 	XMLName struct{}   `xml:"rss"`
 	Version string     `xml:"version,attr"`
+	Atom    string     `xml:"xmlns:atom,attr"` // 添加 atom
 	Channel rssChannel `xml:"channel"`
 }
 
@@ -122,6 +123,7 @@ func main() {
 func generateRSS(metas []meta) {
 	rssFeed := rss{
 		Version: "2.0",
+		Atom:    "http://www.w3.org/1999/xhtml",
 		Channel: rssChannel{
 			Title:       siteData.Name,
 			Link:        siteData.Domain,
@@ -159,7 +161,6 @@ func generateRSS(metas []meta) {
 		fmt.Printf("生成 RSS 错误: %v\n", err)
 		return
 	}
-
 	_ = os.WriteFile("rss.xml", []byte(xml.Header+string(output)), 0644)
 }
 
