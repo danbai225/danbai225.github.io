@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="dhcp,协议"/>
+    <meta name="description" content="**摘要：**
+
+DHCP（动态主机配置协议）是用于自动向网络设备分配IP地址及其他网络配置的重要协议。它通过客户端与服务器间的交互流程简化了设备接入网络的配置过程。该协议的基本交互步骤包括DHCP Discover、Offer、Request及Acknowledge，允许设备快速获得所需的IP地址和配置信息。此外，DHCP还支持配置其他网络参数，如默认网关、DNS服务器及子网掩码等。文章中还提供了一个简单的DHCP服务器实现示例，展现了如何在实际应用中应用该协议。欲了解更深入的信息，文末附有相关链接供进一步阅读。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>dhcp协议学习 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links.html">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">dhcp协议学习</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2024-08-04 15:29:00</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">dhcp</span>
+                    
+                    <span class="label label-success label-outline">协议</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>**摘要：**
+
+DHCP（动态主机配置协议）是用于自动向网络设备分配IP地址及其他网络配置的重要协议。它通过客户端与服务器间的交互流程简化了设备接入网络的配置过程。该协议的基本交互步骤包括DHCP Discover、Offer、Request及Acknowledge，允许设备快速获得所需的IP地址和配置信息。此外，DHCP还支持配置其他网络参数，如默认网关、DNS服务器及子网掩码等。文章中还提供了一个简单的DHCP服务器实现示例，展现了如何在实际应用中应用该协议。欲了解更深入的信息，文末附有相关链接供进一步阅读。</p>
+            </section>
+        </header>
+            <h1 id="heading">协议概述</h1>
+<p>DHCP（动态主机配置协议）是一种网络协议，用于自动向网络设备分配IP地址及其他相关网络配置。DHCP通过客户端与服务器之间的交互来简化网络设备的配置过程，使设备能够快速接入网络。</p>
+<h1 id="heading-1">客户端服务端交互流程</h1>
+<pre class="mermaid">sequenceDiagram
+    participant C as DHCP Client
+    participant S as DHCP Server
+
+    C-&gt;&gt;S: DHCP Discover (广播)
+    S-&gt;&gt;C: DHCP Offer
+    C-&gt;&gt;S: DHCP Request
+    S-&gt;&gt;C: DHCP Acknowledge
+</pre><p>在这个流程中，DHCP客户端和服务器的交互步骤如下：</p>
+<ol>
+<li>
+<p><strong>DHCP Discover</strong>:</p>
+<ul>
+<li>客户端发送发现消息，寻找可用的DHCP服务器。这个消息是广播形式的，因为客户端在此时尚不知道网络中存在的DHCP服务器。</li>
+<li>消息中包含客户端的MAC地址和请求的IP地址（如果有的话）。</li>
+</ul>
+</li>
+<li>
+<p><strong>DHCP Offer</strong>:</p>
+<ul>
+<li>服务器接收到发现消息后，发送一个提供消息，告知客户端可以使用的IP地址及其他网络配置（如子网掩码、默认网关和DNS服务器）。</li>
+<li>提供消息是单播或广播的，取决于服务器的配置。</li>
+</ul>
+</li>
+<li>
+<p><strong>DHCP Request</strong>:</p>
+<ul>
+<li>客户端收到多个提供消息后，选择其中一个，并向该DHCP服务器发送请求，确认使用该IP地址。</li>
+<li>此请求消息也是广播的，以通知其他DHCP服务器该IP地址已被分配。</li>
+</ul>
+</li>
+<li>
+<p><strong>DHCP Acknowledge</strong>:</p>
+<ul>
+<li>服务器确认请求，并向客户端发送确认消息，完成IP地址分配。此时，客户端正式获得所请求的IP地址。</li>
+</ul>
+</li>
+</ol>
+<h3 id="heading-2">扩展阶段（可选）</h3>
+<p>在某些情况下，DHCP交互流程可能会包括以下步骤：</p>
+<ol>
+<li>
+<p><strong>DHCP Nak</strong>:</p>
+<ul>
+<li>如果DHCP服务器无法满足客户端的IP地址请求（例如，所请求的IP地址已被分配），服务器会发送一个DHCP Nak（否定确认）消息，以告知客户端请求失败。</li>
+<li>客户端在收到Nak消息后，会重新开始DORA流程，发送新的Discover消息。</li>
+</ul>
+</li>
+<li>
+<p><strong>DHCP Release</strong>:</p>
+<ul>
+<li>当客户端不再需要分配的IP地址时（例如，设备关闭或断开网络），客户端可以发送一个DHCP Release消息给DHCP服务器，以释放该IP地址。</li>
+<li>这样，服务器可以将该IP地址重新分配给其他设备使用。</li>
+</ul>
+</li>
+</ol>
+<h3 id="dhcp">DHCP租约</h3>
+<ul>
+<li>在整个过程中，DHCP服务器为分配的IP地址设置租约时间（Lease Time），表示客户端可以使用该地址的有效期限。</li>
+<li>租约到期后，客户端需要重新请求IP地址，或者在租约到期前通过发送DHCP Request消息延长租约。</li>
+</ul>
+<h3 id="heading-3">其他配置项</h3>
+<p>DHCP不仅可以用于动态分配IP地址，还可以配置其他网络参数，包括路由、MTU（最大传输单元）以及其他一些网络设置。下面是DHCP可以配置的一些常见选项：</p>
+<h3 id="1-">1. 路由（默认网关）</h3>
+<ul>
+<li><strong>功能</strong>：DHCP服务器可以通过提供默认网关的IP地址来配置客户端的路由设置。客户端在接收到这个信息后，会将其设置为默认路由，从而能够访问其他网络。</li>
+</ul>
+<h3 id="2-mtu">2. MTU（最大传输单元）</h3>
+<ul>
+<li><strong>功能</strong>：DHCP可以指定网络接口的MTU值，帮助客户端配置合适的数据包大小，以便优化网络性能。</li>
+</ul>
+<h3 id="3-dns">3. DNS服务器</h3>
+<ul>
+<li><strong>功能</strong>：DHCP可以提供一个或多个DNS服务器的IP地址，以便客户端能够解析域名。</li>
+</ul>
+<h3 id="4-">4. 子网掩码</h3>
+<ul>
+<li><strong>功能</strong>：DHCP服务器可以提供子网掩码，帮助客户端正确识别网络地址和主机地址。</li>
+</ul>
+<h3 id="5-">5. 主机名称</h3>
+<ul>
+<li><strong>功能</strong>：DHCP可以配置客户端的主机名称，方便在网络中识别设备。</li>
+</ul>
+<h3 id="6-ntp">6. NTP（网络时间协议）服务器</h3>
+<ul>
+<li><strong>功能</strong>：DHCP可以提供NTP服务器的IP地址，帮助客户端自动同步时间。</li>
+</ul>
+<h3 id="7-">7. 其他网络参数</h3>
+<p>DHCP协议还支持许多其他选项，具体包括：</p>
+<ul>
+<li><strong>域名</strong>：指定客户端所使用的域名。</li>
+<li><strong>WINS服务器</strong>：配置Windows Internet名称服务（WINS）服务器。</li>
+<li><strong>广播地址</strong>：指定子网的广播地址。</li>
+<li><strong>路由器选项</strong>：配置多个路由器的IP地址。</li>
+</ul>
+<h1 id="dhcp-1">简易的dhcp服务器实现</h1>
+<pre><code class="language-go">package main
+
+import (
+	&quot;fmt&quot;
+	&quot;github.com/insomniacslk/dhcp/dhcpv4&quot;
+	&quot;github.com/insomniacslk/dhcp/dhcpv4/server4&quot;
+	&quot;log&quot;
+	&quot;net&quot;
+	&quot;test/allocators/bitmap&quot;
+	&quot;time&quot;
+)
+
+type Record struct {
+	IP       net.IP
+	expires  int
+	hostname string
+}
+
+var recordsV4 = make(map[string]*Record)
+var allocator, _ = bitmap.NewIPv4Allocator(net.ParseIP(&quot;172.20.0.2&quot;), net.ParseIP(&quot;172.20.0.254&quot;))
+
+func handler(conn net.PacketConn, peer net.Addr, req *dhcpv4.DHCPv4) {
+	res, err := dhcpv4.NewReplyFromRequest(req)
+	if err != nil {
+		log.Printf(&quot;MainHandler4: failed to build reply: %v&quot;, err)
+		return
+	}
+	switch mt := req.MessageType(); mt {
+	case dhcpv4.MessageTypeDiscover:
+		res.UpdateOption(dhcpv4.OptMessageType(dhcpv4.MessageTypeOffer))
+	case dhcpv4.MessageTypeRequest:
+		res.UpdateOption(dhcpv4.OptMessageType(dhcpv4.MessageTypeAck))
+	default:
+		log.Printf(&quot;plugins/server: Unhandled message type: %v&quot;, mt)
+		return
+	}
+	//autoconfigure
+	{
+		if res.MessageType() != dhcpv4.MessageTypeOffer || !res.YourIPAddr.IsUnspecified() {
+			goto autoconfigureEnd
+		}
+		_, ok := req.AutoConfigure()
+		if ok {
+			res.UpdateOption(dhcpv4.OptAutoConfigure(dhcpv4.DoNotAutoConfigure))
+		}
+	}
+autoconfigureEnd:
+	//DNS
+	{
+		if req.IsOptionRequested(dhcpv4.OptionDomainNameServer) {
+			res.Options.Update(dhcpv4.OptDNS(net.ParseIP(&quot;172.20.0.1&quot;), net.ParseIP(&quot;114.114.114.114&quot;)))
+		}
+	}
+	//IP router Mask
+	{
+		record, ok := recordsV4[req.ClientHWAddr.String()]
+		hostname := req.HostName()
+		if !ok {
+			var ip net.IPNet
+			ip, err = allocator.Allocate(net.IPNet{})
+			if err != nil {
+				return
+			}
+			rec := Record{
+				IP:       ip.IP.To4(),
+				expires:  int(time.Now().Add(time.Hour * 12).Unix()),
+				hostname: hostname,
+			}
+			recordsV4[req.ClientHWAddr.String()] = &amp;rec
+			record = &amp;rec
+		} else {
+			expiry := time.Unix(int64(record.expires), 0)
+			if expiry.Before(time.Now().Add(time.Hour * 12)) {
+				record.expires = int(time.Now().Add(time.Hour * 12).Round(time.Second).Unix())
+				record.hostname = hostname
+				recordsV4[req.ClientHWAddr.String()] = record
+			}
+		}
+
+		res.Options.Update(dhcpv4.OptRouter(net.ParseIP(&quot;172.20.0.1&quot;)))
+		res.Options.Update(dhcpv4.OptSubnetMask(net.IPv4Mask(255, 255, 255, 0)))
+		res.YourIPAddr = record.IP
+		res.Options.Update(dhcpv4.OptIPAddressLeaseTime((time.Hour * 12).Round(time.Second)))
+
+	}
+	//ServerId
+	{
+		serverID := net.ParseIP(&quot;172.20.0.1&quot;)
+		if req.OpCode == dhcpv4.OpcodeBootRequest {
+			if req.ServerIPAddr != nil &amp;&amp;
+				!req.ServerIPAddr.Equal(net.IPv4zero) &amp;&amp;
+				!req.ServerIPAddr.Equal(serverID.To4()) {
+				return
+			}
+			res.ServerIPAddr = make(net.IP, net.IPv4len)
+			copy(res.ServerIPAddr[:], serverID.To4())
+			res.UpdateOption(dhcpv4.OptServerIdentifier(serverID.To4()))
+		}
+	}
+	//回复
+	if res != nil {
+		if _, err = conn.WriteTo(res.ToBytes(), peer); err != nil {
+			log.Printf(&quot;MainHandler4: WriteTo failed: %v&quot;, err)
+		}
+	} else {
+		log.Print(&quot;MainHandler4: dropping request because response is nil&quot;)
+	}
+}
+
+func main() {
+	lAddr := net.UDPAddr{
+		IP:   net.ParseIP(&quot;0.0.0.0&quot;),
+		Port: 67,
+	}
+	server, err := server4.NewServer(&quot;ens19&quot;, &amp;lAddr, handler)
+	if err != nil {
+		fmt.Println(err)
+	}
+	err = server.Serve()
+	if err != nil {
+		return
+	}
+}
+
+</code></pre>
+<h1 id="heading-4">相关链接</h1>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol">DHCP协议</a></li>
+<li><a href="https://web.archive.org/web/20211006053433/http://www.networksorcery.com/enp/protocol/bootp/options.htm">dhcp选项</a></li>
+</ul>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script><script>mermaid.initialize({startOnLoad: true});</script>
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2024-08-04 16:29:00</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        $("img").each(function(i,elem){
+            var e=$(elem);
+            e.addClass("lazyload");
+            var path=e.attr("src");
+            e.attr("src","/res/loading.gif");
+            e.attr("data-src",path);
+        });
+    })();
+</script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtzhpy4g3n");
+</script>
+
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2022<a href="https://p00q.cn">淡白的记忆</a><br/>
+        <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2021019028号</a>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        
+        Theme by <a target="_blank" href="https://github.com/danbai225/halo-theme-simple" data-pjax-state="">Simple</a>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>

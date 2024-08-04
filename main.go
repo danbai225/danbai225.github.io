@@ -4,10 +4,12 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/gomarkdown/markdown"
-	"github.com/gomarkdown/markdown/html"
-	"github.com/gomarkdown/markdown/parser"
 	"github.com/sashabaranov/go-openai"
+	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/extension"
+	"github.com/yuin/goldmark/parser"
+	"github.com/yuin/goldmark/renderer/html"
+	"go.abhg.dev/goldmark/mermaid"
 	"gopkg.in/yaml.v3"
 	"html/template"
 	"net/url"
@@ -137,13 +139,21 @@ func parse(path string) meta {
 	return m
 }
 func mdToHTML(md []byte) []byte {
-	extensions := parser.CommonExtensions | parser.AutoHeadingIDs | parser.NoEmptyLineBeforeBlock
-	p := parser.NewWithExtensions(extensions)
-	doc := p.Parse(md)
-	htmlFlags := html.CommonFlags | html.HrefTargetBlank
-	opts := html.RendererOptions{Flags: htmlFlags}
-	renderer := html.NewRenderer(opts)
-	return markdown.Render(doc, renderer)
+	goMd := goldmark.New(
+		goldmark.WithExtensions(extension.GFM, &mermaid.Extender{}),
+		goldmark.WithParserOptions(
+			parser.WithAutoHeadingID(),
+		),
+		goldmark.WithRendererOptions(
+			html.WithHardWraps(),
+			html.WithXHTML(),
+		),
+	)
+	var buf bytes.Buffer
+	if err := goMd.Convert(md, &buf); err != nil {
+		return []byte(err.Error())
+	}
+	return buf.Bytes()
 }
 func fillTemplate(content string, meta meta) string {
 	t, err := template.ParseFiles("./post.tpl.html")
@@ -167,11 +177,11 @@ func summary(content string) string {
 		openaiClient = openai.NewClient(os.Getenv("TOKEN"))
 	}
 	resp, err := openaiClient.CreateChatCompletion(context.Background(), openai.ChatCompletionRequest{
-		Model: openai.GPT3Dot5Turbo16K,
+		Model: openai.GPT4oMini,
 		Messages: []openai.ChatCompletionMessage{
 			{
 				Role:    openai.ChatMessageRoleSystem,
-				Content: "提取文章的摘要",
+				Content: "提取文章的摘要，用于博客展示摘要。",
 			},
 			{
 				Role:    openai.ChatMessageRoleUser,
