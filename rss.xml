@@ -8,778 +8,778 @@
       <title>dhcp协议学习</title>
       <link>https://danbai225.github.io/?p=1005</link>
       <description>DHCP（动态主机配置协议）是用于自动向网络设备分配IP地址及其他网络配置的重要协议。它通过客户端与服务器间的交互流程简化了设备接入网络的配置过程。该协议的基本交互步骤包括DHCP Discover、Offer、Request及Acknowledge，允许设备快速获得所需的IP地址和配置信息。此外，DHCP还支持配置其他网络参数，如默认网关、DNS服务器及子网掩码等。文章中还提供了一个简单的DHCP服务器实现示例，展现了如何在实际应用中应用该协议。欲了解更深入的信息，文末附有相关链接供进一步阅读。</description>
-      <pubDate>2024-08-04 15:29:00</pubDate>
-      <guid>1005</guid>
+      <pubDate>Sun, 04 Aug 2024 15:29:00 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=1005</guid>
     </item>
     <item>
       <title>自建GPP游戏加速器</title>
       <link>https://danbai225.github.io/?p=1004</link>
       <description>本文是关于如何搭建和使用GPP加速器的教程。GPP是一款基于sing-box开发的加速器，通过tun模式接管应用程序的网络流量，并将其转发到服务端出口，从而实现加速的效果。需要注意的是，GPP本身并不提供加速线路，需要自行选择具有良好线路质量的服务端。&#xA;&#xA;在搭建服务端方面，作者提供了一些服务器选择的建议，并且给出了一些用过的商家的服务端推荐。然后，文章介绍了如何使用GPP的安装脚本来进行服务端的安装。安装的过程包括输入安装路径、监听地址和端口等信息，以及选择加速协议。安装完成后，可以使用`/usr/local/gpp/run.sh start`命令来启动服务端。&#xA;&#xA;在客户端方面，需要从GPP的发布页面下载对应系统的客户端，并以管理员身份运行。然后，在客户端页面上点击`Game`或`Http`字样，弹出节点列表窗口，并粘贴服务端的链接以导入节点。之后，在节点列表中选择加速节点，就可以开始使用加速功能。</description>
-      <pubDate>2024-07-06 10:36:00</pubDate>
-      <guid>1004</guid>
+      <pubDate>Sat, 06 Jul 2024 10:36:00 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=1004</guid>
     </item>
     <item>
       <title>DDNS西部数码脚本</title>
       <link>https://danbai225.github.io/?p=1003</link>
       <description>这是一个用于动态更新域名解析记录的脚本，使用的是西部数码提供的DDNS API。脚本首先获取当前的IP地址，然后生成Token，构建API请求URL，并根据是否设置代理服务器而构建不同的curl命令。最后执行curl命令，将当前IP地址更新到指定的域名解析记录中。执行完毕后，输出API的响应结果。</description>
-      <pubDate>2024-07-05 21:13:00</pubDate>
-      <guid>1003</guid>
+      <pubDate>Fri, 05 Jul 2024 21:13:00 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=1003</guid>
     </item>
     <item>
       <title>资源收藏</title>
       <link>https://danbai225.github.io/?p=0</link>
       <description>这篇文章收藏了一些资源</description>
-      <pubDate>2024-05-09 20:22:00</pubDate>
-      <guid>0</guid>
+      <pubDate>Thu, 09 May 2024 20:22:00 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=0</guid>
     </item>
     <item>
       <title>api获取临时邮箱，收邮件</title>
       <link>https://danbai225.github.io/?p=1002</link>
       <description>本文介绍了临时邮箱的概念，并提供了一个支持在线和api提供调用的临时邮箱服务https://mail.tm/。此外，还提供了多种语言的SDK供开发者使用，例如.NET、Dart、Golang、Java、JavaScript、PHP、Python、Rust和Swift等。其中，以Golang为例，给出了使用mail.tm提供的Golang SDK的示例代码，展示了如何创建一个账号并查看邮件。</description>
-      <pubDate>2024-04-28 19:13:00</pubDate>
-      <guid>1002</guid>
+      <pubDate>Sun, 28 Apr 2024 19:13:00 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=1002</guid>
     </item>
     <item>
       <title>自建游戏加速器</title>
       <link>https://danbai225.github.io/?p=1001</link>
       <description>自建游戏加速器是因为之前使用的加速器不支持mac平台，所以作者使用了sing-box搭建了一个加速器的共享加速服务，并支持mac。作者购买了一个共享IPCL线路的服务器，价格为20元/月。作者使用了自己之前开源的项目[gpp](https://github.com/danbai225/gpp)，并添加了规则路由，让http流量不走加速器，减少流量开销。根据作者的网络环境（四川联通），自建加速器的延迟比之前使用的正经加速器低了几毫秒，从65ms降到60ms左右。</description>
-      <pubDate>2024-01-27 19:13:00</pubDate>
-      <guid>1001</guid>
+      <pubDate>Sat, 27 Jan 2024 19:13:00 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=1001</guid>
     </item>
     <item>
       <title>2023最后一篇博客</title>
       <link>https://danbai225.github.io/?p=1000</link>
       <description>2023年的回顾中，作者提到了自己考驾照和购买第一辆车的重要时刻。工作方面，作者经历了一段不顺利但后来努力改善的过程，还有一段有趣的不坐班的网络维护工作经历。此外，作者还去了川西和西安旅行。在博客方面，作者决定将博客转为静态html文件并迁移到GitHub上。作者还使用chatgpt生成了文章的摘要。</description>
-      <pubDate>2023-12-23 18:06:00</pubDate>
-      <guid>1000</guid>
+      <pubDate>Sat, 23 Dec 2023 18:06:00 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=1000</guid>
     </item>
     <item>
       <title>共享你的游戏加速器</title>
       <link>https://danbai225.github.io/?p=970</link>
       <description>通过提供socks转发来实现加速的原理是利用中转游戏数据传输使用加速器的优质线路和传输算法，以达到快速传输、减少延迟和丢包的目的。具体步骤如下：&#xA;&#xA;1. 首先在加速器客户端选择合适的加速模式，例如通过劫持游戏进程的流量来加速。可以让自己的程序改成游戏进程的名称，让程序的流量通过加速器来加速。&#xA;2. 准备一个服务器或者公网IP，在局域网中能够相互连接的两台电脑（A和B）。&#xA;3. 在服务器上搭建提供socks服务的服务端，可以使用sing-box库来实现。&#xA;4. 在客户端上也使用sing-box库来实现，创建一个虚拟网卡来劫持游戏的流量。&#xA;5. 在客户端配置中指定服务端的IP和端口，设置加速器客户端的参数和加速模式。&#xA;6. 客户端通过socks转发将游戏数据传输给服务端，服务端再将数据传输给加速器进行加速处理。&#xA;&#xA;这样就可以利用socks转发实现游戏加速的效果。以上是基于sing-box库的实现方法，也可以使用其他支持UDP的转发协议或工具来实现。</description>
-      <pubDate>2023-11-09 17:11:23</pubDate>
-      <guid>970</guid>
+      <pubDate>Thu, 09 Nov 2023 17:11:23 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=970</guid>
     </item>
     <item>
       <title>steam挂刀余额充值低至7折</title>
       <link>https://danbai225.github.io/?p=938</link>
       <description>文章提到了一种通过buff和steam市场差价来低价充值的方法。具体步骤为在buff交易平台购买一个与steam市场价格差距较大的饰品，然后在市场上出售该饰品获取steam余额。注意，购买饰品后不能立即交易，但可以立即在市场上出售。在此过程中会扣除15%的手续费。这样可以通过差价来获得额外的余额。同时，文章也注意到，在选择饰品时应避免购买印花之类的物品，因为差价较大的饰品可能会延迟2-5天到账。文章最后提到，作者搭建了一个余额交易平台来帮助大家找到这样的饰品，并表示该交易方式适用于所有地区，但必须开通市场。</description>
-      <pubDate>2023-08-16 07:54:24</pubDate>
-      <guid>938</guid>
+      <pubDate>Wed, 16 Aug 2023 07:54:24 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=938</guid>
     </item>
     <item>
       <title>在golang中使用clash作为http客户端的代理</title>
       <link>https://danbai225.github.io/?p=906</link>
       <description>这是一篇使用Clash作为HTTP客户端代理的Go语言教程。在爬取网站时，经常会遇到一些反爬虫的网站，这些网站会检测你的IP地址，如果被检测到是爬虫，就会拒绝访问。为了解决这个问题，可以使用代理来隐藏真实IP地址。代理的原理是将请求发送到代理服务器，代理服务器再发送给目标服务器并返回数据。这样目标服务器无法知道真实IP地址。本文介绍了使用Clash作为HTTP客户端代理的方法。&#xA;&#xA;首先，需要获取HTTP代理。可以通过免费获取或者付费购买的方式来获取。作者选择了使用机场提供的v2或SSR协议的代理。&#xA;&#xA;接下来，将Clash代码引入Go程序中，并设置代理的配置信息。代码中使用了Clash的Start()方法来启动代理，并通过调用Proxies()方法获取代理列表。&#xA;&#xA;然后，使用代理URL并创建http.Transport和http.Client对象。在创建http.Transport对象时，将代理URL传入Proxy字段。最后，通过调用http.Client对象的Get方法来发送请求。&#xA;&#xA;以上就是使用Clash作为HTTP客户端代理的具体实现方法。通过这种方式，可以在Go程序中轻松地使用Clash作为HTTP客户端代理来访问需要隐藏真实IP地址的网站。</description>
-      <pubDate>2023-07-28 14:23:57</pubDate>
-      <guid>906</guid>
+      <pubDate>Fri, 28 Jul 2023 14:23:57 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=906</guid>
     </item>
     <item>
       <title>原生js模拟输入字符串</title>
       <link>https://danbai225.github.io/?p=874</link>
       <description>这个例子模拟了逐个字符输入文本的过程。首先获取了一个文本输入框元素，并定义了要输入的字符串和当前输入字符的索引。然后定义了一个 `simulateInput` 函数用于模拟逐个字符输入。在函数内部，检查是否还有字符需要输入，如果有，则获取当前要输入的字符，并创建一个 `InputEvent` 对象，将字符添加到文本输入框中，并分派 `inputEvent` 事件。然后增加当前输入字符的索引，并使用 `setTimeout` 函数在 100 毫秒后模拟下一个字符的输入。最后调用 `simulateInput` 函数开始模拟输入。&#xA;&#xA;整个过程模拟了文本逐个字符输入的效果。可以根据需要调整输入速度，通过调整 `setTimeout` 函数的延迟时间来实现。</description>
-      <pubDate>2023-05-22 17:29:52</pubDate>
-      <guid>874</guid>
+      <pubDate>Mon, 22 May 2023 17:29:52 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=874</guid>
     </item>
     <item>
       <title>http代理服务器的代理</title>
       <link>https://danbai225.github.io/?p=843</link>
       <description>该代码是一个基于HTTP的代理服务器，主要实现了自动密码输入的功能。通过传入本地监听地址、远程地址、用户名和密码，可以实现在不支持密码输入的HTTP客户端上使用密码进行访问。&#xA;&#xA;具体实现步骤如下：&#xA;1. 构造待编码的用户名和密码字符串，使用base64进行编码。&#xA;2. 监听本地地址，等待连接。&#xA;3. 当有连接请求时，创建到远程地址的连接。&#xA;4. 在两个连接之间进行数据传输。&#xA;5. 在传输过程中，检查是否存在需要密码认证的请求头或者响应头，如果存在，则将用户名和密码信息进行替换或拼接。&#xA;6. 对传输的数据进行读取和写入操作，实现数据的流转。&#xA;&#xA;通过这种方式，可以在不修改HTTP客户端的情况下，实现密码认证的功能。</description>
-      <pubDate>2023-04-29 15:07:29</pubDate>
-      <guid>843</guid>
+      <pubDate>Sat, 29 Apr 2023 15:07:29 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=843</guid>
     </item>
     <item>
       <title>运行在docker里的微信机器人</title>
       <link>https://danbai225.github.io/?p=842</link>
       <description>该文章介绍了如何使用镜像 `danbai225/wechat-bot` 来创建一个微信机器人。文章提供了一个 Dockerfile 和 Docker Compose 文件，用于构建和运行该微信机器人。镜像包含了一个基于 iPad 协议的机器人，并提供了几个端口用于不同的功能：&#xA;&#xA;- 8080 端口用于访问 web-vnc 文件以通过 VNC 访问图像界面&#xA;- 5555 端口用于机器人的 WebSocket 连接&#xA;- 5556 端口提供了获取微信二维码和上传下载文件的 HTTP 接口&#xA;- 5900 端口用于 VNC 连接&#xA;&#xA;文章还提供了一个 Go 客户端的示例代码，用于与机器人进行交互。可以使用该客户端发送文本、图片和文件消息，获取联系人列表和个人信息等。</description>
-      <pubDate>2023-04-29 09:38:34</pubDate>
-      <guid>842</guid>
+      <pubDate>Sat, 29 Apr 2023 09:38:34 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=842</guid>
     </item>
     <item>
       <title>通过字符串生成手机号</title>
       <link>https://danbai225.github.io/?p=841</link>
       <description>该程序通过将用户名的哈希转换为一个手机号码，生成用户的手机号。在程序中，假设用户名为&#34;john&#34;。首先，将用户名&#34;john&#34;进行MD5哈希运算，生成一个128位的哈希值。然后，将哈希值转换为一个大整数。接下来，取该大整数的前9位数字作为手机号码。最后，从数字&#34;3456789&#34;中随机选择一个数字，将其添加到手机号码的前面，形成最终的手机号码。以上是该程序的基本流程和实现方式。</description>
-      <pubDate>2023-04-18 12:12:42</pubDate>
-      <guid>841</guid>
+      <pubDate>Tue, 18 Apr 2023 12:12:42 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=841</guid>
     </item>
     <item>
       <title>快速搭建百人低延迟直播</title>
       <link>https://danbai225.github.io/?p=840</link>
       <description>本文介绍了在非公开直播平台进行线上直播的需求，并提出了使用WebRTC（Web Real-Time Communication）的方案。WebRTC是一个支持实时视频、音频和数据传输的开放式网络协议和技术标准，无需安装插件或其他软件即可在Web浏览器之间进行点对点通信。&#xA;&#xA;为了节省时间和减少费用开销，文章建议使用腾讯云提供的云直播服务支持WebRTC。首先需要准备一个域名和腾讯云账号，并登录腾讯云添加云直播域名。推流直播可以通过生成推流地址并使用Web推流工具进行直播，然后可以通过腾讯云提供的在线播放器或自己使用腾讯云提供的SDK编写播放页面进行观看。&#xA;&#xA;总的来说，使用WebRTC和腾讯云云直播服务可以快速搭建可用的线上直播平台，并实现低延迟的直播效果。</description>
-      <pubDate>2023-04-10 10:46:04</pubDate>
-      <guid>840</guid>
+      <pubDate>Mon, 10 Apr 2023 10:46:04 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=840</guid>
     </item>
     <item>
       <title>通过修改windows注册表隐藏快捷方式小箭头</title>
       <link>https://danbai225.github.io/?p=839</link>
       <description>本文介绍了如何去除Windows快捷方式图标上的小箭头。有两种方法可以实现：使用第三方软件或手动修改注册表。&#xA;&#xA;使用第三方软件是最简单的方法之一，例如&#34;Ultimate Windows Tweaker&#34;，在&#34;Personalization&#34;选项卡中选择“Remove Shortcut Arrows”选项即可去除小箭头。&#xA;&#xA;如果你想手动修改注册表，请按照以下步骤操作：&#xA;1. 打开注册表编辑器，并导航到`HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons`。&#xA;2. 右键点击空白处，选择新建字符串值（REG_SZ），并将其命名为&#34;29&#34;，将数值数据设置为&#34;%systemroot%\system32\imageres.dll,197&#34;。&#xA;3. 打开任务管理器，找到并结束&#34;explorer.exe&#34;进程。&#xA;4. 打开命令提示符（cmd）窗口，输入命令`attrib -s -r -h &#34;%userprofile%\AppData\Local\iconcache.db&#34;`，去除&#34;iconcache.db&#34;文件的系统、只读和隐藏属性。&#xA;5. 输入命令`del &#34;%userprofile%\AppData\Local\iconcache.db&#34; /f /q`，删除&#34;iconcache.db&#34;文件（如果存在）。&#xA;&#xA;以上是去除Windows快捷方式图标上小箭头的方法。</description>
-      <pubDate>2023-04-05 10:26:18</pubDate>
-      <guid>839</guid>
+      <pubDate>Wed, 05 Apr 2023 10:26:18 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=839</guid>
     </item>
     <item>
       <title>基于tun2socks实现简单的windows代理</title>
       <link>https://danbai225.github.io/?p=838</link>
       <description>tun2socks是一个基于tun设备的部分TCP/UDP流量代理工具。通过抓取本地IP流量并识别需要代理的流量，再将识别出的流量通过tun设备处理后发送至socks代理服务器。使用tun2socks可以实现多个应用程序共享代理服务，而无需修改各个应用程序的代理设置。该工具常被用于科学上网等用途。以上是tun2socks的一个实现代码，其中使用了tun2socks库和fyne库来构建一个具有连接和断开功能的窗口界面。</description>
-      <pubDate>2023-04-03 18:22:40</pubDate>
-      <guid>838</guid>
+      <pubDate>Mon, 03 Apr 2023 18:22:40 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=838</guid>
     </item>
     <item>
       <title>学习rust之实现协程通信</title>
       <link>https://danbai225.github.io/?p=837</link>
       <description>这段代码是一个使用Tokio库实现的生产者-消费者模型的示例。代码中定义了两个函数`producer`和`consumer`，分别代表生产者和消费者。生产者函数会循环发送数字0到9到通道中，并模拟耗时操作。消费者函数会循环接收通道中的数据，并打印接收到的数字。在主函数中，通过`tokio::spawn`函数创建了两个任务，分别执行生产者和消费者函数。任务会在后台异步执行，然后通过`await`关键字等待任务完成。最后，通过使用`mpsc::channel`函数创建了一个通道，用于生产者和消费者之间的通信。</description>
-      <pubDate>2023-03-09 18:35:56</pubDate>
-      <guid>837</guid>
+      <pubDate>Thu, 09 Mar 2023 18:35:56 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=837</guid>
     </item>
     <item>
       <title>java基础20题分享</title>
       <link>https://danbai225.github.io/?p=836</link>
       <description>本文是一篇关于Java的面试题和答案的摘要。摘要中包括了20个常见的Java面试题，包括Java的基本数据类型、final关键字、抽象类和接口、多态、垃圾回收机制、异常、反射、泛型、线程、Synchronized关键字、HashMap和HashTable等内容。每个问题都附有答案和解释，帮助读者更好地理解和记忆Java面试知识。</description>
-      <pubDate>2023-03-09 12:29:31</pubDate>
-      <guid>836</guid>
+      <pubDate>Thu, 09 Mar 2023 12:29:31 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=836</guid>
     </item>
     <item>
       <title>在github自动构建go程序</title>
       <link>https://danbai225.github.io/?p=835</link>
       <description>在GitHub上自动构建Go程序可以通过GitHub Actions完成。首先，在GitHub上创建一个新的仓库，并使用Git将代码推送到该仓库。然后，在该仓库的主页上，点击&#34;Actions&#34;选项卡，然后点击&#34;New Workflow&#34;按钮。选择要构建的Go版本，并创建一个包含构建和测试代码的Workflow文件。将Workflow文件提交到GitHub，并确保仓库中存在可构建的Go项目。打开仓库的Actions页面，可以看到一个新的构建正在运行。构建完成后，可以在构建日志中查看构建结果。注意事项包括使用正确的Go版本和命令，添加其他步骤和正确配置环境变量和GitHub Secrets。</description>
-      <pubDate>2023-03-08 18:43:04</pubDate>
-      <guid>835</guid>
+      <pubDate>Wed, 08 Mar 2023 18:43:04 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=835</guid>
     </item>
     <item>
       <title>欢迎2023，再见2022</title>
       <link>https://danbai225.github.io/?p=834</link>
       <description>今年是一个新的开始。过去的一年我经历了很多挑战和困难，但我也学到了很多东西。我成长了许多，变得更加坚强和自信。今年，我决心要抓住每一个机会，追求我的梦想。我将努力学习，提升自己的技能和知识。我还计划旅行，探索新的地方，结识新的朋友。我知道这一年可能还会有困难和挑战，但我相信我有能力克服它们。我将保持积极的态度和勇气，坚持不懈地追求我的目标。今年，我相信我会过得更好，实现更多的梦想。</description>
-      <pubDate>2023-01-01 12:54:36</pubDate>
-      <guid>834</guid>
+      <pubDate>Sun, 01 Jan 2023 12:54:36 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=834</guid>
     </item>
     <item>
       <title>解密第一道二进制程序题</title>
       <link>https://danbai225.github.io/?p=806</link>
       <description>这是作者第一次参加CTF比赛，参加了Hackergame 2022赛事，并分享了自己解决的一道二进制题目。题目是一个自动点击的程序，但按钮位置在鼠标移动过程中会随机改变位置。作者通过分析程序代码，找到了代码中使用的Win32API函数SetWindowPos，并修改了其中的参数，使按钮位置不再随机变动。接着，作者继续查找相关代码，找到了弹出消息框的部分，并在汇编代码中修改了跳转条件，以实现反转跳转的效果。最终，作者成功得到了Flag。在解题过程中，作者借助了静态分析工具Ghidra以及自己对Windows编程的一些基础知识。</description>
-      <pubDate>2022-11-02 16:00:21</pubDate>
-      <guid>806</guid>
+      <pubDate>Wed, 02 Nov 2022 16:00:21 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=806</guid>
     </item>
     <item>
       <title>csgo注入,5EArena平台防检测。</title>
       <link>https://danbai225.github.io/?p=804</link>
       <description>文章提到了5EArena的防注入方法，主要是通过使用‘cheano.dll’来实现。只要在注入‘Osiris.dll’之前进行这个操作，就可以避免注入攻击。&#xA;&#xA;此外，文章还提到了使用火绒的自定义规则来阻止对敏感位置的扫描。&#xA;&#xA;如果想要实现这个功能，可以下载文章中提供的代码。</description>
-      <pubDate>2022-10-05 21:01:38</pubDate>
-      <guid>804</guid>
+      <pubDate>Wed, 05 Oct 2022 21:01:38 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=804</guid>
     </item>
     <item>
       <title>alist 🗂一个支持多存储的文件列表程序</title>
       <link>https://danbai225.github.io/?p=803</link>
       <description>Alist是一个开源程序，可以将各种网盘、云存储和本地存储统一管理。它基于webdav开发，提供了一个接口来下载不同网盘的文件。通过将不同的存储联系起来，它实现了统一管理的目的。使用Alist，用户可以直接下载别人分享的文件，而无需将其保存到自己的云盘中。这种方式更加直接，不需要使用网盘的分享链接。</description>
-      <pubDate>2022-09-29 17:38:43</pubDate>
-      <guid>803</guid>
+      <pubDate>Thu, 29 Sep 2022 17:38:43 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=803</guid>
     </item>
     <item>
       <title>VR游戏体验</title>
       <link>https://danbai225.github.io/?p=802</link>
       <description>最近作者去了两次VR游戏体验馆，称之为VR网吧。里面有按小时计费、电脑主机和Steam游戏。作者玩了几款游戏如《英雄萨姆》、《CS:GO VR版》和一个射箭的游戏。有些游戏不能动，感觉呆板，像回到了血战上海滩的时代。不过VR版的CS很有意思。作者体验下来晕倒不算很晕，操作协调一般。不过游戏的数量太少了，质量也不是很高，发展路还很长。</description>
-      <pubDate>2022-09-17 13:08:54</pubDate>
-      <guid>802</guid>
+      <pubDate>Sat, 17 Sep 2022 13:08:54 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=802</guid>
     </item>
     <item>
       <title>打开控制台疯狂占用服务器带宽😂</title>
       <link>https://danbai225.github.io/?p=771</link>
       <description>在测试中台项目时，发现服务器带宽被占满，测试服务器变得很慢。查看了网络请求并没有发现有大量的资源请求。尝试多次重启测试后，发现在打开开发者工具时流量会突然激增。&#xA;&#xA;为了找到具体的原因，我试着使用了抓包软件，虽然可以看到流量在运行，但是不知道具体在做什么。后来想起今天前端更新了一个打包文件需要部署到服务器上，于是我替换了index.html文件，发现问题没有再次出现。接着我尝试替换注释中的一个js文件，问题就得到了解决。&#xA;&#xA;在查看js文件夹时，我发现每个js文件都有一个对应的js.map文件。我想起这个好像是用来进行调试的。结合控制台卡死的情况，我猜测可能是自动加载了这个文件导致的问题。</description>
-      <pubDate>2022-09-02 17:34:24</pubDate>
-      <guid>771</guid>
+      <pubDate>Fri, 02 Sep 2022 17:34:24 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=771</guid>
     </item>
     <item>
       <title>使用 caddy 替换nginx 免费ssl证书</title>
       <link>https://danbai225.github.io/?p=770</link>
       <description>Caddy是一个强大的、可扩展的平台，用Go编写，可用于为站点、服务和应用程序提供服务。大多数人将Caddy用作Web服务器或代理。Caddy可以充当长时间运行的进程的角色，可以动态修改配置，也可以使用配置文件进行配置。Caddy可以免费签发SSL证书。通过按照安装步骤安装Caddy，然后修改配置文件，可以启动Caddy并访问服务器。遇到的问题可能是网站根目录权限不正确或者SELinux开启的问题。</description>
-      <pubDate>2022-08-30 19:36:22</pubDate>
-      <guid>770</guid>
+      <pubDate>Tue, 30 Aug 2022 19:36:22 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=770</guid>
     </item>
     <item>
       <title>从监控摄像头拿视频流</title>
       <link>https://danbai225.github.io/?p=739</link>
       <description>本文介绍了使用ONVIF协议连接摄像头获取RTSP流地址，并使用lal流媒体服务器播放。主要步骤包括使用ONVIF Client工具连接摄像头获取RTSP流地址，然后将流地址添加到lal流媒体服务器，并通过API获取播放地址进行播放。如果遇到无法播放的情况，可以尝试更换视频编码为H.264或检查音频编码是否支持。</description>
-      <pubDate>2022-08-13 10:08:28</pubDate>
-      <guid>739</guid>
+      <pubDate>Sat, 13 Aug 2022 10:08:28 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=739</guid>
     </item>
     <item>
       <title>tailscale快速搭建derper中转服务器</title>
       <link>https://danbai225.github.io/?p=738</link>
       <description>本文介绍了使用docker-compose快速部署DERP服务器的方法。首先，在docker-compose文件中定义了DERP服务的相关配置，如重启策略、网络模式、容器名称和环境变量等。然后，使用`docker-compose up -d`命令启动DERP服务器。&#xA;&#xA;接下来，文章介绍了如何修改DERP服务器的管理配置。通过修改配置文件中的`derpMap`部分，可以添加或修改DERP服务器的区域、节点信息等。&#xA;&#xA;最后，保存并重启客户端，即可使用修改后的DERP服务器。&#xA;&#xA;该教程的详细步骤可参考原文链接。</description>
-      <pubDate>2022-08-01 12:58:25</pubDate>
-      <guid>738</guid>
+      <pubDate>Mon, 01 Aug 2022 12:58:25 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=738</guid>
     </item>
     <item>
       <title>golang 申请一块内存</title>
       <link>https://danbai225.github.io/?p=710</link>
       <description>这是一个用于申请一块占用实际内存的内存空间的函数。函数的参数是所需内存空间的大小（以字节为单位）。函数会使用`make`函数创建一个大小为`size`的字节切片。然后，通过一个循环，将切片中的每个元素赋予递增的值，以模拟对内存的占用。最后返回该字节切片作为申请到的内存空间。</description>
-      <pubDate>2022-07-30 14:43:34</pubDate>
-      <guid>710</guid>
+      <pubDate>Sat, 30 Jul 2022 14:43:34 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=710</guid>
     </item>
     <item>
       <title>golang err:Today is Thursday,please give me 50$ i go to eat KFC</title>
       <link>https://danbai225.github.io/?p=709</link>
       <description>这篇文章描述了作者在编写代码时遇到的一个错误，然后作者发现是钱不够导致的问题。作者通过让另一个有钱的人给他50块解决了问题。代码经过修改后，再次运行就没有问题了。</description>
-      <pubDate>2022-07-28 12:40:01</pubDate>
-      <guid>709</guid>
+      <pubDate>Thu, 28 Jul 2022 12:40:01 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=709</guid>
     </item>
     <item>
       <title>ubuntu apt离线源制作 安装桌面环境</title>
       <link>https://danbai225.github.io/?p=708</link>
       <description>这篇文章介绍了如何制作Ubuntu的离线软件包源。首先创建一个文件夹，并下载所需的依赖软件包。然后建立依赖关系并进行打包。在使用时，将打包的文件解压到/opt目录，并将其写入本地源列表中。最后更新源并开始使用离线软件包源。</description>
-      <pubDate>2022-07-26 13:53:43</pubDate>
-      <guid>708</guid>
+      <pubDate>Tue, 26 Jul 2022 13:53:43 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=708</guid>
     </item>
     <item>
       <title>golang实现mac、windows开机自启动</title>
       <link>https://danbai225.github.io/?p=707</link>
       <description>DownTip是一个摸鱼小工具，作者最近在给状态栏小工具添加一些功能模块，其中包括了一个自启动的功能。实现原理是通过在LaunchAgents目录下写入一个启动配置文件，在Mac上实现自启动。在Windows上，作者是在用户启动目录下写入一个bat文件来启动当前二进制。具体实现的代码可以参考上述代码段。</description>
-      <pubDate>2022-07-25 19:17:05</pubDate>
-      <guid>707</guid>
+      <pubDate>Mon, 25 Jul 2022 19:17:05 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=707</guid>
     </item>
     <item>
       <title>分享一个开源库，使用golang创建一些弹窗接收用户输入</title>
       <link>https://danbai225.github.io/?p=706</link>
       <description>本文介绍了一个适用于 Golang、Windows 和 macOS 的 Zenity 对话框库，可以用于创建提示框、选择框、文件选择、进度条和输入框等功能。通过安装 zenity 包，可以在 Golang 程序中使用这些对话框功能。代码示例展示了如何使用 zenity 创建不同类型的对话框，并获取用户的交互结果。适用于需要在 Golang 程序中使用对话框的开发者。</description>
-      <pubDate>2022-07-19 20:32:32</pubDate>
-      <guid>706</guid>
+      <pubDate>Tue, 19 Jul 2022 20:32:32 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=706</guid>
     </item>
     <item>
       <title>我再也不在德邦寄电脑了。</title>
       <link>https://danbai225.github.io/?p=674</link>
       <description>文章中提到，作者在网上搜到推荐使用德邦快递来寄大件物品。作者花了210块钱通过德邦快递寄了三箱行李，体积大约为0.6m³，重量约80kg。然而，货物在从成都到绵阳的过程中耗时6天，显示器被压碎，而且送货上楼的服务也没有提供。作者还提到，电脑主机的独立包装费用为30块钱，运费也是30块钱，但机箱仍然被压碎。目前，作者已经申请了显示器的理赔，并加了保价。最后，作者用了一个哭泣的表情符号来表达自己的不满。</description>
-      <pubDate>2022-06-25 16:17:11</pubDate>
-      <guid>674</guid>
+      <pubDate>Sat, 25 Jun 2022 16:17:11 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=674</guid>
     </item>
     <item>
       <title>rustdesk服务端golang实现</title>
       <link>https://danbai225.github.io/?p=644</link>
       <description>作者在这篇文章中分享了自己寻找远程桌面软件的经历，并介绍了在Mac平台下使用开源软件rustdesk建立自己的远程桌面服务的过程。作者通过实现基础功能、局域网直连、中继器连接和加密连接等功能，最终完成了一个可以使用的远程桌面服务端。文章最后，作者表示从rustdesk项目中学到了很多，并提到了rust的语法难度。</description>
-      <pubDate>2022-05-28 21:34:31</pubDate>
-      <guid>644</guid>
+      <pubDate>Sat, 28 May 2022 21:34:31 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=644</guid>
     </item>
     <item>
       <title>寻迹 search-trace{浏览内容记录}</title>
       <link>https://danbai225.github.io/?p=643</link>
       <description>这篇文章介绍了一个浏览器插件，可以记录浏览器访问的网页内容，并通过服务端搜索关键字来查找浏览记录。插件和服务端的开源代码可以在GitHub上找到，其中服务端管理页面由@Bibooo25730负责。</description>
-      <pubDate>2022-05-18 21:09:37</pubDate>
-      <guid>643</guid>
+      <pubDate>Wed, 18 May 2022 21:09:37 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=643</guid>
     </item>
     <item>
       <title>编程小记-22.4.24</title>
       <link>https://danbai225.github.io/?p=642</link>
       <description>本文介绍了几种方法来处理不同的打包和文本提取问题。&#xA;&#xA;对于Angular打包时内存占用过高的问题，可以使用`node`命令来限制内存大小。使用`node --max_old_space_size=600 ./node_modules/@angular/cli/bin/ng build`，可以将内存限制在600MB以内。&#xA;&#xA;对于Golang打包时压缩体积的问题，可以使用`go build`命令，并结合`-ldflags &#39;-w -s&#39;`参数。例如，`go build -ldflags &#39;-w -s&#39; -o main`可以在打包时去除调试信息和符号表，从而减小可执行文件的体积。然后，可以使用UPX工具进行进一步压缩。可以使用`upx main`命令来使用UPX工具，需要先安装[UPX](https://github.com/upx/upx)。&#xA;&#xA;对于提取页面文本内容的问题，可以使用JavaScript来实现。通过`document.documentElement.innerText`可以获取整个页面的文本内容。可以使用该方法来提取页面的纯文本内容。</description>
-      <pubDate>2022-04-24 22:09:22</pubDate>
-      <guid>642</guid>
+      <pubDate>Sun, 24 Apr 2022 22:09:22 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=642</guid>
     </item>
     <item>
       <title>golang解析sql从中获取表名</title>
       <link>https://danbai225.github.io/?p=610</link>
       <description>ANTLR是一个用Java语言编写的识别器工具，可以自动生成解析器。它支持生成Java、Go、C等语言的解析器客户端。可以通过下载ANTLR的jar包和mysql的语法规则文件，使用ANTLR来生成解析器。通过覆盖`BaseMySqlParserListener`的`EnterTableName`接口，可以收集解析过程中的表名。</description>
-      <pubDate>2022-04-24 20:34:12</pubDate>
-      <guid>610</guid>
+      <pubDate>Sun, 24 Apr 2022 20:34:12 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=610</guid>
     </item>
     <item>
       <title>golang实现跨平台单文件无依赖贪吃蛇游戏</title>
       <link>https://danbai225.github.io/?p=578</link>
       <description>该代码是一个简单的贪吃蛇游戏的实现。主要包含以下几个部分：&#xA;&#xA;1. 声明了一些需要使用的常量和变量，如蛇的类型、速度等。&#xA;2. 实现了清空终端、获取终端宽高的函数。&#xA;3. 初始化蛇的位置和身体。&#xA;4. 随机食物位置的函数。&#xA;5. 按键监听的函数，根据按键设置蛇的移动方向和加速开关。&#xA;6. 计算下一次移动位置和判断蛇是否撞到边界或自己的函数。&#xA;7. 绘制地图的函数。&#xA;&#xA;以上就是该代码的主要内容。完整的代码可以查看作者的GitHub仓库。</description>
-      <pubDate>2022-03-29 20:30:54</pubDate>
-      <guid>578</guid>
+      <pubDate>Tue, 29 Mar 2022 20:30:54 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=578</guid>
     </item>
     <item>
       <title>idea设置终端docker中的容器为shll</title>
       <link>https://danbai225.github.io/?p=549</link>
       <description>这段代码是关于使用shell脚本在IntelliJ IDEA中设置终端路径和使用docker实现远程开发的方法。在Windows操作系统中，需要创建一个批处理文件，内容为`docker exec -it ubuntu bash`，并在IntelliJ IDEA的终端设置中将shell路径设置为这个批处理文件。在Unix操作系统中，需要创建一个bash脚本，内容也是`docker exec -it ubuntu bash`。此外，还提到了使用IntelliJ IDEA的代码同步功能和JetBrains Gateway远程开发功能，以及将docker映射到开发工作目录。</description>
-      <pubDate>2022-03-16 17:25:13</pubDate>
-      <guid>549</guid>
+      <pubDate>Wed, 16 Mar 2022 17:25:13 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=549</guid>
     </item>
     <item>
       <title>在mysql中使用json数据类型 grom</title>
       <link>https://danbai225.github.io/?p=548</link>
       <description>MySQL自从5.7版本开始支持JSON数据类型字段。本文介绍了如何使用MySQL和GORM库操作JSON类型的数据。首先，需要自定义数据类型来支持JSON字段，并实现Value和Scan接口。然后，可以通过语句&#34;字段名-&gt;&#39;$.json属性名&#39;&#34;来访问JSON属性，并进行查询和修改操作。此外，还介绍了一些MySQL内置函数用于操作JSON数据。更多详细信息可以参考附带的链接。</description>
-      <pubDate>2022-03-16 15:01:22</pubDate>
-      <guid>548</guid>
+      <pubDate>Wed, 16 Mar 2022 15:01:22 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=548</guid>
     </item>
     <item>
       <title>gorm OrderBy注入</title>
       <link>https://danbai225.github.io/?p=547</link>
       <description>在上述代码中，存在一个安全隐患：`order` 参数没有经过校验，可能导致 SQL 注入攻击。尽管 GORM 已经有一定的防注入措施，但仍存在一些方法没有转义。在不进行参数校验的情况下，攻击者可以构造恶意的 `order` 参数来执行危险的 SQL 查询。&#xA;&#xA;一个示例是通过构造 `order` 参数来爆出符合条件的所有数据。攻击者可以构造 `order` 参数为 `id;--`，从而将原本的 SQL 查询改为查询所有数据的语句。&#xA;&#xA;另一个示例是通过构造 `order` 参数来执行 `updatexml` 函数，从而进行更多的信息泄露。攻击者可以构造 `order` 参数为 `updatexml(1,if(1=2,1,concat(0x7e,database(),0x7e)),1)`，从而执行该函数并通过错误回显获取数据库的信息。&#xA;&#xA;为了避免这些安全隐患，建议在使用前对参数进行校验。可以使用合适的正则表达式或者白名单来限制 `order` 参数的值，确保其只包含被允许的字符和语法。此外，还可以对输入的参数进行转义或者使用参数绑定的方式来构建 SQL 查询，防止注入攻击的发生。&#xA;&#xA;通过对参数进行校验和处理，可以有效提升系统的安全性，防止 SQL 注入攻击。</description>
-      <pubDate>2022-03-15 15:40:41</pubDate>
-      <guid>547</guid>
+      <pubDate>Tue, 15 Mar 2022 15:40:41 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=547</guid>
     </item>
     <item>
       <title>解决宝塔控制面板在开启全站反向代理时没法自动续签SSL的问题</title>
       <link>https://danbai225.github.io/?p=546</link>
       <description>文章介绍了免费SSL续签的方法。当使用宝塔的自动申请功能时，如果网站开启了反向代理，无法访问到验证文件。解决办法是在Nginx配置文件中添加 `/www/wwwlogs/p00q.cn` 替换你的网站根目录，然后通过访问网站路径 `/well-known/` 进行验证。当出现nginx403时，即可完成续签。</description>
-      <pubDate>2022-03-12 12:01:14</pubDate>
-      <guid>546</guid>
+      <pubDate>Sat, 12 Mar 2022 12:01:14 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=546</guid>
     </item>
     <item>
       <title>IDEA插件 pwl-chat</title>
       <link>https://danbai225.github.io/?p=517</link>
       <description>PWL(摸鱼派)是一个聚集了一群热爱工作和生活，富有学习干劲的新时代工作者的社区。PWL开发了一款插件，让工作者能够在工作中摸鱼同时学习。该插件包含了多种功能特性，例如命令控制、发送红包、撤回与防撤回、输入框粘贴图片、在线列表双击@、上下切换发送历史等等。插件提供了动静分明的Web界面和悄悄摸鱼的文字界面。用户可以自由拖动窗口位置，插件以左下角小巧文字的形式存在，轻松实现摸鱼于无形的效果。插件还支持使用命令来获取帮助、发送红包、撤回消息、退出登录等功能。插件的地址包括GitHub和未来可能审核通过的JB插件仓库地址。</description>
-      <pubDate>2021-11-29 20:31:46</pubDate>
-      <guid>517</guid>
+      <pubDate>Mon, 29 Nov 2021 20:31:46 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=517</guid>
     </item>
     <item>
       <title>jbcef修改请求头和js交互</title>
       <link>https://danbai225.github.io/?p=516</link>
       <description>该文档介绍了如何使用CefBrowser类来修改请求头和实现和JavaScript的交互。首先，在实现CefContextMenuHandler接口的类中，可以通过onBeforeContextMenu方法清除默认的菜单项，并添加自定义菜单项。然后，可以在onContextMenuCommand方法中根据菜单项的ID执行相应的操作。接下来，在初始化时，可以通过addRequestHandler方法添加实现的处理方法。另外，在加载网页后，可以使用executeJavaScript方法加载JavaScript代码，并将方法注册到window对象中，以实现与JavaScript的交互。最后，可以通过JBCefJSQuery类的相关方法来处理JavaScript方法的调用，并在回调中返回调用结果。&#xA;&#xA;参考链接：[CefBrowser文档](http://www.xuanyimao.com/doc/jcef/202011/org/cef/browser/CefBrowser.html) [帮助文档](http://www.xuanyimao.com/jcef/index.html)</description>
-      <pubDate>2021-11-29 19:59:09</pubDate>
-      <guid>516</guid>
+      <pubDate>Mon, 29 Nov 2021 19:59:09 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=516</guid>
     </item>
     <item>
       <title>IDEA插件开发-发送事件日志(eventLog)</title>
       <link>https://danbai225.github.io/?p=515</link>
       <description>这段代码实现了在 IntelliJ IDEA 插件中发送通知的功能。首先，通过 `NotificationGroupManager.getInstance().getNotificationGroup(&#34;com.github.danbai225.pwlchat.notify&#34;)` 获取到通知组，并使用 `createNotification()` 创建一个通知实例。然后，通过 `setTitle()` 设置通知的标题，并使用 `notify()` 方法发送通知。&#xA;&#xA;在 `plugin.xml` 中，需要添加一个通知组的注册，例如：&#xA;```xml&#xA;&lt;notificationGroup id=&#34;com.github.danbai225.pwlchat.notify&#34; displayType=&#34;NONE&#34;/&gt;&#xA;```&#xA;其中，`displayType` 属性可以决定通知的显示方式。&#xA;&#xA;你可以在[这里](https://github.com/danbai225/pwl-chat/blob/main/src/main/kotlin/com/github/danbai225/pwlchat/notify/Notification.kt)找到完整的代码。</description>
-      <pubDate>2021-11-28 18:32:05</pubDate>
-      <guid>515</guid>
+      <pubDate>Sun, 28 Nov 2021 18:32:05 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=515</guid>
     </item>
     <item>
       <title>白嫖一个在线vscode server</title>
       <link>https://danbai225.github.io/?p=483</link>
       <description>本文介绍了通过railway提供的无服务器部署服务来免费部署和托管应用程序。每个月用户可以获得5美元的免费额度来使用该服务。</description>
-      <pubDate>2021-09-18 14:38:39</pubDate>
-      <guid>483</guid>
+      <pubDate>Sat, 18 Sep 2021 14:38:39 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=483</guid>
     </item>
     <item>
       <title>讯景rx460刷bios免驱黑苹果</title>
       <link>https://danbai225.github.io/?p=482</link>
       <description>作者在文章中描述了他升级了黑苹果的显卡，并提到选择了一张讯景的rx460显卡。然而，显卡出现了启动一直读条的问题。通过阅读教程和一些工具，他决定刷BIOS来解决问题。作者列出了刷BIOS的准备工作和操作步骤，并提供了相关工具和资源的下载链接。最后，作者成功地刷入了新的BIOS，并显示新显卡正常工作。文章末尾提供了一些参考链接供读者进一步了解。</description>
-      <pubDate>2021-09-17 21:39:39</pubDate>
-      <guid>482</guid>
+      <pubDate>Fri, 17 Sep 2021 21:39:39 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=482</guid>
     </item>
     <item>
       <title>手动升级py后apt update无法执行，显示没有apt_pkg模块</title>
       <link>https://danbai225.github.io/?p=421</link>
       <description>这个错误是由于没有找到名为&#39;apt_pkg&#39;的模块导致的。解决方法是创建一个软链接。首先进入/usr/lib/python3/dist-packages目录，然后以管理员身份运行以下命令：&#xA;```&#xA;sudo ln -s apt_pkg.cpython-36m-x86_64-linux-gnu.so apt_pkg.so&#xA;```&#xA;其中的&#39;36m&#39;需要根据你安装的Python版本进行替换，例如&#39;38m&#39;或&#39;39m&#39;。</description>
-      <pubDate>2021-09-16 11:09:38</pubDate>
-      <guid>421</guid>
+      <pubDate>Thu, 16 Sep 2021 11:09:38 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=421</guid>
     </item>
     <item>
       <title>京东签到白嫖豆豆</title>
       <link>https://danbai225.github.io/?p=420</link>
       <description>这是一个签到脚本的介绍。该脚本可以通过部署到腾讯云函数来实现签到，无需服务器。但不能保证一直可用，目前可以使用。你可以通过这个开源的js脚本[Github](https://github.com/zero205/JD_tencent_scf/tree/main)来实现签到。还有一个相关的教程地址可以参考[教程地址](https://66ccff.work/teach/jd.html)，提供了更详细的指导。该脚本的作者是杏铃の小本。</description>
-      <pubDate>2021-09-13 10:32:43</pubDate>
-      <guid>420</guid>
+      <pubDate>Mon, 13 Sep 2021 10:32:43 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=420</guid>
     </item>
     <item>
       <title>好物推荐-罗技G102鼠标</title>
       <link>https://danbai225.github.io/?p=419</link>
       <description>该鼠标是一款轻巧舒适的鼠标，支持宏设定和流光灯效。它具有舒适耐用的特点，价格相对较高。使用者购买后对其手感和游戏体验都非常满意。</description>
-      <pubDate>2021-09-11 14:44:31</pubDate>
-      <guid>419</guid>
+      <pubDate>Sat, 11 Sep 2021 14:44:31 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=419</guid>
     </item>
     <item>
       <title>买卖洋垃圾-E5装机</title>
       <link>https://danbai225.github.io/?p=418</link>
       <description>本文介绍了作者在今年4月份购买的一台多核CPU电脑的配置，并附上了各个配件的购买渠道和价格。然后作者提到由于电脑发热严重，经过了6、7月份的炎热天气后，作者决定拆卸并出售了部分配件，列出了出售价格和亏损金额。最后作者总结了装机需要耐心，不应购买低质量产品，并提到了发热和耗电问题。</description>
-      <pubDate>2021-09-11 14:21:24</pubDate>
-      <guid>418</guid>
+      <pubDate>Sat, 11 Sep 2021 14:21:24 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=418</guid>
     </item>
     <item>
       <title>修复一个open too many files</title>
       <link>https://danbai225.github.io/?p=390</link>
       <description>在使用socks5代理客户端时，发现很多连接没有被正常关闭的问题。问题出现在代码中的两个地方。首先，在client.go文件中，当代理类型不为http时，会执行安全信道建立的代码。其次，在cryptogram.go文件中的copy方法中，会进行加密io复制。当一方连接断开时，另一方连接可能不会被正常关闭，导致锁一直没有释放。本地连接也一直没有关闭，从而打开了太多连接并出现报错。为了解决这个问题，对代码进行了修改。首先，在cryptogram.go文件的copy方法中，增加了对连接的关闭操作。其次，在client.go文件中，将连接的关闭放在copy方法内部，当一方连接被关闭时，关闭两个连接，另一个拷贝就能感知到并读取错误并正常关闭并退出。这样就解决了连接没有正常关闭的问题。</description>
-      <pubDate>2021-09-09 18:00:03</pubDate>
-      <guid>390</guid>
+      <pubDate>Thu, 09 Sep 2021 18:00:03 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=390</guid>
     </item>
     <item>
       <title>给socks5套个壳</title>
       <link>https://danbai225.github.io/?p=389</link>
       <description>文章介绍了当学习网站被限制访问时，通过搭建一个套壳的socks5代理来解除限制的方法。作者修改了开源库socks5proxy的代码，添加了与最初的socks5代理相连接的功能。然后编译服务端和客户端代码，在服务端运行新的套壳服务端，在本地电脑上运行客户端，并将代理设置为本地客户端的代理端口，这样就能够访问限制的学习网站。并且作者在后续将该方法进行了改进和重写。</description>
-      <pubDate>2021-09-06 20:05:18</pubDate>
-      <guid>389</guid>
+      <pubDate>Mon, 06 Sep 2021 20:05:18 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=389</guid>
     </item>
     <item>
       <title>字体加载错误，我的代码有问题？？？</title>
       <link>https://danbai225.github.io/?p=388</link>
       <description>文章提到了作者在使用Apache时遇到了一个字体文件加载错误的问题。作者起初在自己的电脑上没有遇到问题，但在其他主机上却出现了字体显示不正常的情况。作者后来发现原因是他自己的电脑安装了这个字体文件，导致其他主机无法正确加载字体。作者尝试将字体文件转换成其他格式，但仍然出现错误。最后，作者从一个仓库下载了使用示例的字体文件，发现使用这个字体文件时一切正常。作者最后得出结论是字体的版本造成了这个问题。另外，作者还提到了关于字体格式兼容性的一些内容，总结出了一个完美兼容所有浏览器的字体格式组合。</description>
-      <pubDate>2021-09-03 12:16:33</pubDate>
-      <guid>388</guid>
+      <pubDate>Fri, 03 Sep 2021 12:16:33 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=388</guid>
     </item>
     <item>
       <title>制作生成漂亮的代码截图</title>
       <link>https://danbai225.github.io/?p=387</link>
       <description>这篇文章介绍了使用Go语言调用carbon的原理和代码。作者首先介绍了carbon的使用方法和制作代码截图的工具。然后作者通过使用谷歌无头浏览器来实现调用carbon生成代码截图的功能。作者使用了Go语言中的两个开源库，分别是chromedp和rod。最后，作者展示了使用Go代码调用carbon进行代码截图的示例代码，并详细解释了代码的运行原理。通过模拟输入方式输入代码，并通过获取dom的宽高来确定截图的大小。最终，作者成功生成了代码截图并返回了相关的图片数据。</description>
-      <pubDate>2021-08-23 11:05:16</pubDate>
-      <guid>387</guid>
+      <pubDate>Mon, 23 Aug 2021 11:05:16 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=387</guid>
     </item>
     <item>
       <title>使用Go创建一个守护进程</title>
       <link>https://danbai225.github.io/?p=355</link>
       <description>本文介绍了守护进程和僵尸进程的概念。守护进程是在后台运行的进程，类似于使用`nohup`命令启动的进程。僵尸进程是子进程退出后父进程没有正确回收进程描述符导致子进程占用进程资源的进程。文章还给出了使用Go语言创建守护进程的示例代码，该代码通过调用`exec`包的相关函数创建和管理守护进程。最后，文章提供了该示例代码的GitHub链接。</description>
-      <pubDate>2021-08-07 16:53:33</pubDate>
-      <guid>355</guid>
+      <pubDate>Sat, 07 Aug 2021 16:53:33 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=355</guid>
     </item>
     <item>
       <title>socks5协议Go实现</title>
       <link>https://danbai225.github.io/?p=354</link>
       <description>本文介绍了Socks5协议及其Go语言的相关实现。Socks5是Socks4协议的升级版，相比Socks4，Socks5协议支持了UDP代理，并且比HTTP协议更低层次、支持TCP代理。作者提供了一个基本的Socks5客户端和服务端的实现示例，可以用于建立Socks5代理连接。&#xA;&#xA;在客户端部分，作者使用了Go语言编写了一个Socks5客户端，实现了连接、认证和请求功能。该客户端可以发送连接请求到服务端，并进行认证，然后通过服务端访问目标网站并返回数据。作者还提供了获取HTTP代理客户端的方法，方便在HTTP客户端中使用Socks5代理。&#xA;&#xA;在服务端部分，作者使用Go语言编写了一个Socks5服务端。该服务端可以监听客户端连接，并进行客户端的认证。一旦认证成功，服务端可以根据客户端的请求类型进行不同处理，比如建立TCP连接或者UDP连接。&#xA;&#xA;总的来说，本文提供了一个基础的Socks5的实现示例，对了解Socks5协议及其Go语言实现有一定帮助。同时，作者还在GitHub上提供了代码的仓库，方便查看和使用。可以从中学习和进一步扩展实现。</description>
-      <pubDate>2021-08-07 14:34:18</pubDate>
-      <guid>354</guid>
+      <pubDate>Sat, 07 Aug 2021 14:34:18 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=354</guid>
     </item>
     <item>
       <title>视频推荐-计算机科学速成课</title>
       <link>https://danbai225.github.io/?p=328</link>
       <description>该视频是关于计算机组成原理以及计算机网络的抽象的内容。视频的作者是CrashCourse，他们致力于制作高质量的免费视频教程，覆盖的内容范围很广。这个视频值得推荐。</description>
-      <pubDate>2021-06-29 14:41:25</pubDate>
-      <guid>328</guid>
+      <pubDate>Tue, 29 Jun 2021 14:41:25 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=328</guid>
     </item>
     <item>
       <title>通过拳头lucAPI来拉人进游戏</title>
       <link>https://danbai225.github.io/?p=327</link>
       <description>该文档介绍了拳头官方提供给开发者的LOLApi（LUCApi）。该API可以用来开发各种有趣的工具，包括wegame的天赋配置。文章中提供了相关的参考资料和简单使用方法，以及使用Go代码实现一个LUCA连接器的示例。最后，文章展示了如何使用API调用邀请召唤师的功能。</description>
-      <pubDate>2021-06-21 18:08:13</pubDate>
-      <guid>327</guid>
+      <pubDate>Mon, 21 Jun 2021 18:08:13 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=327</guid>
     </item>
     <item>
       <title>网际校验和算法ICMP校验位计算</title>
       <link>https://danbai225.github.io/?p=326</link>
       <description>本文主要介绍了关于网络知识中的ping命令和其中的ICMP协议。ping命令使用ICMP协议来进行网络连接测试，在ping命令中，发送的数据包中包含了校验和字段。校验和的计算过程是将每两个字节相加，直到最后得出结果，并与前面的结果相加，然后取结果的反码作为最终的校验和。文章还给出了一个Go语言代码示例，展示了如何计算校验和。</description>
-      <pubDate>2021-06-10 14:19:34</pubDate>
-      <guid>326</guid>
+      <pubDate>Thu, 10 Jun 2021 14:19:34 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=326</guid>
     </item>
     <item>
       <title>用go实现一个通过模拟输入剪切板内容的程序</title>
       <link>https://danbai225.github.io/?p=325</link>
       <description>该程序的目的是为了解决在禁用CV大法的程序中输入复杂或长字符串时的不便。它通过监听Ctrl + I的快捷键，将剪切板中的内容作为字符串读取，然后用按键库模拟输入字符串的每个字符。该程序使用了robotgo、clipboard和systray等库，并且集成了一个带有图标的托盘应用程序。在运行该程序时，会在托盘中显示一个图标，右键点击可以选择退出程序。然后通过按下Ctrl + I快捷键，即可模拟输入剪切板中的字符串。但需要注意的是，并不是所有程序都支持输入，需要进一步使用虚拟键盘才能实现对这些程序的支持。</description>
-      <pubDate>2021-06-08 20:32:38</pubDate>
-      <guid>325</guid>
+      <pubDate>Tue, 08 Jun 2021 20:32:38 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=325</guid>
     </item>
     <item>
       <title>租房记</title>
       <link>https://danbai225.github.io/?p=324</link>
       <description>作者在这篇文章中分享了自己的租房经历。首先提到了刚毕业找工作时租房的经历，因为被中介诓骗导致没有租到满意的房子。接着提到了之后租的房子出现了问题，被蛋壳房源跑路了。最后提到了自己在朋友的介绍下找到整租套三的房子，并将原来的房间转租给了另一位同事。</description>
-      <pubDate>2021-06-07 21:05:46</pubDate>
-      <guid>324</guid>
+      <pubDate>Mon, 07 Jun 2021 21:05:46 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=324</guid>
     </item>
     <item>
       <title>暗夜精灵3安装mac黑苹果</title>
       <link>https://danbai225.github.io/?p=322</link>
       <description>该文章是一篇关于如何在台式电脑上安装黑苹果系统的教程。作者先介绍了自己准备玩黑苹果的动机和所需的工具。然后详细介绍了如何制作Mac启动盘和安装Mac系统的步骤。最后提到了一些引用的文章和参考链接。</description>
-      <pubDate>2021-06-06 20:32:25</pubDate>
-      <guid>322</guid>
+      <pubDate>Sun, 06 Jun 2021 20:32:25 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=322</guid>
     </item>
     <item>
       <title>golang cacheMap</title>
       <link>https://danbai225.github.io/?p=291</link>
       <description>本文介绍了一个简单的缓存实现方法，通过使用Map来存储缓存数据，并利用sync.Mutex实现并发安全。其中缓存数据包含一个值和过期时间，可以通过SetCache方法设置缓存并指定过期时间，通过GetCache方法获取缓存值，通过Remove方法移除缓存。示例代码展示了如何使用该缓存库，先设置一个缓存值为&#34;cache&#34;并设置过期时间为10秒，然后获取并打印该缓存值。</description>
-      <pubDate>2020-12-12 20:30:04</pubDate>
-      <guid>291</guid>
+      <pubDate>Sat, 12 Dec 2020 20:30:04 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=291</guid>
     </item>
     <item>
       <title>golang数组切片拷贝问题</title>
       <link>https://danbai225.github.io/?p=258</link>
       <description>本文介绍了在Go语言中对数组切片进行传递时的一些注意事项。在Go语言中，数组的传递是采用引用传递的方式，即传递的是数组的内存地址。因此，即使重新赋值，也只是复制了一份内存地址。如果要解决这个问题，可以使用copy()函数来进行复制。此外，在遇到多维数组时，使用copy()函数无法解决子元素数组的复制问题，需要进行二次复制来解决。此外，本文还介绍了一个通用的深拷贝函数Clone()，可以用来对任意结构进行深拷贝。</description>
-      <pubDate>2020-11-08 19:31:37</pubDate>
-      <guid>258</guid>
+      <pubDate>Sun, 08 Nov 2020 19:31:37 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=258</guid>
     </item>
     <item>
       <title>word转pdf 实现</title>
       <link>https://danbai225.github.io/?p=228</link>
       <description>本文介绍了如何在Linux环境下生成Word文档，并且同时生成一份Word文档。作者选择了libreoffice这个库来实现这个需求。首先需要下载libreoffice的安装包，解压并安装。然后添加环境变量，将字体文件复制到指定目录。最后，可以使用soffice命令将Word文档转换为pdf格式。</description>
-      <pubDate>2020-10-17 00:05:16</pubDate>
-      <guid>228</guid>
+      <pubDate>Sat, 17 Oct 2020 00:05:16 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=228</guid>
     </item>
     <item>
       <title>使用go unioffice让图片衬于文字下方</title>
       <link>https://danbai225.github.io/?p=227</link>
       <description>该文章介绍了使用go处理office文档的开源库unioffice，并讨论了在处理word文档时遇到的问题。问题是如何将图片设置为封面背景时不挤压文字。作者发现了一种解决方案，通过修改文档的xml结构来实现。作者将两个文档进行了对比，找到了影响图片布局的属性，并通过unioffice库的API来修改这些属性，最终解决了问题。文章还给出了相关代码示例。</description>
-      <pubDate>2020-10-11 12:45:48</pubDate>
-      <guid>227</guid>
+      <pubDate>Sun, 11 Oct 2020 12:45:48 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=227</guid>
     </item>
     <item>
       <title>小水管服务器被cc攻击</title>
       <link>https://danbai225.github.io/?p=226</link>
       <description>作者描述了自己的小服务器遭受了CC攻击，攻击者一直调用其项目中的搜索接口，导致服务器流量消耗完毕，项目无法访问。为了解决这个问题，作者租了一台性能更好的服务器，并安装了宝塔面板和Nginx防火墙插件，通过查看请求日志和写黑名单限制，成功减少了大部分攻击和流量。最终，项目恢复正常使用。</description>
-      <pubDate>2020-10-08 18:10:55</pubDate>
-      <guid>226</guid>
+      <pubDate>Thu, 08 Oct 2020 18:10:55 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=226</guid>
     </item>
     <item>
       <title>Flutter Video_Flutter+Chewie切换播放源泄漏问题解决</title>
       <link>https://danbai225.github.io/?p=194</link>
       <description>本文介绍了在切换播放源时可能出现的后台播放问题，并提供了一种解决方案。在切换播放源之前，先将新的`VideoPlayerController`保存在一个变量中，待其初始化完成后再销毁上一个控制器。具体操作通过判断当前控制器是否为空，如果为空则直接初始化新的控制器；如果不为空，则先保存当前控制器到一个变量，在下一次刷新时销毁之前的控制器，并初始化新的控制器。控制器初始化的过程是先初始化`VideoPlayerController`，然后使用其初始化完成的回调来初始化`ChewieController`。在页面销毁时，需要先销毁播放器以避免泄漏。</description>
-      <pubDate>2020-09-24 16:09:34</pubDate>
-      <guid>194</guid>
+      <pubDate>Thu, 24 Sep 2020 16:09:34 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=194</guid>
     </item>
     <item>
       <title>k8s 节点未就绪,容器正常运行</title>
       <link>https://danbai225.github.io/?p=165</link>
       <description>文章描述了在打开k8s控制面板时遇到的异常状态，即主节点和k8s2两个节点都未就绪，并且部分容器服务处于未运行状态，而非k8s容器正常运行。作者尝试通过重启kubelet.service来解决问题，成功恢复了正常状态。最后，作者附上了一张重启成功后的截图。</description>
-      <pubDate>2020-09-18 18:54:33</pubDate>
-      <guid>165</guid>
+      <pubDate>Fri, 18 Sep 2020 18:54:33 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=165</guid>
     </item>
     <item>
       <title>无比欢快的游戏Pummel Party-局域网多人联机</title>
       <link>https://danbai225.github.io/?p=163</link>
       <description>Pummel Party是一款多人联机的局域网游戏，类似于大富翁的桌游。玩家每回合都会扔骰子走指定步数，并参与各种小游戏来决定下一个回合的先后顺序。游戏的目标是收集钥匙来开启宝箱获胜。游戏中有许多道具和机关，增加了游戏的趣味性。游戏支持最大8人联机，对于非付费玩家来说只能进行局域网联机。</description>
-      <pubDate>2020-09-05 20:04:18</pubDate>
-      <guid>163</guid>
+      <pubDate>Sat, 05 Sep 2020 20:04:18 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=163</guid>
     </item>
     <item>
       <title>使用fyne将go程序运行在安卓上</title>
       <link>https://danbai225.github.io/?p=162</link>
       <description>这篇文章介绍了如何将u2ps客户端运行在安卓上。作者采用了fyne跨平台界面库来进行开发，并提供了环境搭建和代码编写的步骤。最后，作者展示了运行的结果，包括生成的apk和exe文件的截图。</description>
-      <pubDate>2020-08-23 19:39:08</pubDate>
-      <guid>162</guid>
+      <pubDate>Sun, 23 Aug 2020 19:39:08 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=162</guid>
     </item>
     <item>
       <title>U2PS开发日志</title>
       <link>https://danbai225.github.io/?p=137</link>
       <description>U2PS是一款内网穿透平台，用户可以将自己的服务器加入平台，其他用户可以选择节点进行内网传输，并将流量计入节点所属用户的账号。该平台支持TCP、UDP、HTTP和SOCKS5代理，并提供简单的Web操作界面配置。平台还具有热更新功能，无需重启客户端即可更新隧道。近期的开发进展包括完成对节点、客户端和隧道的增删改查功能，对接支付和实名认证系统，将服务端进行分离，通过dubbo调用服务端，完善流量统计功能，并进行容器化部署。接下来的开发重点是实现服务端和前端的对接和通信。</description>
-      <pubDate>2020-08-10 13:09:43</pubDate>
-      <guid>137</guid>
+      <pubDate>Mon, 10 Aug 2020 13:09:43 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=137</guid>
     </item>
     <item>
       <title>微云下载慢?用其他方式不限速</title>
       <link>https://danbai225.github.io/?p=136</link>
       <description>用户想要下载一个手机ROM，但是发现下载速度很慢。用户找到了一个微云的链接，普通下载速度只有100kb/s，而极速下载需要人民币支付，用户没有人民币。于是用户在网上搜索到了一个方法：&#xA;&#xA;1. 用户将需要下载的文件保存到自己的微云中。&#xA;2. 用户让好友点击发送微云文件。&#xA;3. 发送后，在聊天窗口中会出现一个下载按钮，点击后选择保存位置，即可满速下载。</description>
-      <pubDate>2020-08-03 23:23:17</pubDate>
-      <guid>136</guid>
+      <pubDate>Mon, 03 Aug 2020 23:23:17 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=136</guid>
     </item>
     <item>
       <title>使用spring boot email发送模版邮件</title>
       <link>https://danbai225.github.io/?p=135</link>
       <description>本文介绍了在项目中发送邮件时的两种方式：使用原始的javax.mail发送简单邮件和使用html模板发送邮件。原始方式发送的邮件容易被识别成垃圾邮件，而使用html模板发送能够更好地呈现邮件内容。使用模板发送邮件的步骤包括添加相关依赖、设置模板内容、创建MimeMessage对象并设置相关信息，最后发送邮件。给出了具体的代码示例，方便读者参考。</description>
-      <pubDate>2020-08-03 11:38:25</pubDate>
-      <guid>135</guid>
+      <pubDate>Mon, 03 Aug 2020 11:38:25 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=135</guid>
     </item>
     <item>
       <title>卸载内置应用</title>
       <link>https://danbai225.github.io/?p=133</link>
       <description>这篇文章介绍了如何使用adb卸载应用程序，并以小米视频为例进行说明。首先需要安装adb工具，然后在手机上打开开发者模式并使用USB数据线连接手机和电脑。最后，在命令行中使用`adb shell pm uninstall --user 0 应用包名`的命令卸载应用程序，如`adb shell pm uninstall --user 0 com.miui.video`，成功输出`Success`表示卸载成功。</description>
-      <pubDate>2020-07-22 11:39:06</pubDate>
-      <guid>133</guid>
+      <pubDate>Wed, 22 Jul 2020 11:39:06 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=133</guid>
     </item>
     <item>
       <title>让数据脱离环境(GoLang)</title>
       <link>https://danbai225.github.io/?p=132</link>
       <description>最近作者写了一个命令行工具集，其中包含一些常用的小工具。作者希望工具能够脱离环境，不需要额外的配置文件，只需要一个可执行文件即可运行。为了实现这个目标，作者将配置数据放在程序自身，并使用程序自我更新的方式来更新数据。&#xA;&#xA;具体实现如下：&#xA;- 在程序的最后8个字节中存储数据的长度（包括8个字节）。&#xA;- 程序每次初始化时读取数据，每次写入数据时更新程序。&#xA;- 初始时，程序在最后写入一个int64型的0（因为没有数据）。&#xA;- 数据以JSON格式保存在程序后面。&#xA;&#xA;作者使用了一个名为&#34;itself&#34;的包来实现以上功能。该包包含以下方法：&#xA;- `Get(key string) string`：根据键获取对应的值。&#xA;- `Put(key string, val string)`：根据键和值将数据存储起来。&#xA;- `Remove(key string)`：根据键删除对应的数据。&#xA;&#xA;作者还实现了一些辅助方法来支持自我更新。&#xA;- `getDataLength() int64`：从程序中读取存储的数据长度。&#xA;- `marshalMap()`：将map数据转换成JSON并更新程序。&#xA;- `loadMapData()`：加载map数据到内存中。&#xA;&#xA;以上就是作者通过将配置数据放在程序自身来实现命令行工具集的方法。这种方法可以避免使用额外的配置文件，使得工具更加方便和易用。</description>
-      <pubDate>2020-07-22 10:13:04</pubDate>
-      <guid>132</guid>
+      <pubDate>Wed, 22 Jul 2020 10:13:04 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=132</guid>
     </item>
     <item>
       <title>让java switch支持表达式和多匹配</title>
       <link>https://danbai225.github.io/?p=131</link>
       <description>Choice是一个Java库，提供了支持表达式和多匹配的功能。它能让Java支持类似JS中的函数变量传入的特性。使用Choice库可以根据不同的条件选择执行不同的方法。&#xA;&#xA;使用Choice的例子如下：&#xA;&#xA;int a = 1, b = 2, c = 3, d = 4;&#xA;new Choice(true).add(1L, () -&gt; {&#xA;    System.out.println(&#34;这里是1&#34;);&#xA;}).add(a &lt; b ? c : d &gt; a ? b : c, () -&gt; {&#xA;    System.out.println(&#34;这里是2&#34;);&#xA;}).add(3.0f, () -&gt; {&#xA;    System.out.println(&#34;这里是3&#34;);&#xA;}).add(Color.BLUE, () -&gt; {&#xA;    System.out.println(&#34;这里是4&#34;);&#xA;}).add(() -&gt; {&#xA;    System.out.println(&#34;多个匹配&#34;);&#xA;}, 1, 2, 3, 4, 5, 6, 7, 8, 9).Default(() -&gt; {&#xA;    System.out.println(&#34;这里是默认方法&#34;);&#xA;}).execute(4);&#xA;&#xA;在这个例子中，使用了Lambda表达式来定义不同的方法。然后通过Choice库中的add方法将方法和对应的条件添加到Choice对象中。最后使用execute方法根据给定的条件执行相应的方法。&#xA;&#xA;Choice库的实现是通过定义一个Choice类，并在其中定义了一个Map来保存方法和对应的条件。通过add方法将方法和条件添加到Map中，然后通过execute方法根据给定的条件执行相应的方法。&#xA;&#xA;Choice库的实现代码如下：&#xA;&#xA;public interface Function {&#xA;    void run();&#xA;}&#xA;&#xA;public class Choice {&#xA;    private Map&lt;Object, Function&gt; map;&#xA;    private Function Default;&#xA;    private boolean expression;&#xA;&#xA;    public Choice() {&#xA;        map = new ConcurrentHashMap();&#xA;    }&#xA;&#xA;    public Choice(boolean expression) {&#xA;        this();&#xA;        this.expression = expression;&#xA;    }&#xA;&#xA;    public Choice add(Object v, Function function) {&#xA;        if (v != null &amp;&amp; function != null) {&#xA;            map.put(v, function);&#xA;        }&#xA;        return this;&#xA;    }&#xA;&#xA;    public Choice add(Function function, Object... v) {&#xA;        if (function != null) {&#xA;            for (Object iv : v) {&#xA;                if (iv != null) {&#xA;                    map.put(iv, function);&#xA;                }&#xA;            }&#xA;        }&#xA;        return this;&#xA;    }&#xA;&#xA;    public void execute() {&#xA;        // 代码省略...&#xA;    }&#xA;&#xA;    public void execute(Object v) {&#xA;        // 代码省略...&#xA;    }&#xA;&#xA;    public Choice Default(Function function) {&#xA;        Default = function;&#xA;        return this;&#xA;    }&#xA;}&#xA;&#xA;在Choice类中，使用ConcurrentHashMap来保存方法和条件的映射关系。可以通过add方法将方法和条件添加到map中。execute方法用于执行方法，如果没有匹配的条件，则执行默认方法。&#xA;&#xA;总结来说，Choice是一个简单的Java库，用于实现条件选择执行不同的方法。它支持表达式和多匹配的功能，并且使用起来非常方便。</description>
-      <pubDate>2020-07-22 09:54:19</pubDate>
-      <guid>131</guid>
+      <pubDate>Wed, 22 Jul 2020 09:54:19 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=131</guid>
     </item>
     <item>
       <title>MySQL字符集之emoji</title>
       <link>https://danbai225.github.io/?p=112</link>
       <description>可以使用以下SQL语句设置字段的字符集为utf8mb4：&#xA;&#xA;ALTER TABLE table_name MODIFY column_name VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;&#xA;&#xA;其中，table_name是要修改的表名，column_name是要修改的字段名。这样可以确保字段支持emoji字符。</description>
-      <pubDate>2020-07-11 21:04:34</pubDate>
-      <guid>112</guid>
+      <pubDate>Sat, 11 Jul 2020 21:04:34 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=112</guid>
     </item>
     <item>
       <title>基于Flutter Video_Player实现倍速播放</title>
       <link>https://danbai225.github.io/?p=111</link>
       <description>文章讲述了作者在使用Flutter开发应用过程中的一个问题，即如何实现倍速播放。作者首先介绍了Flutter支持倍速播放的两种播放器，并选择了官方的Video_Player进行开发。接着，作者通过查看Video_Player的源码发现其封装了Exoplayer播放器，并且Exoplayer支持倍速播放。因此，作者通过Flutter与原生的通信，调用Exoplayer的方法来实现倍速播放。最后，作者展示了实现效果，并给出了相关项目的地址。</description>
-      <pubDate>2020-07-11 00:12:17</pubDate>
-      <guid>111</guid>
+      <pubDate>Sat, 11 Jul 2020 00:12:17 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=111</guid>
     </item>
     <item>
       <title>MySQL timestamp NOT NULL插入NULL的问题</title>
       <link>https://danbai225.github.io/?p=110</link>
       <description>问题描述：在MySQL数据库中，遇到了字段`gktime`不能为null的问题。该字段的表结构如下图所示。为了解决这个问题，可以设置字段`gktime`有默认值。&#xA;&#xA;解决方法：在MySQL 5.6版本中，引入了`explicit_defaults_for_timestamp`参数来控制对timestamp NULL值的处理。如果该参数不开启，插入NULL值到timestamp NOT NULL字段时，不会报错，也不会有警告，插入后的值会被设置为当前时间。如果在my.cnf配置文件中设置`explicit_defaults_for_timestamp=1`，则在插入该字段时会报错，提示该列不可以为null。可以通过执行以下命令来设置该参数为0：`set global explicit_defaults_for_timestamp=0;`，或者在`my.cnf`配置文件中添加`explicit_defaults_for_timestamp = 0`来修改该参数的值。</description>
-      <pubDate>2020-07-10 14:24:17</pubDate>
-      <guid>110</guid>
+      <pubDate>Fri, 10 Jul 2020 14:24:17 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=110</guid>
     </item>
     <item>
       <title>flutter 可以运行但是一直构建不了</title>
       <link>https://danbai225.github.io/?p=109</link>
       <description>这篇文章记录了作者在使用Flutter构建项目时遇到的问题。作者尝试了多种方法来解决问题，包括清除构建缓存、删除构建文件夹、删除依赖缓存以及回滚代码版本等，但都没有成功。最终，作者决定删除整个项目文件夹并重新拉取代码，这次构建过程没有问题。尽管作者没有找到问题的根本原因，但问题得到了解决。</description>
-      <pubDate>2020-07-10 12:42:34</pubDate>
-      <guid>109</guid>
+      <pubDate>Fri, 10 Jul 2020 12:42:34 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=109</guid>
     </item>
     <item>
       <title>数据库迁移-MySQL-Redis</title>
       <link>https://danbai225.github.io/?p=108</link>
       <description>文章提到了迁移准备和MySQL迁移以及Redis迁移。&#xA;&#xA;在迁移准备部分，作者提到目标服务器已经安装了MySQL和Redis数据库，并指明了源数据库和目标数据库的版本信息。对于MySQL的迁移，作者试过使用SQLyog连接两边的数据库，但觉得比较麻烦需要手动创建数据库和用户。于是作者决定尝试宝塔控制面板的数据迁移API，但遇到了问题，发现不能从Windows服务器迁移到Linux服务器，只能手动迁移。&#xA;&#xA;对于Redis的迁移，作者使用了redis-shake进行迁移。作者提供了使用RDB文件迁移的方式，并提供了redis-shake工具的下载链接。作者解释了如何修改redis-shake的配置文件，并指出在Linux和Windows下分别如何执行redis-shake命令。最后，作者展示了Redis迁移完成的截图。&#xA;&#xA;根据文章内容可以得知，文章主要是讲述了作者进行服务器迁移的准备工作以及具体的MySQL和Redis迁移过程。</description>
-      <pubDate>2020-07-09 09:23:03</pubDate>
-      <guid>108</guid>
+      <pubDate>Thu, 09 Jul 2020 09:23:03 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=108</guid>
     </item>
     <item>
       <title>K8s安装以及使用</title>
       <link>https://danbai225.github.io/?p=107</link>
       <description>本文介绍了在进行安装之前的准备工作，包括修改主机名、关闭防火墙、关闭swap分区和关闭SELinux。然后，文中提供了安装k8s的详细教程，并包括了初始化master节点和worker节点的步骤。最后，介绍了安装Ingress Controller的步骤。文章给出了一些参考链接供读者参考。</description>
-      <pubDate>2020-07-09 08:09:29</pubDate>
-      <guid>107</guid>
+      <pubDate>Thu, 09 Jul 2020 08:09:29 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=107</guid>
     </item>
     <item>
       <title>2020-6月总结---近况</title>
       <link>https://danbai225.github.io/?p=106</link>
       <description>6月底，作者休学在家，准备在9月份出去找工作。另外，作者还报名了一个专升本的自学考试，专业为计算机科学与技术。作者目前正在积极复习数学和英语，因为考试需要。作者感到事情很多，接下来的几个月会很忙。</description>
-      <pubDate>2020-07-04 20:19:09</pubDate>
-      <guid>106</guid>
+      <pubDate>Sat, 04 Jul 2020 20:19:09 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=106</guid>
     </item>
     <item>
       <title>MongoDB分页查询</title>
       <link>https://danbai225.github.io/?p=105</link>
       <description>这段代码是一个表格分页的示例，数据是从MongoDB中获取的。代码中定义了一个`PageResult`类来存储分页结果，包括页码、页面大小、总数、总页数和数据列表。然后，有一个`DmServiceImpl`类实现了一个`DmService`接口，具有各种根据条件查询的方法以及分页查询的方法。在分页查询的方法中，首先根据条件查询总条数，然后计算总页数。如果页码不合法，则设置为第一页。接下来，根据是否有最后一条数据的id来确定是使用普通分页还是使用有lastId的分页。最后，将查询结果封装到`PageResult`对象中返回。</description>
-      <pubDate>2020-07-02 12:01:30</pubDate>
-      <guid>105</guid>
+      <pubDate>Thu, 02 Jul 2020 12:01:30 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=105</guid>
     </item>
     <item>
       <title>整合服务治理Alibaba Sentinel+Dubbo</title>
       <link>https://danbai225.github.io/?p=104</link>
       <description>Sentinel是一个面向分布式服务架构的流量控制组件，可以帮助保障微服务的稳定性。它提供了流量控制、熔断降级、系统自适应保护等多个功能。安装Sentinel可以通过在GitHub下载相应版本的jar包，并将其放入一个新建的sentinel目录，然后通过运行启动文件run.sh来启动Sentinel。登录Sentinel控制台可以通过访问http://IP:8091，并使用默认的用户名和密码sentinel进行登录。&#xA;&#xA;接下来，可以将Sentinel整合到Dubbo服务中。首先，在一个新建的POM项目中添加相关依赖，包括spring-cloud-starter-alibaba-sentinel和sentinel-apache-dubbo-adapter。消费者和提供者都需要依赖sentinel项目。然后，在配置中心中添加相关配置，包括设置服务器端口号、是否饥饿加载以及Sentinel控制台地址。最后，访问http://127.0.0.1:8001/demo，并查看Sentinel控制台上的相关信息。&#xA;&#xA;整合Sentinel可以帮助保障微服务的稳定性，提供流量控制和熔断降级等功能，通过上述步骤可以完成Sentinel的安装和配置。</description>
-      <pubDate>2020-06-08 15:35:07</pubDate>
-      <guid>104</guid>
+      <pubDate>Mon, 08 Jun 2020 15:35:07 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=104</guid>
     </item>
     <item>
       <title>Spring Cloud Alibaba 整合Nacos和Dubbo</title>
       <link>https://danbai225.github.io/?p=103</link>
       <description>Spring Cloud Alibaba是一个提供微服务开发解决方案的项目，包含了分布式应用微服务开发所需要的组件。它基于Spring Cloud编程模型，通过添加一些注解和配置，可以将Spring Cloud应用接入阿里微服务解决方案，快速搭建分布式应用系统。其中，Nacos是一种服务发现、配置和管理的工具，而Apache Dubbo是一款高性能的Java RPC框架。在搭建项目时，需要创建多个模块，包括API模块、服务提供者模块和消费者模块。具体的配置包括根POM.xml配置、Nacos依赖配置、Dubbo依赖配置、起始依赖（spring-cloud-alibaba-starter）配置，以及各个模块的POM.xml和配置文件的配置。使用Nacos作为配置中心，可以在Nacos的配置列表中上传配置文件，并在消费者和提供者模块中添加bootstrap.yaml文件进行配置。可以通过访问http://localhost:8002/demo来测试项目的功能。</description>
-      <pubDate>2020-06-04 16:18:25</pubDate>
-      <guid>103</guid>
+      <pubDate>Thu, 04 Jun 2020 16:18:25 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=103</guid>
     </item>
     <item>
       <title>java判断压缩包内是否存在指定文件</title>
       <link>https://danbai225.github.io/?p=102</link>
       <description>以上代码是用于判断压缩包内是否存在名为index.html的文件。&#xA;&#xA;其中，通过`ZipInputStream`从输入流中读取压缩包的文件流。通过`zin.getNextEntry()`获得压缩包中的文件，然后判断文件名是否为index.html。若存在index.html文件，则将变量`ifThere`置为true，跳出循环。&#xA;&#xA;最后，根据`ifThere`的值来判断是否存在index.html文件，并返回对应的响应。&#xA;&#xA;另外，如果有文件对象，可以直接使用`ZipFile`来读取压缩包内的文件。可以通过`zipfile.getEntry(&#34;index.html&#34;)`获取index.html文件的入口，并通过`.getName()`获取文件名。</description>
-      <pubDate>2020-05-20 09:02:03</pubDate>
-      <guid>102</guid>
+      <pubDate>Wed, 20 May 2020 09:02:03 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=102</guid>
     </item>
     <item>
       <title>spring boot上传文件并自动解压</title>
       <link>https://danbai225.github.io/?p=101</link>
       <description>这段代码展示了如何将上传的文件进行解压到指定目录的业务实现。首先，使用zip4j库进行文件解压，该库支持加密、解密压缩，以及文件的添加、删除等功能。然后，在控制器中判断上传文件的后缀是否是.zip，如果是，则调用服务进行文件解压。服务部分主要实现了将元数据保存到数据库，并保存文件后进行解压的操作。文件工具类中的方法用于保存文件、获取应用程序路径以及进行zip文件的解压操作。最后，调用解压方法将文件解压到指定目录，并返回解压成功的提示信息。</description>
-      <pubDate>2020-05-15 08:35:44</pubDate>
-      <guid>101</guid>
+      <pubDate>Fri, 15 May 2020 08:35:44 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=101</guid>
     </item>
     <item>
       <title>spring boot映射所在目录下的静态资源</title>
       <link>https://danbai225.github.io/?p=100</link>
       <description>这段代码是一个Spring MVC的配置类。它通过实现WebMvcConfigurer接口来自定义资源处理器，实现了addResourceHandlers方法。在这个方法中，它首先获取了应用的classpath路径，并拼接上自定义的路径/images。然后通过addResourceHandler方法将访问路径/images/**映射到实际文件的路径file:gitPath上。&#xA;&#xA;在运行这个jar包的时候，可以通过访问http://127.0.0.1:8081/images/1.png来访问到D:\TEST\images\1.png这个文件。也就是说，这个配置类为指定路径下的文件提供了访问的接口。</description>
-      <pubDate>2020-05-14 15:48:10</pubDate>
-      <guid>100</guid>
+      <pubDate>Thu, 14 May 2020 15:48:10 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=100</guid>
     </item>
     <item>
       <title>Lintcode记录</title>
       <link>https://danbai225.github.io/?p=99</link>
       <description>这篇文章包含了三个题目的代码和解题思路。首先是39-恢复旋转排序数组，这个题目要求将一个旋转排序数组恢复成原来的排序数组。代码中使用了寻找最小值的方法来确定旋转的起点，并将数组重新排列。接下来是2-尾部的零，这个题目要求给定一个整数n，计算n的阶乘末尾零的个数。代码中使用了分解因子的方法来计算零的个数。最后是44-最小子数组，这个题目要求找到一个数组中和最小的子数组。代码中使用了动态规划的方法来找到最小子数组。</description>
-      <pubDate>2020-05-13 18:39:01</pubDate>
-      <guid>99</guid>
+      <pubDate>Wed, 13 May 2020 18:39:01 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=99</guid>
     </item>
     <item>
       <title>Flutter 播放器(video_player)切换源</title>
       <link>https://danbai225.github.io/?p=68</link>
       <description>这段代码主要是关于使用chewie和video_player库来实现视频播放的。首先定义了_videoPlayerController和_chewieController两个变量，用来控制视频播放。然后在dispose方法中，对这两个控制器进行释放。接下来是_initController方法，初始化_videoPlayerController和_chewieController，并设置相关参数，其中使用了VideoPlayerController和ChewieController类。最后是_loadVideo方法，根据传入的视频链接初始化控制器，如果已经有视频在播放，则先将旧的控制器处理掉。在build方法中，使用Container和Chewie组件来展示视频播放界面。</description>
-      <pubDate>2020-04-27 15:22:40</pubDate>
-      <guid>68</guid>
+      <pubDate>Mon, 27 Apr 2020 15:22:40 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=68</guid>
     </item>
     <item>
       <title>Flutter缓存M3U8</title>
       <link>https://danbai225.github.io/?p=67</link>
       <description>本文介绍了如何使用Flutter实现缓存影视功能，在安卓端添加了M3U8Manger的依赖库，并通过建立Flutter与安卓的通信实现了下载功能。在Flutter代码中调用安卓的M3U8Download方法进行下载任务，并通过UDP发送回调信息给Flutter端进行展示。具体的代码实现可以参考文章内容，其中包括了Flutter代码和安卓代码的链接。</description>
-      <pubDate>2020-04-26 13:03:18</pubDate>
-      <guid>67</guid>
+      <pubDate>Sun, 26 Apr 2020 13:03:18 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=67</guid>
     </item>
     <item>
       <title>学习Flutter-跨平台UI开发框架</title>
       <link>https://danbai225.github.io/?p=66</link>
       <description>本文介绍了Flutter跨平台UI开发框架以及学习和使用Flutter的一些基本要点。首先介绍了Flutter所采用的开发语言Dart的特性和基本语法。然后介绍了Flutter的运行环境安装和常用组件的使用，推荐了一个组件Demo项目和一个Flutter项目示例地址。最后，展示了一个简单的启动动画的实现，并总结了Flutter的优势和不足。总体而言，Flutter是一个快速上手的跨平台UI开发框架，特点是UI性能强大，开发效率高。然而，还存在一些坑需要填，且在调用硬件和系统API时仍需依靠原生平台。但作为一个学习和掌握的技术，Flutter仍然是值得一学的。</description>
-      <pubDate>2020-04-18 22:07:00</pubDate>
-      <guid>66</guid>
+      <pubDate>Sat, 18 Apr 2020 22:07:00 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=66</guid>
     </item>
     <item>
       <title>实现一个简单的投屏影视功能</title>
       <link>https://danbai225.github.io/?p=35</link>
       <description>本文介绍了如何给影视app添加一个投屏功能。首先需要在项目中添加依赖，然后在Activity中实现投屏功能。具体实现包括搜索设备、添加设备到下拉框、设置投屏信息以及实现投屏按钮的点击事件。最后给出了参考地址和项目地址供参考。</description>
-      <pubDate>2020-03-30 13:52:54</pubDate>
-      <guid>35</guid>
+      <pubDate>Mon, 30 Mar 2020 13:52:54 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=35</guid>
     </item>
     <item>
       <title>使用java websocket+agora.io实现影视同步一起观看和语音功能</title>
       <link>https://danbai225.github.io/?p=33</link>
       <description>该功能是一个影视观看平台，用户可以创建房间并邀请好友一同观看影视，同时支持房间语音。具体流程是用户创建房间后，生成一个房间ID，然后通过邀请好友加入房间。前端页面使用DPlayer播放器播放影视，使用cdnbye进行p2p加速，并使用声网Agora处理房间语音。后端使用淡白影视作为基础进行开发，使用socket进行实时通信。具体实现包括前端页面和后端socket类，后端socket管理类用于处理各种操作，例如加入房间、创建房间、发送消息等。整个流程的效果图可以参考文章中的图片。</description>
-      <pubDate>2020-03-21 19:06:56</pubDate>
-      <guid>33</guid>
+      <pubDate>Sat, 21 Mar 2020 19:06:56 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=33</guid>
     </item>
     <item>
       <title>一个简单的登陆注册中心实现</title>
       <link>https://danbai225.github.io/?p=16</link>
       <description>该文介绍了一个简单的登录注册中心，类似于微服务中的单点登录。作者在开发过程中发现频繁重复编写和使用登录注册功能的问题，因此开发了这个登录注册中心。服务端使用MySQL数据库存储用户信息，并使用Redis存储登录状态。接口包括登录、退出登录、设置token过期时间、注册、获取用户名和删除用户等功能。作者还提供了一个Java客户端库，方便与服务端进行通信。</description>
-      <pubDate>2020-02-12 21:44:41</pubDate>
-      <guid>16</guid>
+      <pubDate>Wed, 12 Feb 2020 21:44:41 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=16</guid>
     </item>
     <item>
       <title>学业繁重的一年-2019年终总结</title>
       <link>https://danbai225.github.io/?p=14</link>
       <description>文章的摘要为：作者在2019年度的学习上取得了很多进展，主要学习了Java及相关知识，掌握了一些编程思想和安卓开发的知识。作者也通过实践应用了所学的知识，并在GitHub上展示了自己的项目成果。除了学习，作者也参与了一些娱乐活动，并对自己的成长感到满意。在感悟部分，作者提及了身处良好环境对个人的影响，并对来年的计划表示了希望。</description>
-      <pubDate>2020-01-01 00:00:01</pubDate>
-      <guid>14</guid>
+      <pubDate>Wed, 01 Jan 2020 00:00:01 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=14</guid>
     </item>
     <item>
       <title>关于我的博客</title>
       <link>https://danbai225.github.io/?p=8</link>
       <description>写博客的好处是能记录个人的成长，方便自己也方便别人，随着时间推移可以成为一种财富，同时也提供了一个可以表达真实想法和观点的平台。写博客时应避免重复造轮子，坚持写原创内容并保证文章有意义，首先考虑自己以后是否能看得懂，然后才是考虑他人的阅读感受。可以学习其他优质博客的写作方式，并将自己的想法与实际结合起来，查阅相关资料并实践写出的博客更具可靠性。个人希望通过自己的博客真实记录学习和生活，并分享收获和经验，希望能在这个平台上记录自己踏过的坑。</description>
-      <pubDate>2019-12-27 16:05:55</pubDate>
-      <guid>8</guid>
+      <pubDate>Fri, 27 Dec 2019 16:05:55 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=8</guid>
     </item>
     <item>
       <title>GoLang基础知识整理</title>
       <link>https://danbai225.github.io/?p=13</link>
       <description>Go语言是一种简洁、快速、安全的编程语言，具有并行处理、有趣、开源和跨平台的特点。它在内存管理、数组安全和编译速度方面表现优秀。&#xA;&#xA;第一个Go程序是一个打印&#34;Hello, World!&#34;的程序。&#xA;&#xA;Go语言内置了许多关键字，包括break、default、func、interface、select、case、defer、go、map、struct、chan、else、goto、package、switch、const、fallthrough、if、range、type、continue、for、import、return和var。&#xA;&#xA;Go语言的命名规范是在main函数的包必须为main，变量命名遵循相应的英文表达或简写，私有变量以小写开头，公共变量以大写开头。&#xA;&#xA;Go语言中的数组是固定长度的列表，而切片是长度不固定的列表。&#xA;&#xA;数组的使用包括声明、获取长度、获取容量、比较和遍历。&#xA;&#xA;切片的使用包括创建、初始化、访问、切片和其他函数。&#xA;&#xA;Go语言中的结构体是复合类型，可以通过struct关键字定义。&#xA;&#xA;结构体的定义包括类型名称和字段或属性。&#xA;&#xA;结构体的声明包括使用make()函数和直接赋值初始化。&#xA;&#xA;结构体的特性包括值传递、没有继承和不能包含自己。&#xA;&#xA;Go语言中的字典是键值对类型，可以使用make()函数和直接赋值初始化。&#xA;&#xA;字典的使用包括插入、遍历和删除。&#xA;&#xA;Go语言中的协程是一种轻量级线程实现，可以使用go关键字开启协程。&#xA;&#xA;协程的应用包括并发执行和通过通信模型进行协程间通信。&#xA;&#xA;通信模型包括共享内存和消息。&#xA;&#xA;消息机制使用channel来进行协程间通信，channel是类型相关的，并可以进行写入、读出和关闭。</description>
-      <pubDate>2019-12-15 16:10:32</pubDate>
-      <guid>13</guid>
+      <pubDate>Sun, 15 Dec 2019 16:10:32 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=13</guid>
     </item>
     <item>
       <title>golang项目练习-临时云</title>
       <link>https://danbai225.github.io/?p=12</link>
       <description>这篇文章介绍了一个临时网盘项目，用于测试和临时存放json文件。用户可以通过主域名和路径访问文件，也可以通过子域名的方式访问文件。项目还可以进一步完善功能，如权限管理、统计、协同等。文章还提到了注意事项，即在前端页面传入的路径参数和用户名中不得出现 &#34;..&#34;。</description>
-      <pubDate>2019-12-14 16:09:54</pubDate>
-      <guid>12</guid>
+      <pubDate>Sat, 14 Dec 2019 16:09:54 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=12</guid>
     </item>
     <item>
       <title>golang beego框架orm操作mysql数据库</title>
       <link>https://danbai225.github.io/?p=11</link>
       <description>本文介绍了在GoLang中使用beego框架进行ORM（对象关系映射）操作的基本知识。首先，文章介绍了如何连接数据库，然后说明了如何创建模型。在查询方面，文章展示了使用原始SQL查询和根据主键查询的例子。在插入和更新方面，文章展示了插入新数据和更新已有数据的例子。最后，文章总结了学习beego框架的一些感受，并提供了相关中文文档和参考链接。</description>
-      <pubDate>2019-12-12 16:08:54</pubDate>
-      <guid>11</guid>
+      <pubDate>Thu, 12 Dec 2019 16:08:54 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=11</guid>
     </item>
     <item>
       <title>IDEA常用插件以及快捷键</title>
       <link>https://danbai225.github.io/?p=9</link>
       <description>idea是一个强大的开发工具，配合好用的插件和快捷键使开发更快捷便利。其中的插件包括各语言的支持插件、文件管理插件、代码生成插件、代码格式化插件等等。而快捷键则可以帮助开发者快速完成一些常见操作，如删除行、剪切行、查找类、替换、查找当前代码等等。这些功能和快捷键的使用可以大大提高开发效率。</description>
-      <pubDate>2019-12-05 16:06:57</pubDate>
-      <guid>9</guid>
+      <pubDate>Thu, 05 Dec 2019 16:06:57 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=9</guid>
     </item>
     <item>
       <title>2019-11月总结</title>
       <link>https://danbai225.github.io/?p=10</link>
       <description>在11月，我完成了spring boot影视项目的主要功能完善，并进行了spring cloud alibaba和dubbo rpc通信和nacos服务注册和配置中心的复习。此外，我还大致了解了k8s服务集群容器管理。通过以上学习和复习，我掌握了spring boot项目开发流程和docker容器部署，并学习了linux知识和网站速度优化的知识。此外，通过学习spring cloud alibaba，我掌握了nacos和dubbo的使用。&#xA;&#xA;在本月，我还完成了服务器迁移、数据备份，并搭建了博客并坚持写博客。&#xA;&#xA;接下来的学习计划是学习golang的基础知识、特点以及常用的web服务框架，并实战一个项目。我还想了解go与java的特点，并学会在不同的地方使用它们的特性。</description>
-      <pubDate>2019-12-01 16:07:52</pubDate>
-      <guid>10</guid>
+      <pubDate>Sun, 01 Dec 2019 16:07:52 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=10</guid>
     </item>
     <item>
       <title>RESTful token登陆(基于Spring、Redis)</title>
       <link>https://danbai225.github.io/?p=6</link>
       <description>本文介绍了为什么要使用token进行身份验证，以及使用token实现身份验证的通信流程。在代码实战部分，给出了一个Token实体类，并提供了相关的service接口和实现类，包括创建token、检测token有效性、删除token和token登录等功能的实现。</description>
-      <pubDate>2019-11-21 15:20:53</pubDate>
-      <guid>6</guid>
+      <pubDate>Thu, 21 Nov 2019 15:20:53 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=6</guid>
     </item>
     <item>
       <title>使用vue+element开发移动端页面</title>
       <link>https://danbai225.github.io/?p=5</link>
       <description>该文介绍了作者用vue开发一套手机前端页面的经历。作者在介绍了项目的创建和vue项目开发的基本结构后，分享了自己在开发过程中遇到的困难和解决方法。其中困难包括对如何引入和使用组件的不熟悉、使用axios获取数据时的跨域和cookie问题、以及修改element-ui默认样式的困难。作者最终通过修改样式元素的class来覆盖原有样式。</description>
-      <pubDate>2019-10-23 15:19:04</pubDate>
-      <guid>5</guid>
+      <pubDate>Wed, 23 Oct 2019 15:19:04 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=5</guid>
     </item>
     <item>
       <title>修改并完善淡白影视代码</title>
       <link>https://danbai225.github.io/?p=4</link>
       <description>该项目是为了巩固学习Spring框架而创建的一个影视项目。在项目中使用了阿里代码检测插件检查代码规范并进行修改，实现了访问统计的功能，并使用Redis存储数据。同时也实现了从腾讯视频获取弹幕的功能，并通过视频播放器Dplayer展示弹幕。最后还实现了将弹幕保存到数据库的功能，并通过异步任务线程池和任务调度实现了定时任务。在项目中还遇到了时区问题，通过修改配置文件解决了该问题。</description>
-      <pubDate>2019-10-13 16:39:44</pubDate>
-      <guid>4</guid>
+      <pubDate>Sun, 13 Oct 2019 16:39:44 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=4</guid>
     </item>
     <item>
       <title>为影视网站写一个爬虫脚本</title>
       <link>https://danbai225.github.io/?p=3</link>
       <description>该脚本是一个用于爬取影视网站的爬虫脚本，使用Python编写。脚本包括几个主要的模块和函数，通过请求URL获取网页的HTML内容，并使用XPath解析器提取需要的数据。脚本还使用了代理和多线程技术以提高爬取效率。在获取到数据后，脚本将数据存储到MySQL数据库中。&#xA;&#xA;具体实现逻辑如下：&#xA;1. 定义了一个数据库连接池，并设置了一些连接参数。&#xA;2. 定义了一个影视类(Ji)，用于存储影视的名称和URL。&#xA;3. 定义了获取代理的函数(get_proxy)。&#xA;4. 定义了获取页面HTML的函数(getHtml)。&#xA;5. 定义了主函数(main)。在主函数中，首先获取网页的HTML内容，并使用XPath提取影视的URL。然后创建一个线程池，并将每个影视的URL作为参数传递给一个函数(run)。最后等待线程结束并关闭线程池。&#xA;6. 定义了一个函数(run)，用于获取影视的详细数据并将数据存储到数据库中。在获取详细数据时，脚本使用XPath解析器提取需要的数据，并将数据存储到数据库中。&#xA;&#xA;总体来说，该脚本使用了Python的requests、lxml、re和pymysql等模块，通过请求网页、解析网页和操作数据库的方式实现了影视网站的数据爬取。</description>
-      <pubDate>2019-10-11 14:37:04</pubDate>
-      <guid>3</guid>
+      <pubDate>Fri, 11 Oct 2019 14:37:04 +0000</pubDate>
+      <guid>https://danbai225.github.io/?p=3</guid>
     </item>
   </channel>
 </rss>

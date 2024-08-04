@@ -123,12 +123,18 @@ func generateRSS(metas []meta) {
 	}
 
 	for _, m := range metas {
+		// 将日期转换为 RFC-822 格式
+		pubDate, err := time.Parse("2006-01-02 15:04:05", m.Date)
+		if err != nil {
+			fmt.Printf("日期格式错误: %v\n", err)
+			continue
+		}
 		item := rssItem{
 			Title:       m.Title,
 			Link:        m.URL,
 			Description: m.Summary,
-			PubDate:     m.Date,
-			Guid:        m.Id,
+			PubDate:     pubDate.Format("Mon, 02 Jan 2006 15:04:05 -0700"), // 转换为 RFC-822 格式
+			Guid:        m.URL,                                             // 确保 guid 是完整的 URL
 		}
 		rssFeed.Channel.Items = append(rssFeed.Channel.Items, item)
 	}
