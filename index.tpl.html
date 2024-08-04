@@ -77,28 +77,12 @@
         // 如果路径参数不为空，则重定向到指定的 URL
         window.location.href = '/posts/' + path + '.html';
     }
-    var _hmt = _hmt || [];
-    (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-        $("img").each(function(i,elem){
-            var e=$(elem);
-            e.addClass("lazyload");
-            var path=e.attr("src");
-            e.attr("src","/res/loading.gif");
-            e.attr("data-src",path);
-        });
-    })();
 </script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2024<a href="https://danbai225.github.io">{{.Name}}</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io">Github</a>
         <br/>

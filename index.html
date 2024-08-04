@@ -1781,30 +1781,13 @@ Go语言中的协程是一种轻量级线程实现，可以使用go关键字开�
 </div>
 
 <script>
-    
     var url = new URL(window.location.href);
-    
     var path = url.searchParams.get('p');
     if (path) {
         
         window.location.href = '/posts/' + path + '.html';
     }
-    var _hmt = _hmt || [];
-    (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?957fa178e77a6b4c93efb5dad79b8d31";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-        $("img").each(function(i,elem){
-            var e=$(elem);
-            e.addClass("lazyload");
-            var path=e.attr("src");
-            e.attr("src","/res/loading.gif");
-            e.attr("data-src",path);
-        });
-    })();
 </script>
-
 </body>
 <footer>
     <hr>
