@@ -181,7 +181,7 @@ func summary(content string) string {
 		Messages: []openai.ChatCompletionMessage{
 			{
 				Role:    openai.ChatMessageRoleSystem,
-				Content: "提取文章的摘要，用于博客展示摘要。",
+				Content: "提取文章的摘要",
 			},
 			{
 				Role:    openai.ChatMessageRoleUser,
