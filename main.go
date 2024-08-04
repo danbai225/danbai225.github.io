@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"encoding/xml" // 导入 XML 包
 	"fmt"
 	"github.com/sashabaranov/go-openai"
 	"github.com/yuin/goldmark"
@@ -19,6 +20,28 @@ import (
 	"strings"
 	"time"
 )
+
+// 定义 RSS 相关结构体
+type rssItem struct {
+	Title       string `xml:"title"`
+	Link        string `xml:"link"`
+	Description string `xml:"description"`
+	PubDate     string `xml:"pubDate"`
+	Guid        string `xml:"guid"`
+}
+
+type rss struct {
+	XMLName struct{}   `xml:"rss"`
+	Version string     `xml:"version,attr"`
+	Channel rssChannel `xml:"channel"`
+}
+
+type rssChannel struct {
+	Title       string    `xml:"title"`
+	Link        string    `xml:"link"`
+	Description string    `xml:"description"`
+	Items       []rssItem `xml:"item"`
+}
 
 type site struct {
 	Domain string
@@ -46,7 +69,7 @@ type index struct {
 }
 
 var siteData = site{
-	Domain: "https://p00q.cn",
+	Domain: "https://danbai225.github.io",
 	Name:   "淡白的记忆",
 	Author: "淡白",
 }
@@ -84,6 +107,39 @@ func main() {
 		return
 	}
 	_ = os.WriteFile("index.html", []byte(b.String()), 0644)
+
+	// 生成 RSS
+	generateRSS(metas)
+}
+
+func generateRSS(metas []meta) {
+	rssFeed := rss{
+		Version: "2.0",
+		Channel: rssChannel{
+			Title:       siteData.Name,
+			Link:        siteData.Domain,
+			Description: "这是 " + siteData.Name + " 的 RSS 订阅",
+		},
+	}
+
+	for _, m := range metas {
+		item := rssItem{
+			Title:       m.Title,
+			Link:        m.URL,
+			Description: m.Summary,
+			PubDate:     m.Date,
+			Guid:        m.Id,
+		}
+		rssFeed.Channel.Items = append(rssFeed.Channel.Items, item)
+	}
+
+	output, err := xml.MarshalIndent(rssFeed, "", "  ")
+	if err != nil {
+		fmt.Printf("生成 RSS 错误: %v\n", err)
+		return
+	}
+
+	_ = os.WriteFile("rss.xml", []byte(xml.Header+string(output)), 0644)
 }
 
 func parse(path string) meta {
@@ -138,6 +194,7 @@ func parse(path string) meta {
 	_ = os.WriteFile(htmlPath, []byte(s), 0644)
 	return m
 }
+
 func mdToHTML(md []byte) []byte {
 	goMd := goldmark.New(
 		goldmark.WithExtensions(extension.GFM, &mermaid.Extender{}),
@@ -155,6 +212,7 @@ func mdToHTML(md []byte) []byte {
 	}
 	return buf.Bytes()
 }
+
 func fillTemplate(content string, meta meta) string {
 	t, err := template.ParseFiles("./post.tpl.html")
 	if err != nil {
