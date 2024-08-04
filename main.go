@@ -41,6 +41,13 @@ type rssChannel struct {
 	Link        string    `xml:"link"`
 	Description string    `xml:"description"`
 	Items       []rssItem `xml:"item"`
+	AtomLink    atomLink  `xml:"atom:link"` // 添加 atom:link
+}
+
+type atomLink struct {
+	Href string `xml:"href,attr"`
+	Rel  string `xml:"rel,attr"`
+	Type string `xml:"type,attr"`
 }
 
 type site struct {
@@ -119,22 +126,30 @@ func generateRSS(metas []meta) {
 			Title:       siteData.Name,
 			Link:        siteData.Domain,
 			Description: "这是 " + siteData.Name + " 的 RSS 订阅",
+			AtomLink: atomLink{
+				Href: fmt.Sprintf("%s/rss.xml", siteData.Domain),
+				Rel:  "self",
+				Type: "application/rss+xml",
+			},
 		},
 	}
 
 	for _, m := range metas {
-		// 将日期转换为 RFC-822 格式
 		pubDate, err := time.Parse("2006-01-02 15:04:05", m.Date)
 		if err != nil {
 			fmt.Printf("日期格式错误: %v\n", err)
 			continue
 		}
+		// 检查日期是否在未来
+		if pubDate.After(time.Now()) {
+			pubDate = time.Now() // 或者设置为其他合理的日期
+		}
 		item := rssItem{
 			Title:       m.Title,
 			Link:        m.URL,
 			Description: m.Summary,
-			PubDate:     pubDate.Format("Mon, 02 Jan 2006 15:04:05 -0700"), // 转换为 RFC-822 格式
-			Guid:        m.URL,                                             // 确保 guid 是完整的 URL
+			PubDate:     pubDate.Format("Mon, 02 Jan 2006 15:04:05 -0700"),
+			Guid:        m.URL, // 使用完整的 URL 作为 GUID
 		}
 		rssFeed.Channel.Items = append(rssFeed.Channel.Items, item)
 	}

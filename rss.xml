@@ -8,7 +8,7 @@
       <title>dhcp协议学习</title>
       <link>https://danbai225.github.io/?p=1005</link>
       <description>DHCP（动态主机配置协议）是用于自动向网络设备分配IP地址及其他网络配置的重要协议。它通过客户端与服务器间的交互流程简化了设备接入网络的配置过程。该协议的基本交互步骤包括DHCP Discover、Offer、Request及Acknowledge，允许设备快速获得所需的IP地址和配置信息。此外，DHCP还支持配置其他网络参数，如默认网关、DNS服务器及子网掩码等。文章中还提供了一个简单的DHCP服务器实现示例，展现了如何在实际应用中应用该协议。欲了解更深入的信息，文末附有相关链接供进一步阅读。</description>
-      <pubDate>Sun, 04 Aug 2024 15:29:00 +0000</pubDate>
+      <pubDate>Sun, 04 Aug 2024 18:50:35 +0800</pubDate>
       <guid>https://danbai225.github.io/?p=1005</guid>
     </item>
     <item>
@@ -781,5 +781,6 @@
       <pubDate>Fri, 11 Oct 2019 14:37:04 +0000</pubDate>
       <guid>https://danbai225.github.io/?p=3</guid>
     </item>
+    <atom:link href="https://danbai225.github.io/rss.xml" rel="self" type="application/rss+xml"></atom:link>
   </channel>
 </rss>
