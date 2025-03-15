@@ -8,7 +8,7 @@
       <title>使用debian搭建软路由</title>
       <link>https://danbai225.github.io/?p=1006</link>
       <description>本文介绍了如何将一台基于x86架构的j4125多网卡机器配置为Debian 12网关，并安装名为daed的基于eBPF的代理程序。首先，作者开启了IP转发功能并使用systemd-network配置网络接口，将`enp1s0`设置为WAN口，其余网口作为LAN口。接着，配置了NAT和过滤规则的nftables，以便LAN设备能够通过WAN口访问外网。最后，安装了daed并开启其网页控制界面，用户可通过设置密码访问控制页面。</description>
-      <pubDate>Sat, 15 Mar 2025 11:10:29 +0800</pubDate>
+      <pubDate>Sat, 15 Mar 2025 11:34:00 +0800</pubDate>
       <guid>https://danbai225.github.io/?p=1006</guid>
     </item>
     <item>
