@@ -254,7 +254,7 @@ var openaiClient *openai.Client
 
 func summary(content string) string {
 	if openaiClient == nil {
-		openaiClient = openai.NewClient(os.Getenv("TOKEN"))
+		openaiClient = openai.NewClient(os.Getenv("OPENAI_TOKEN"))
 	}
 	resp, err := openaiClient.CreateChatCompletion(context.Background(), openai.ChatCompletionRequest{
 		Model: openai.GPT4oMini,

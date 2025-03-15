@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="软路由,debian,dae"/>
+    <meta name="description" content="本文介绍了如何将一台基于x86架构的j4125多网卡机器配置为Debian 12网关，并安装名为daed的基于eBPF的代理程序。首先，作者开启了IP转发功能并使用systemd-network配置网络接口，将`enp1s0`设置为WAN口，其余网口作为LAN口。接着，配置了NAT和过滤规则的nftables，以便LAN设备能够通过WAN口访问外网。最后，安装了daed并开启其网页控制界面，用户可通过设置密码访问控制页面。" />
+    
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="/res/css/style.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    
+    <script src="/res/js/index.js"></script>
+    <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <title>使用debian搭建软路由 - 淡白的记忆</title>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        
+        <div class="navbar-header">
+            淡白
+        </div>
+        
+        <div class="collapse navbar-collapse navbar-collapse-example">
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <input style="margin-top: 3px;" id="searchBox" type="search" class="form-control search-input" placeholder="搜索">
+                </li>
+                <li><a href="/">首页</a></li>
+                <li><a href="/links.html">友情链接</a></li>
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+<div class="container">
+    <article class="article">
+        <header>
+            <h1 class="text-center">使用debian搭建软路由</h1>
+            <dl class="dl-inline">
+                <dt>作者:</dt>
+                <dd>淡白</dd>
+                <dt>创建时间：</dt>
+                <dd>2025-03-15 10:00:00</dd>
+                <dt></dt>
+                <dd class="pull-right">
+                    
+                    <span class="label label-success label-outline">软路由</span>
+                    
+                    <span class="label label-success label-outline">debian</span>
+                    
+                    <span class="label label-success label-outline">dae</span>
+                    
+                </dd>
+            </dl>
+            <section class="abstract">
+                <p><strong>摘要：</strong>本文介绍了如何将一台基于x86架构的j4125多网卡机器配置为Debian 12网关，并安装名为daed的基于eBPF的代理程序。首先，作者开启了IP转发功能并使用systemd-network配置网络接口，将`enp1s0`设置为WAN口，其余网口作为LAN口。接着，配置了NAT和过滤规则的nftables，以便LAN设备能够通过WAN口访问外网。最后，安装了daed并开启其网页控制界面，用户可通过设置密码访问控制页面。</p>
+            </section>
+        </header>
+            <h1 id="0x00-">0x00 简介</h1>
+<p>手里有个j4125多网卡x86机器，之前一直装的是openwrt系列，之前在网上看到有关<a href="https://github.com/daeuniverse/dae">dae</a>的一个基于Ebpf的代理程序。<br />
+先在pve里试了下发现还行，后想着干脆直接就debian+dae算了。</p>
+<h1 id="0x01-debian12">0x01 将debian12作为网关</h1>
+<h2 id="ip">打开ip转发</h2>
+<p>编辑 <code>/etc/sysctl.conf</code> 文件：</p>
+<ol>
+<li>
+<p>使用文本编辑器打开文件：</p>
+<pre><code class="language-bash">vim /etc/sysctl.conf
+</code></pre>
+</li>
+<li>
+<p>找到以下行（如果不存在，则添加）：</p>
+<pre><code class="language-conf">net.ipv4.ip_forward=1
+</code></pre>
+</li>
+<li>
+<p>保存并关闭文件，运行以下命令以应用更改：</p>
+<pre><code class="language-bash">sudo sysctl -p
+</code></pre>
+</li>
+</ol>
+<h2 id="heading">配置网口</h2>
+<p>我使用systemd-network来配置网络<br />
+配置路径在：<code>/etc/systemd/network</code>有如下文件我的设备有4个网口我将<code>enp1s0</code>作为<code>wan</code>口其余为<code>lan</code>口</p>
+<pre><code>10-wan-enp1s0.network #wan口配置
+20-br-lan.netdev
+30-br-lan.network
+40-lan-eno1.network 
+40-lan-enp2s0.network
+40-lan-enp4s0.network
+</code></pre>
+<p>下面看看分别里面的内容：</p>
+<ul>
+<li><code>10-wan-enp1s0.network</code></li>
+</ul>
+<pre><code>[Match]
+Name=enp1s0   # 匹配网络接口名称
+ 
+[Network]
+DHCP=yes      # 启用DHCP客户端，从上级路由获取IP地址
+</code></pre>
+<ul>
+<li><code>20-br-lan.netdev</code></li>
+</ul>
+<pre><code>[NetDev]
+Name=br-lan   # 创建名为br-lan的网络设备
+Kind=bridge   # 设备类型为桥接
+</code></pre>
+<ul>
+<li><code>30-br-lan.network</code></li>
+</ul>
+<pre><code>[Match]
+Name=br-lan   # 匹配之前创建的br-lan桥接设备
+
+[Network]
+Address=192.168.2.1/24   # 设置桥接设备的IP地址和子网掩码
+DHCPServer=yes           # 启用DHCP服务器功能
+IPMasquerade=yes         # 启用IP伪装(NAT)，允许内网设备通过此路由器访问外网
+IPv4Forwarding=yes       # 启用IPv4转发功能
+
+[DHCPServer]
+PoolOffset=100           # DHCP地址池起始偏移量，实际分配从192.168.2.100开始
+PoolSize=100             # DHCP地址池大小，最多分配100个IP
+EmitDNS=yes              # DHCP服务向客户端提供DNS服务器信息
+DNS=192.168.2.1          # 设置DHCP客户端使用的DNS服务器地址为路由器自身
+</code></pre>
+<ul>
+<li><code>40-lan-eno1.network</code></li>
+</ul>
+<pre><code>[Match]
+Name=eno1     # 匹配物理网口eno1
+ 
+[Network]
+Bridge=br-lan # 将此网口加入到br-lan桥接设备
+</code></pre>
+<ul>
+<li><code>40-lan-enp2s0.network</code></li>
+</ul>
+<pre><code>[Match]
+Name=enp2s0   # 匹配物理网口enp2s0
+ 
+[Network]
+Bridge=br-lan # 将此网口加入到br-lan桥接设备
+</code></pre>
+<ul>
+<li><code>40-lan-enp4s0.network</code></li>
+</ul>
+<pre><code>[Match]
+Name=enp4s0   # 匹配物理网口enp4s0
+ 
+[Network]
+Bridge=br-lan # 将此网口加入到br-lan桥接设备
+</code></pre>
+<p>配置nftables <code>/etc/nftables.conf</code></p>
+<pre><code>#!/usr/sbin/nft -f
+
+# 清空现有规则集，确保配置的干净
+flush ruleset
+
+###############################################################################
+# 定义 NAT 表
+table ip nat {
+    # 预路由链（可根据需要进行扩展）
+    chain prerouting {
+        type nat hook prerouting priority 0; policy accept;
+    }
+
+    # 输入链（用于目的地 NAT 等）
+    chain input {
+        type nat hook input priority 0; policy accept;
+    }
+
+    # 输出链
+    chain output {
+        type nat hook output priority 0; policy accept;
+    }
+
+    # 后路由链，用于源地址转换（Masquerade）
+    chain postrouting {
+        type nat hook postrouting priority 100; policy accept;
+        # 对出接口为 enp1s0 的流量进行 Masquerade
+        oif &quot;enp1s0&quot; masquerade
+    }
+}
+
+###############################################################################
+# 定义过滤表
+table ip filter {
+    # 输入链
+    chain input {
+        type filter hook input priority 0; policy drop;
+
+        # 允许本地回环接口的流量
+        iif &quot;lo&quot; accept
+
+        # 允许已建立和相关的连接
+        ct state established,related accept
+
+        # 允许来自 LAN 的流量
+        iif &quot;br-lan&quot; accept
+
+        # 允许 SSH 访问（如果需要）
+        tcp dport 22 accept
+
+        # 其他流量默认拒绝
+    }
+
+    # 转发链
+    chain forward {
+        type filter hook forward priority 0; policy drop;
+
+        # 允许已建立和相关的连接
+        ct state established,related accept
+
+        # 允许从 LAN 到 WAN 的转发
+        iif &quot;br-lan&quot; oif &quot;enp1s0&quot; accept
+
+    }
+
+    # 输出链
+    chain output {
+        type filter hook output priority 0; policy accept;
+    }
+}
+
+###############################################################################
+</code></pre>
+<h1 id="0x02-daed">0x02 安装daed</h1>
+<p>有个带控制页面的<a href="https://github.com/daeuniverse/daed">daed</a></p>
+<pre><code># Download
+wget -P /tmp https://github.com/daeuniverse/daed/releases/latest/download/installer-daed-linux-$(arch).deb
+
+# install
+sudo dpkg -i /tmp/installer-daed-linux-$(arch).deb
+rm /tmp/installer-daed-linux-$(arch).deb
+
+# Start daed
+sudo systemctl start daed
+
+# enable daed start automatically
+sudo systemctl enable daed
+</code></pre>
+<p>使用<code>daed resetpass [password]</code> 设置密码</p>
+<p>访问http://192.168.2.1:2023/ 控制页面</p>
+
+        <footer>
+            <p class="pull-right text-muted">最后编辑于：2025-03-15 10:20:00</p>
+            <p class="text-important">未经允许不得转载</p>
+        </footer>
+    </article>
+</div>
+<link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+<footer>
+    <hr>
+    <div class="container text-center">
+        Copyright &copy; 2024<a href="https://danbai225.github.io">淡白的记忆</a><br/>
+        <br/>
+        Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
+        <br/>
+        <p>本站运行：<span id="span_dt_dt"></span></p>
+    </div>
+</footer>
+</html>
