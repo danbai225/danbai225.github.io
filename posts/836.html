@@ -3,21 +3,99 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="java,面试题"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="java,面试题,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="本文是一篇关于Java的面试题和答案的摘要。摘要中包括了20个常见的Java面试题，包括Java的基本数据类型、final关键字、抽象类和接口、多态、垃圾回收机制、异常、反射、泛型、线程、Synchronized关键字、HashMap和HashTable等内容。每个问题都附有答案和解释，帮助读者更好地理解和记忆Java面试知识。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2023-03-09 12:29:31">
+    <meta name="article:modified_time" content="2023-03-09 12:33:42">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="java">
+    <meta name="article:tag" content="面试题">
+    <link rel="canonical" href="https://danbai225.github.io/?p=836">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=836">
+    <meta property="og:title" content="java基础20题分享">
+    <meta property="og:description" content="本文是一篇关于Java的面试题和答案的摘要。摘要中包括了20个常见的Java面试题，包括Java的基本数据类型、final关键字、抽象类和接口、多态、垃圾回收机制、异常、反射、泛型、线程、Synchronized关键字、HashMap和HashTable等内容。每个问题都附有答案和解释，帮助读者更好地理解和记忆Java面试知识。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2023-03-09 12:29:31">
+    <meta property="article:modified_time" content="2023-03-09 12:33:42">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="java">
+    <meta property="article:tag" content="面试题">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=836">
+    <meta property="twitter:title" content="java基础20题分享">
+    <meta property="twitter:description" content="本文是一篇关于Java的面试题和答案的摘要。摘要中包括了20个常见的Java面试题，包括Java的基本数据类型、final关键字、抽象类和接口、多态、垃圾回收机制、异常、反射、泛型、线程、Synchronized关键字、HashMap和HashTable等内容。每个问题都附有答案和解释，帮助读者更好地理解和记忆Java面试知识。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>java基础20题分享 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "java基础20题分享",
+        "description": "本文是一篇关于Java的面试题和答案的摘要。摘要中包括了20个常见的Java面试题，包括Java的基本数据类型、final关键字、抽象类和接口、多态、垃圾回收机制、异常、反射、泛型、线程、Synchronized关键字、HashMap和HashTable等内容。每个问题都附有答案和解释，帮助读者更好地理解和记忆Java面试知识。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2023-03-09 12:29:31",
+        "dateModified": "2023-03-09 12:33:42",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=836"
+        },
+        "keywords": ["java","面试题"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=836"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -64,76 +142,95 @@
                 <p><strong>摘要：</strong>本文是一篇关于Java的面试题和答案的摘要。摘要中包括了20个常见的Java面试题，包括Java的基本数据类型、final关键字、抽象类和接口、多态、垃圾回收机制、异常、反射、泛型、线程、Synchronized关键字、HashMap和HashTable等内容。每个问题都附有答案和解释，帮助读者更好地理解和记忆Java面试知识。</p>
             </section>
         </header>
-            <h1 id="20个java常见面试题和答案">20个Java常见面试题和答案</h1>
-
+            <h1 id="20java">20个Java常见面试题和答案</h1>
 <ol>
-<li><p>Java中的基本数据类型有哪些？它们的大小是多少？
-答：Java中的基本数据类型有八种，分别是byte、short、int、long、float、double、boolean和char。它们的大小分别是1字节、2字节、4字节、8字节、4字节、8字节、1位和2字节。</p></li>
-
-<li><p>Java中的final关键字有什么作用？
-答：final关键字可以用来修饰变量、方法和类。用来修饰变量时，表示该变量的值不能被修改；用来修饰方法时，表示该方法不能被重写；用来修饰类时，表示该类不能被继承。</p></li>
-
-<li><p>Java中的抽象类和接口有什么区别？
-答：抽象类是一种不能被实例化的类，它的目的是为了被子类继承，子类必须实现父类中的所有抽象方法。接口是一种抽象类型，它定义了一组方法的签名，但没有实现。类可以实现多个接口，但只能继承一个类。</p></li>
-
-<li><p>Java中的多态是什么？
-答：多态是指同一个类型的对象，在不同的情况下呈现不同的行为。Java中的多态性可以通过方法重载和方法重写来实现。</p></li>
-
-<li><p>Java中的垃圾回收机制是什么？
-答：Java中的垃圾回收机制是自动的，它通过GC（Garbage Collection）来实现。当一个对象不再被引用时，垃圾收集器会自动回收它占用的内存空间。</p></li>
-
-<li><p>Java中的异常有哪些？它们有什么区别？
-答：Java中的异常分为两类：受检异常和非受检异常。受检异常必须在代码中显式地进行处理，否则代码将无法编译通过；非受检异常是指RuntimeException及其子类，它们不需要进行处理，但建议进行处理以避免程序崩溃。常见的异常包括NullPointerException、IndexOutOfBoundsException、ArithmeticException等。</p></li>
-
-<li><p>Java中的反射是什么？
-答：Java中的反射是指通过程序动态地获取一个类的信息，并在运行时使用这些信息。反射可以用来获取类的方法、属性等信息，以及动态创建对象和调用方法。</p></li>
-
-<li><p>Java中的泛型是什么？
-答：Java中的泛型是一种类型参数化的机制，它可以让程序员在编写代码时指定类型，以提高代码的安全性和可读性。泛型可以应用于类、接口、方法等。</p></li>
-
-<li><p>Java中的线程有几种状态？
-答：Java中的线程有6种状态：新建状态（New）、就绪状态（Runnable）、运行状态（Running）、阻塞状态（Blocked）、等待状态（Waiting）和计时等待状态（Timed Waiting）。</p></li>
-
-<li><p>Java中的Synchronized关键字是什么作用？
-答：Synchronized关键字可以用来修饰方法或代码块，它的作用是保证同一时刻只有一个线程可以访问被修饰的代码，从而避免多线程并发访问的问题。</p></li>
-
-<li><p>Java中的HashMap和HashTable有什么区别？
-答：HashMap和HashTable都是用来存储键值对的数据结构，但它们有以下区别：</p></li>
+<li>
+<p>Java中的基本数据类型有哪些？它们的大小是多少？<br />
+答：Java中的基本数据类型有八种，分别是byte、short、int、long、float、double、boolean和char。它们的大小分别是1字节、2字节、4字节、8字节、4字节、8字节、1位和2字节。</p>
+</li>
+<li>
+<p>Java中的final关键字有什么作用？<br />
+答：final关键字可以用来修饰变量、方法和类。用来修饰变量时，表示该变量的值不能被修改；用来修饰方法时，表示该方法不能被重写；用来修饰类时，表示该类不能被继承。</p>
+</li>
+<li>
+<p>Java中的抽象类和接口有什么区别？<br />
+答：抽象类是一种不能被实例化的类，它的目的是为了被子类继承，子类必须实现父类中的所有抽象方法。接口是一种抽象类型，它定义了一组方法的签名，但没有实现。类可以实现多个接口，但只能继承一个类。</p>
+</li>
+<li>
+<p>Java中的多态是什么？<br />
+答：多态是指同一个类型的对象，在不同的情况下呈现不同的行为。Java中的多态性可以通过方法重载和方法重写来实现。</p>
+</li>
+<li>
+<p>Java中的垃圾回收机制是什么？<br />
+答：Java中的垃圾回收机制是自动的，它通过GC（Garbage Collection）来实现。当一个对象不再被引用时，垃圾收集器会自动回收它占用的内存空间。</p>
+</li>
+<li>
+<p>Java中的异常有哪些？它们有什么区别？<br />
+答：Java中的异常分为两类：受检异常和非受检异常。受检异常必须在代码中显式地进行处理，否则代码将无法编译通过；非受检异常是指RuntimeException及其子类，它们不需要进行处理，但建议进行处理以避免程序崩溃。常见的异常包括NullPointerException、IndexOutOfBoundsException、ArithmeticException等。</p>
+</li>
+<li>
+<p>Java中的反射是什么？<br />
+答：Java中的反射是指通过程序动态地获取一个类的信息，并在运行时使用这些信息。反射可以用来获取类的方法、属性等信息，以及动态创建对象和调用方法。</p>
+</li>
+<li>
+<p>Java中的泛型是什么？<br />
+答：Java中的泛型是一种类型参数化的机制，它可以让程序员在编写代码时指定类型，以提高代码的安全性和可读性。泛型可以应用于类、接口、方法等。</p>
+</li>
+<li>
+<p>Java中的线程有几种状态？<br />
+答：Java中的线程有6种状态：新建状态（New）、就绪状态（Runnable）、运行状态（Running）、阻塞状态（Blocked）、等待状态（Waiting）和计时等待状态（Timed Waiting）。</p>
+</li>
+<li>
+<p>Java中的Synchronized关键字是什么作用？<br />
+答：Synchronized关键字可以用来修饰方法或代码块，它的作用是保证同一时刻只有一个线程可以访问被修饰的代码，从而避免多线程并发访问的问题。</p>
+</li>
+<li>
+<p>Java中的HashMap和HashTable有什么区别？<br />
+答：HashMap和HashTable都是用来存储键值对的数据结构，但它们有以下区别：</p>
+</li>
 </ol>
-
 <ul>
 <li>HashMap是非线程安全的，而HashTable是线程安全的。</li>
 <li>HashMap允许null键和null值，而HashTable不允许。</li>
 <li>HashMap的迭代器是fail-fast的，而HashTable的迭代器不是。</li>
 </ul>
-
-<ol>
-<li><p>Java中的字符串是不可变的，是什么意思？
-答：Java中的字符串是不可变的，指的是一旦创建了字符串对象，就无法改变其值。如果需要修改字符串内容，需要创建一个新的字符串对象。</p></li>
-
-<li><p>Java中的JVM是什么？
-答：JVM（Java Virtual Machine）是Java虚拟机的缩写，它是Java程序运行的环境。JVM可以将Java字节码解释成本地机器代码，从而使Java程序可以在任何支持Java虚拟机的平台上运行。</p></li>
-
-<li><p>Java中的静态变量和实例变量有什么区别？
-答：静态变量是指用static关键字修饰的变量，它属于类，所有实例共享一个静态变量的值。实例变量是指在类中声明的变量，每个实例都有自己的实例变量的值。</p></li>
-
-<li><p>Java中的构造方法是什么？
-答：构造方法是一种特殊的方法，它用于创建对象时初始化对象的状态。Java中的构造方法与类同名，没有返回值，可以有多个参数。</p></li>
-
-<li><p>Java中的接口可以继承接口吗？
-答：Java中的接口可以继承接口，可以形成接口的继承链。</p></li>
-
-<li><p>Java中的单例模式是什么？
-答：单例模式是一种设计模式，它保证一个类只有一个实例，并提供一个全局访问点。Java中的单例模式可以使用静态变量或静态方法实现。</p></li>
-
-<li><p>Java中的equals和\==有什么区别？
-答：equals方法用于比较两个对象的内容是否相同，而==用于比较两个对象的引用是否相同。当比较两个基本数据类型时，==会比较它们的值是否相等；而比较两个对象时，==会比较它们在内存中的地址是否相同。</p></li>
-
-<li><p>Java中的异常分为哪些类型？
-答：Java中的异常分为两种类型：Checked Exception（受检异常）和Unchecked Exception（非受检异常）。受检异常需要在代码中显式处理，否则编译器会报错。非受检异常通常是由程序逻辑错误引起的，可以通过代码改进来避免。</p></li>
-
-<li><p>Java中的泛型是什么？
-答：Java中的泛型是一种编译时类型检查机制，它可以将类型参数化，使得代码更加通用、类型安全、简洁。通过使用泛型，可以避免类型转换和运行时类型错误的问题。例如，List<String>就是一种泛型类型，它可以存储String类型的元素。</p></li>
+<ol start="12">
+<li>
+<p>Java中的字符串是不可变的，是什么意思？<br />
+答：Java中的字符串是不可变的，指的是一旦创建了字符串对象，就无法改变其值。如果需要修改字符串内容，需要创建一个新的字符串对象。</p>
+</li>
+<li>
+<p>Java中的JVM是什么？<br />
+答：JVM（Java Virtual Machine）是Java虚拟机的缩写，它是Java程序运行的环境。JVM可以将Java字节码解释成本地机器代码，从而使Java程序可以在任何支持Java虚拟机的平台上运行。</p>
+</li>
+<li>
+<p>Java中的静态变量和实例变量有什么区别？<br />
+答：静态变量是指用static关键字修饰的变量，它属于类，所有实例共享一个静态变量的值。实例变量是指在类中声明的变量，每个实例都有自己的实例变量的值。</p>
+</li>
+<li>
+<p>Java中的构造方法是什么？<br />
+答：构造方法是一种特殊的方法，它用于创建对象时初始化对象的状态。Java中的构造方法与类同名，没有返回值，可以有多个参数。</p>
+</li>
+<li>
+<p>Java中的接口可以继承接口吗？<br />
+答：Java中的接口可以继承接口，可以形成接口的继承链。</p>
+</li>
+<li>
+<p>Java中的单例模式是什么？<br />
+答：单例模式是一种设计模式，它保证一个类只有一个实例，并提供一个全局访问点。Java中的单例模式可以使用静态变量或静态方法实现。</p>
+</li>
+<li>
+<p>Java中的equals和==有什么区别？<br />
+答：equals方法用于比较两个对象的内容是否相同，而==用于比较两个对象的引用是否相同。当比较两个基本数据类型时，==会比较它们的值是否相等；而比较两个对象时，==会比较它们在内存中的地址是否相同。</p>
+</li>
+<li>
+<p>Java中的异常分为哪些类型？<br />
+答：Java中的异常分为两种类型：Checked Exception（受检异常）和Unchecked Exception（非受检异常）。受检异常需要在代码中显式处理，否则编译器会报错。非受检异常通常是由程序逻辑错误引起的，可以通过代码改进来避免。</p>
+</li>
+<li>
+<p>Java中的泛型是什么？<br />
+答：Java中的泛型是一种编译时类型检查机制，它可以将类型参数化，使得代码更加通用、类型安全、简洁。通过使用泛型，可以避免类型转换和运行时类型错误的问题。例如，List<!-- raw HTML omitted -->就是一种泛型类型，它可以存储String类型的元素。</p>
+</li>
 </ol>
 
         <footer>
@@ -145,24 +242,14 @@
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

@@ -51,6 +51,20 @@ type atomLink struct {
 	Type string `xml:"type,attr"`
 }
 
+// 定义 Sitemap 相关结构体
+type sitemapURL struct {
+	Loc        string `xml:"loc"`
+	LastMod    string `xml:"lastmod"`
+	ChangeFreq string `xml:"changefreq"`
+	Priority   string `xml:"priority"`
+}
+
+type sitemap struct {
+	XMLName struct{}     `xml:"urlset"`
+	Xmlns   string       `xml:"xmlns,attr"`
+	URLs    []sitemapURL `xml:"url"`
+}
+
 type site struct {
 	Domain string
 	Name   string
@@ -118,6 +132,9 @@ func main() {
 
 	// 生成 RSS
 	generateRSS(metas)
+
+	// 生成 Sitemap
+	generateSitemap(metas)
 }
 
 func generateRSS(metas []meta) {
@@ -164,6 +181,51 @@ func generateRSS(metas []meta) {
 	_ = os.WriteFile("rss.xml", []byte(xml.Header+string(output)), 0644)
 }
 
+func generateSitemap(metas []meta) {
+	sitemapData := sitemap{
+		Xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9",
+	}
+
+	// 添加首页
+	sitemapData.URLs = append(sitemapData.URLs, sitemapURL{
+		Loc:        siteData.Domain + "/",
+		LastMod:    time.Now().Format("2006-01-02T15:04:05-07:00"),
+		ChangeFreq: "daily",
+		Priority:   "1.0",
+	})
+
+	// 添加友情链接页
+	sitemapData.URLs = append(sitemapData.URLs, sitemapURL{
+		Loc:        siteData.Domain + "/links.html",
+		LastMod:    time.Now().Format("2006-01-02T15:04:05-07:00"),
+		ChangeFreq: "monthly",
+		Priority:   "0.5",
+	})
+
+	// 添加所有文章
+	for _, m := range metas {
+		lastMod, err := time.Parse("2006-01-02 15:04:05", m.Updated)
+		if err != nil {
+			lastMod, _ = time.Parse("2006-01-02 15:04:05", m.Date)
+		}
+
+		sitemapData.URLs = append(sitemapData.URLs, sitemapURL{
+			Loc:        m.URL,
+			LastMod:    lastMod.Format("2006-01-02T15:04:05-07:00"),
+			ChangeFreq: "weekly",
+			Priority:   "0.8",
+		})
+	}
+
+	output, err := xml.MarshalIndent(sitemapData, "", "  ")
+	if err != nil {
+		fmt.Printf("生成 Sitemap 错误: %v\n", err)
+		return
+	}
+	_ = os.WriteFile("sitemap.xml", []byte(xml.Header+string(output)), 0644)
+	fmt.Printf("生成 Sitemap 完成，包含 %d 个URL\n", len(sitemapData.URLs))
+}
+
 func parse(path string) meta {
 	d, _ := os.ReadFile(path)
 	lines := strings.Split(string(d), "\n")
@@ -199,10 +261,8 @@ func parse(path string) meta {
 	m.Date = m.Date[:19]
 	m.Updated = m.Updated[:19]
 	htmlPath := fmt.Sprintf("posts/%s.html", id)
-	stat, err := os.Stat(htmlPath)
-	if err == nil && stat.Size() > 0 {
-		return m
-	}
+
+	// 只有当摘要为空时才生成AI摘要
 	if m.Summary == "" {
 		m.Summary = summary(dataStr)
 		if m.Summary == "" {
@@ -211,6 +271,8 @@ func parse(path string) meta {
 		out, _ := yaml.Marshal(m)
 		_ = os.WriteFile(path, []byte(fmt.Sprintf("---\n%s---\n%s", string(out), dataStr)), 0644)
 	}
+
+	// 每次运行都重新渲染模板并生成HTML文件
 	fmt.Println(m.Title, m.Summary)
 	s := fillTemplate(string(mdToHTML([]byte(dataStr))), m)
 	_ = os.WriteFile(htmlPath, []byte(s), 0644)
@@ -257,7 +319,7 @@ func summary(content string) string {
 		openaiClient = openai.NewClient(os.Getenv("OPENAI_TOKEN"))
 	}
 	resp, err := openaiClient.CreateChatCompletion(context.Background(), openai.ChatCompletionRequest{
-		Model: openai.GPT4oMini,
+		Model: openai.GPT4Dot1Mini,
 		Messages: []openai.ChatCompletionMessage{
 			{
 				Role:    openai.ChatMessageRoleSystem,

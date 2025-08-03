@@ -3,21 +3,97 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="golang"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="golang,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="该程序通过将用户名的哈希转换为一个手机号码，生成用户的手机号。在程序中，假设用户名为&#34;john&#34;。首先，将用户名&#34;john&#34;进行MD5哈希运算，生成一个128位的哈希值。然后，将哈希值转换为一个大整数。接下来，取该大整数的前9位数字作为手机号码。最后，从数字&#34;3456789&#34;中随机选择一个数字，将其添加到手机号码的前面，形成最终的手机号码。以上是该程序的基本流程和实现方式。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2023-04-18 12:12:42">
+    <meta name="article:modified_time" content="2023-04-29 09:40:19">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="golang">
+    <link rel="canonical" href="https://danbai225.github.io/?p=841">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=841">
+    <meta property="og:title" content="通过字符串生成手机号">
+    <meta property="og:description" content="该程序通过将用户名的哈希转换为一个手机号码，生成用户的手机号。在程序中，假设用户名为&#34;john&#34;。首先，将用户名&#34;john&#34;进行MD5哈希运算，生成一个128位的哈希值。然后，将哈希值转换为一个大整数。接下来，取该大整数的前9位数字作为手机号码。最后，从数字&#34;3456789&#34;中随机选择一个数字，将其添加到手机号码的前面，形成最终的手机号码。以上是该程序的基本流程和实现方式。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2023-04-18 12:12:42">
+    <meta property="article:modified_time" content="2023-04-29 09:40:19">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="golang">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=841">
+    <meta property="twitter:title" content="通过字符串生成手机号">
+    <meta property="twitter:description" content="该程序通过将用户名的哈希转换为一个手机号码，生成用户的手机号。在程序中，假设用户名为&#34;john&#34;。首先，将用户名&#34;john&#34;进行MD5哈希运算，生成一个128位的哈希值。然后，将哈希值转换为一个大整数。接下来，取该大整数的前9位数字作为手机号码。最后，从数字&#34;3456789&#34;中随机选择一个数字，将其添加到手机号码的前面，形成最终的手机号码。以上是该程序的基本流程和实现方式。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>通过字符串生成手机号 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "通过字符串生成手机号",
+        "description": "该程序通过将用户名的哈希转换为一个手机号码，生成用户的手机号。在程序中，假设用户名为\u0022john\u0022。首先，将用户名\u0022john\u0022进行MD5哈希运算，生成一个128位的哈希值。然后，将哈希值转换为一个大整数。接下来，取该大整数的前9位数字作为手机号码。最后，从数字\u00223456789\u0022中随机选择一个数字，将其添加到手机号码的前面，形成最终的手机号码。以上是该程序的基本流程和实现方式。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2023-04-18 12:12:42",
+        "dateModified": "2023-04-29 09:40:19",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=841"
+        },
+        "keywords": ["golang"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=841"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -63,7 +139,6 @@
             </section>
         </header>
             <p>用户信息中没有手机号，通过用户名的哈希来生成一个手机号。</p>
-
 <pre><code>package main
 
 import (
@@ -104,24 +179,14 @@ func main() {
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

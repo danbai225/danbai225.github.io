@@ -3,21 +3,103 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="黑苹果,amd,显卡,bios"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="黑苹果,amd,显卡,bios,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="作者在文章中描述了他升级了黑苹果的显卡，并提到选择了一张讯景的rx460显卡。然而，显卡出现了启动一直读条的问题。通过阅读教程和一些工具，他决定刷BIOS来解决问题。作者列出了刷BIOS的准备工作和操作步骤，并提供了相关工具和资源的下载链接。最后，作者成功地刷入了新的BIOS，并显示新显卡正常工作。文章末尾提供了一些参考链接供读者进一步了解。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2021-09-17 21:39:39">
+    <meta name="article:modified_time" content="2021-09-17 21:47:35">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="黑苹果">
+    <meta name="article:tag" content="amd">
+    <meta name="article:tag" content="显卡">
+    <meta name="article:tag" content="bios">
+    <link rel="canonical" href="https://danbai225.github.io/?p=482">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=482">
+    <meta property="og:title" content="讯景rx460刷bios免驱黑苹果">
+    <meta property="og:description" content="作者在文章中描述了他升级了黑苹果的显卡，并提到选择了一张讯景的rx460显卡。然而，显卡出现了启动一直读条的问题。通过阅读教程和一些工具，他决定刷BIOS来解决问题。作者列出了刷BIOS的准备工作和操作步骤，并提供了相关工具和资源的下载链接。最后，作者成功地刷入了新的BIOS，并显示新显卡正常工作。文章末尾提供了一些参考链接供读者进一步了解。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2021-09-17 21:39:39">
+    <meta property="article:modified_time" content="2021-09-17 21:47:35">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="黑苹果">
+    <meta property="article:tag" content="amd">
+    <meta property="article:tag" content="显卡">
+    <meta property="article:tag" content="bios">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=482">
+    <meta property="twitter:title" content="讯景rx460刷bios免驱黑苹果">
+    <meta property="twitter:description" content="作者在文章中描述了他升级了黑苹果的显卡，并提到选择了一张讯景的rx460显卡。然而，显卡出现了启动一直读条的问题。通过阅读教程和一些工具，他决定刷BIOS来解决问题。作者列出了刷BIOS的准备工作和操作步骤，并提供了相关工具和资源的下载链接。最后，作者成功地刷入了新的BIOS，并显示新显卡正常工作。文章末尾提供了一些参考链接供读者进一步了解。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>讯景rx460刷bios免驱黑苹果 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "讯景rx460刷bios免驱黑苹果",
+        "description": "作者在文章中描述了他升级了黑苹果的显卡，并提到选择了一张讯景的rx460显卡。然而，显卡出现了启动一直读条的问题。通过阅读教程和一些工具，他决定刷BIOS来解决问题。作者列出了刷BIOS的准备工作和操作步骤，并提供了相关工具和资源的下载链接。最后，作者成功地刷入了新的BIOS，并显示新显卡正常工作。文章末尾提供了一些参考链接供读者进一步了解。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2021-09-17 21:39:39",
+        "dateModified": "2021-09-17 21:47:35",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=482"
+        },
+        "keywords": ["黑苹果","amd","显卡","bios"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=482"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -68,70 +150,48 @@
                 <p><strong>摘要：</strong>作者在文章中描述了他升级了黑苹果的显卡，并提到选择了一张讯景的rx460显卡。然而，显卡出现了启动一直读条的问题。通过阅读教程和一些工具，他决定刷BIOS来解决问题。作者列出了刷BIOS的准备工作和操作步骤，并提供了相关工具和资源的下载链接。最后，作者成功地刷入了新的BIOS，并显示新显卡正常工作。文章末尾提供了一些参考链接供读者进一步了解。</p>
             </section>
         </header>
-            <h1 id="升级显卡">升级显卡</h1>
-
+            <h1 id="heading">升级显卡</h1>
 <p>原来我的黑苹果使用的是gt730很遗憾的是不支持4k@60所以在前两天入了一张rx460 但是不成想讯景这个牌子的显卡黑果好多都有问题，我的显卡也出现了启动一直读条的问题。起初我以为是efi的问题整了好半天都不行，然后我就想着挂海鲜市场给卖了。不成想今早来了个人说这张卡是可以支持的需要刷BIOS，于是今天我看了一番教程，下班回家后开始了操作。</p>
-
-<h1 id="刷bios">刷BIOS</h1>
-
+<h1 id="bios">刷BIOS</h1>
 <p>注意，刷BIOS有风险。</p>
-
-<h2 id="准备工作">准备工作</h2>
-
+<h2 id="heading-1">准备工作</h2>
 <ul>
-<li><a href="https://danbai-cloud.oss-cn-chengdu.aliyuncs.com/uploads%2F2021%2F09%2F17%2F7XDa60Ds_DDU%20v18.0.4.3.exe?Expires=1631885142" target="_blank">DDU 可以用来卸载驱动</a> 非必须</li>
-<li><a href="https://danbai-cloud.oss-cn-chengdu.aliyuncs.com/uploads%2F2021%2F09%2F17%2FfwwLKjFC_GPU-Z%20v2.41.0%20%E6%B1%89%E5%8C%96%E7%89%88.exe?Expires=1631885212" target="_blank">GPU-Z 查看显卡信息</a></li>
-<li><a href="https://danbai-cloud.oss-cn-chengdu.aliyuncs.com/uploads%2F2021%2F09%2F17%2FIE6OTnpD_amdvbflashWin.zip?Expires=1631885284" target="_blank">amdvbflashWin 刷bios工具</a> 最新版我用会出错 2.93最好用</li>
-<li><a href="https://www.techpowerup.com/vgabios/" target="_blank">vgabios 下载</a></li>
+<li><a href="https://danbai-cloud.oss-cn-chengdu.aliyuncs.com/uploads%2F2021%2F09%2F17%2F7XDa60Ds_DDU%20v18.0.4.3.exe?Expires=1631885142">DDU 可以用来卸载驱动</a> 非必须</li>
+<li><a href="https://danbai-cloud.oss-cn-chengdu.aliyuncs.com/uploads%2F2021%2F09%2F17%2FfwwLKjFC_GPU-Z%20v2.41.0%20%E6%B1%89%E5%8C%96%E7%89%88.exe?Expires=1631885212">GPU-Z 查看显卡信息</a></li>
+<li><a href="https://danbai-cloud.oss-cn-chengdu.aliyuncs.com/uploads%2F2021%2F09%2F17%2FIE6OTnpD_amdvbflashWin.zip?Expires=1631885284">amdvbflashWin 刷bios工具</a> 最新版我用会出错 2.93最好用</li>
+<li><a href="https://www.techpowerup.com/vgabios/">vgabios 下载</a></li>
 </ul>
-
-<h2 id="挑选vbios">挑选vbios</h2>
-
-<p>同阵营、同型号（极个别可以跨型号）
-gpu核心频率差距不大、内存颗粒一致功耗等等
-我刷的是华硕的 bios 最先刷的蓝宝石的结果 LOL 1FPS
+<h2 id="vbios">挑选vbios</h2>
+<p>同阵营、同型号（极个别可以跨型号）<br />
+gpu核心频率差距不大、内存颗粒一致功耗等等<br />
+我刷的是华硕的 bios 最先刷的蓝宝石的结果 LOL 1FPS<br />
 技嘉的不是满血，唉~ 不过对我来够用了。</p>
-
-<h2 id="备份">备份</h2>
-
-<p>GPU-Z除了查看以外还能备份BIOS
-<img src="../res/img/482-1.png" alt="gpz05.gif" />
-顺便在这保存一下我的备份
-<a href="https://danbai-cloud.oss-cn-chengdu.aliyuncs.com/uploads%2F2021%2F09%2F17%2FUD8d1JeO_Baffin.rom?Expires=1631886043" target="_blank">备份rx460 bios</a></p>
-
-<h2 id="刷bios操作">刷bios操作</h2>
-
+<h2 id="heading-2">备份</h2>
+<p>GPU-Z除了查看以外还能备份BIOS<br />
+<img src="../res/img/482-1.png" alt="gpz05.gif" /><br />
+顺便在这保存一下我的备份<br />
+<a href="https://danbai-cloud.oss-cn-chengdu.aliyuncs.com/uploads%2F2021%2F09%2F17%2FUD8d1JeO_Baffin.rom?Expires=1631886043">备份rx460 bios</a></p>
+<h2 id="bios-1">刷bios操作</h2>
 <p>以下命令需cmd管理员身份运行然后进入amdvbflash目录执行</p>
-
 <p>1、解锁BIOS</p>
-
 <pre><code>amdvbflash.exe -unlockrom 0
 </code></pre>
-
 <p>2、刷入BIOS</p>
-
 <pre><code>amdvbflash -f -p 0 XXXX.rom
 </code></pre>
-
 <p>注释：XXXX为你下载的VBIOS文件名，也可以将下载好的文件名改成简单的名称即可。</p>
-
-<p>没有err的话重启电脑再用GPU-Z看看是不是已经刷上了。
-重启后再看
-<img src="../res/img/482-2.png" alt="image.png" />
-下面是之前的：
+<p>没有err的话重启电脑再用GPU-Z看看是不是已经刷上了。<br />
+重启后再看<br />
+<img src="../res/img/482-2.png" alt="image.png" /><br />
+下面是之前的：<br />
 <img src="../res/img/482-3.png" alt="image.png" /></p>
-
 <p>由于没有找到更合适的bios这张卡频率降了处理单元也少了。</p>
-
-<h1 id="启动mac">启动mac</h1>
-
-<p>成功启动，害我搞了半天efi，显卡识别成功。60fps的流畅👌
+<h1 id="mac">启动mac</h1>
+<p>成功启动，害我搞了半天efi，显卡识别成功。60fps的流畅👌<br />
 <img src="../res/img/482-4.png" alt="截屏20210917 下午9.13.49的副本.png" /></p>
-
-<p>参考：
-<a href="https://www.ichaotv.com/archives/184" target="_blank">1</a>
-<a href="https://www.imac.vip/thread-7905-1-1.html" target="_blank">2</a></p>
-
+<p>参考：<br />
+<a href="https://www.ichaotv.com/archives/184">1</a><br />
+<a href="https://www.imac.vip/thread-7905-1-1.html">2</a></p>
 <p>更多详细内容请查看参考</p>
 
         <footer>
@@ -143,24 +203,14 @@ gpu核心频率差距不大、内存颗粒一致功耗等等
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

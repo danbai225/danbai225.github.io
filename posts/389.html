@@ -3,21 +3,99 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="Go,socks5"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Go,socks5,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="文章介绍了当学习网站被限制访问时，通过搭建一个套壳的socks5代理来解除限制的方法。作者修改了开源库socks5proxy的代码，添加了与最初的socks5代理相连接的功能。然后编译服务端和客户端代码，在服务端运行新的套壳服务端，在本地电脑上运行客户端，并将代理设置为本地客户端的代理端口，这样就能够访问限制的学习网站。并且作者在后续将该方法进行了改进和重写。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2021-09-06 20:05:18">
+    <meta name="article:modified_time" content="2021-09-14 15:43:20">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="Go">
+    <meta name="article:tag" content="socks5">
+    <link rel="canonical" href="https://danbai225.github.io/?p=389">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=389">
+    <meta property="og:title" content="给socks5套个壳">
+    <meta property="og:description" content="文章介绍了当学习网站被限制访问时，通过搭建一个套壳的socks5代理来解除限制的方法。作者修改了开源库socks5proxy的代码，添加了与最初的socks5代理相连接的功能。然后编译服务端和客户端代码，在服务端运行新的套壳服务端，在本地电脑上运行客户端，并将代理设置为本地客户端的代理端口，这样就能够访问限制的学习网站。并且作者在后续将该方法进行了改进和重写。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2021-09-06 20:05:18">
+    <meta property="article:modified_time" content="2021-09-14 15:43:20">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="Go">
+    <meta property="article:tag" content="socks5">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=389">
+    <meta property="twitter:title" content="给socks5套个壳">
+    <meta property="twitter:description" content="文章介绍了当学习网站被限制访问时，通过搭建一个套壳的socks5代理来解除限制的方法。作者修改了开源库socks5proxy的代码，添加了与最初的socks5代理相连接的功能。然后编译服务端和客户端代码，在服务端运行新的套壳服务端，在本地电脑上运行客户端，并将代理设置为本地客户端的代理端口，这样就能够访问限制的学习网站。并且作者在后续将该方法进行了改进和重写。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>给socks5套个壳 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "给socks5套个壳",
+        "description": "文章介绍了当学习网站被限制访问时，通过搭建一个套壳的socks5代理来解除限制的方法。作者修改了开源库socks5proxy的代码，添加了与最初的socks5代理相连接的功能。然后编译服务端和客户端代码，在服务端运行新的套壳服务端，在本地电脑上运行客户端，并将代理设置为本地客户端的代理端口，这样就能够访问限制的学习网站。并且作者在后续将该方法进行了改进和重写。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2021-09-06 20:05:18",
+        "dateModified": "2021-09-14 15:43:20",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=389"
+        },
+        "keywords": ["Go","socks5"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=389"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -64,20 +142,14 @@
                 <p><strong>摘要：</strong>文章介绍了当学习网站被限制访问时，通过搭建一个套壳的socks5代理来解除限制的方法。作者修改了开源库socks5proxy的代码，添加了与最初的socks5代理相连接的功能。然后编译服务端和客户端代码，在服务端运行新的套壳服务端，在本地电脑上运行客户端，并将代理设置为本地客户端的代理端口，这样就能够访问限制的学习网站。并且作者在后续将该方法进行了改进和重写。</p>
             </section>
         </header>
-            <h1 id="限制我学习">限制我学习</h1>
-
+            <h1 id="heading">限制我学习</h1>
 <p>由于公司限制了哔哩哔哩等学习网站我用的代理也是明文的socks5于是上级路由还是能够通过http给我拦截了。 注:我用socks5主要的原因是方便访问局域网</p>
-
-<p>于是我便给我的socks5套了一层壳
-通过修改<a href="https://github.com/shikanon/socks5proxy" target="_blank">socks5proxy</a>开源库即可实现。</p>
-
-<h1 id="解除限制">解除限制</h1>
-
-<p>前面的开源库本身就是一个socks5服务器和客户端，但为了连接我之前的socks（有代理）需要用到另一个socks5的开源实现<a href="https://github.com/txthinking/socks5" target="_blank">socks5</a>
+<p>于是我便给我的socks5套了一层壳<br />
+通过修改<a href="https://github.com/shikanon/socks5proxy">socks5proxy</a>开源库即可实现。</p>
+<h1 id="heading-1">解除限制</h1>
+<p>前面的开源库本身就是一个socks5服务器和客户端，但为了连接我之前的socks（有代理）需要用到另一个socks5的开源实现<a href="https://github.com/txthinking/socks5">socks5</a><br />
 修改 <code>socks5proxy</code> 代码</p>
-
 <p><code>server.go</code>文件</p>
-
 <pre><code class="language-Go">//添加依赖
 &quot;github.com/txthinking/socks5&quot;
 
@@ -96,14 +168,11 @@
 	}
 	defer dstServer.Close()
 </code></pre>
-
-<p>然后编译服务端和客户端代码，在socks5原来的服务器端上运行这个新的套壳服务端。
+<p>然后编译服务端和客户端代码，在socks5原来的服务器端上运行这个新的套壳服务端。<br />
 在本地电脑上运行客户端。注意启动参数，启动客户端后把网络代理的socks5替换成本地客户端的代理端口，就能访问b站了。</p>
-
-<h1 id="追更-9-14">追更 9.14</h1>
-
-<p>前面的实现有些问题，后面我重写了。
-<a href="https://github.com/danbai225/tcpproxy" target="_blank">Github</a></p>
+<h1 id="-914">追更 9.14</h1>
+<p>前面的实现有些问题，后面我重写了。<br />
+<a href="https://github.com/danbai225/tcpproxy">Github</a></p>
 
         <footer>
             <p class="pull-right text-muted">最后编辑于：2021-09-14 15:43:20</p>
@@ -114,24 +183,14 @@
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

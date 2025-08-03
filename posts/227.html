@@ -3,21 +3,97 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="unioffice"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="unioffice,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="该文章介绍了使用go处理office文档的开源库unioffice，并讨论了在处理word文档时遇到的问题。问题是如何将图片设置为封面背景时不挤压文字。作者发现了一种解决方案，通过修改文档的xml结构来实现。作者将两个文档进行了对比，找到了影响图片布局的属性，并通过unioffice库的API来修改这些属性，最终解决了问题。文章还给出了相关代码示例。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2020-10-11 12:45:48">
+    <meta name="article:modified_time" content="2020-10-17 00:10:45">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="unioffice">
+    <link rel="canonical" href="https://danbai225.github.io/?p=227">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=227">
+    <meta property="og:title" content="使用go unioffice让图片衬于文字下方">
+    <meta property="og:description" content="该文章介绍了使用go处理office文档的开源库unioffice，并讨论了在处理word文档时遇到的问题。问题是如何将图片设置为封面背景时不挤压文字。作者发现了一种解决方案，通过修改文档的xml结构来实现。作者将两个文档进行了对比，找到了影响图片布局的属性，并通过unioffice库的API来修改这些属性，最终解决了问题。文章还给出了相关代码示例。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2020-10-11 12:45:48">
+    <meta property="article:modified_time" content="2020-10-17 00:10:45">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="unioffice">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=227">
+    <meta property="twitter:title" content="使用go unioffice让图片衬于文字下方">
+    <meta property="twitter:description" content="该文章介绍了使用go处理office文档的开源库unioffice，并讨论了在处理word文档时遇到的问题。问题是如何将图片设置为封面背景时不挤压文字。作者发现了一种解决方案，通过修改文档的xml结构来实现。作者将两个文档进行了对比，找到了影响图片布局的属性，并通过unioffice库的API来修改这些属性，最终解决了问题。文章还给出了相关代码示例。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>使用go unioffice让图片衬于文字下方 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "使用go unioffice让图片衬于文字下方",
+        "description": "该文章介绍了使用go处理office文档的开源库unioffice，并讨论了在处理word文档时遇到的问题。问题是如何将图片设置为封面背景时不挤压文字。作者发现了一种解决方案，通过修改文档的xml结构来实现。作者将两个文档进行了对比，找到了影响图片布局的属性，并通过unioffice库的API来修改这些属性，最终解决了问题。文章还给出了相关代码示例。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2020-10-11 12:45:48",
+        "dateModified": "2020-10-17 00:10:45",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=227"
+        },
+        "keywords": ["unioffice"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=227"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -63,30 +139,23 @@
             </section>
         </header>
             <h1 id="unioffice">unioffice</h1>
-
-<p>使用go处理offce是一个开源库,不过这个库需要付费授权<a href="https://unidoc.io/unioffice/" target="_blank">unioffice</a>
+<p>使用go处理offce是一个开源库,不过这个库需要付费授权<a href="https://unidoc.io/unioffice/">unioffice</a><br />
 没有相关文档只有github上的几个例子</p>
-
-<h1 id="遇到的问题">遇到的问题</h1>
-
-<p>在处理word的时候需求是将图片设为封面背景,但是当图片添加进去后放大到页面大小会挤压文字
-<img src="../res/img/227-1.jpeg" alt="image.png" />
-我想实现的效果:
-<img src="../res/img/227-2.jpeg" alt="image.png" />|<img src="../res/img/227-3.jpeg" alt="image.png" />
+<h1 id="heading">遇到的问题</h1>
+<p>在处理word的时候需求是将图片设为封面背景,但是当图片添加进去后放大到页面大小会挤压文字<br />
+<img src="../res/img/227-1.jpeg" alt="image.png" /><br />
+我想实现的效果:<br />
+<img src="../res/img/227-2.jpeg" alt="image.png" />|<img src="../res/img/227-3.jpeg" alt="image.png" /><br />
 没有文档我只找到了这个API<code>t.SetTextWrapSquare()</code>设置文字环绕图片,但是没有用还是解决不了.</p>
-
-<h1 id="尝试查看docx文件结构">尝试查看docx文件结构</h1>
-
-<p>据了解,word内部其实就是xml.
-我首先直接用vscode打开查看,发现是个二进制文件.
-后有发现原来可以解压处出来:
-<img src="../res/img/227-4.jpeg" alt="image.png" />
-在<code>word</code>文件夹下的<code>document.xml</code>就是主要文档内容
-我首先将同一文档一个通过wps手动实现图片衬于文字下方,一个没有实现.
+<h1 id="docx">尝试查看docx文件结构</h1>
+<p>据了解,word内部其实就是xml.<br />
+我首先直接用vscode打开查看,发现是个二进制文件.<br />
+后有发现原来可以解压处出来:<br />
+<img src="../res/img/227-4.jpeg" alt="image.png" /><br />
+在<code>word</code>文件夹下的<code>document.xml</code>就是主要文档内容<br />
+我首先将同一文档一个通过wps手动实现图片衬于文字下方,一个没有实现.<br />
 然后分别对比xml(需要先格式化一下不然压缩了的不好看)</p>
-
-<h2 id="原文档">原文档:</h2>
-
+<h2 id="heading-1">原文档:</h2>
 <pre><code>&lt;w:p&gt;
             &lt;w:r&gt;
                 &lt;w:drawing&gt;
@@ -140,9 +209,7 @@
             &lt;/w:r&gt;
         &lt;/w:p&gt;
 </code></pre>
-
-<h2 id="修改过">修改过</h2>
-
+<h2 id="heading-2">修改过</h2>
 <pre><code>&lt;w:p&gt;
             &lt;w:bookmarkStart w:id=&quot;0&quot; w:name=&quot;_GoBack&quot;/&gt;
             &lt;w:r&gt;
@@ -193,20 +260,14 @@
             &lt;w:bookmarkEnd w:id=&quot;0&quot;/&gt;
         &lt;/w:p&gt;
 </code></pre>
-
-<h2 id="发现">发现</h2>
-
-<p>在经过几次反复对照修改后
+<h2 id="heading-3">发现</h2>
+<p>在经过几次反复对照修改后<br />
 发现决定图片衬于文字下方的属性<code>behindDoc=&quot;1&quot;</code>同时 <code>&lt;wp:wrapNone/&gt;</code>(图片不挤兑文字)</p>
-
 <p>通过以下代码修改</p>
-
 <pre><code>t.SetTextWrapNone()
 t.X().BehindDocAttr=true
 </code></pre>
-
 <p>大致代码如下:</p>
-
 <pre><code>	bgImg, err := common.ImageFromFile(bgPath)
 	if err != nil {
 		logger.Error(err)
@@ -237,24 +298,14 @@ t.X().BehindDocAttr=true
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

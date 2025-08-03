@@ -3,21 +3,99 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="Go,github"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Go,github,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="在GitHub上自动构建Go程序可以通过GitHub Actions完成。首先，在GitHub上创建一个新的仓库，并使用Git将代码推送到该仓库。然后，在该仓库的主页上，点击&#34;Actions&#34;选项卡，然后点击&#34;New Workflow&#34;按钮。选择要构建的Go版本，并创建一个包含构建和测试代码的Workflow文件。将Workflow文件提交到GitHub，并确保仓库中存在可构建的Go项目。打开仓库的Actions页面，可以看到一个新的构建正在运行。构建完成后，可以在构建日志中查看构建结果。注意事项包括使用正确的Go版本和命令，添加其他步骤和正确配置环境变量和GitHub Secrets。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2023-03-08 18:43:04">
+    <meta name="article:modified_time" content="2023-03-08 18:43:04">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="Go">
+    <meta name="article:tag" content="github">
+    <link rel="canonical" href="https://danbai225.github.io/?p=835">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=835">
+    <meta property="og:title" content="在github自动构建go程序">
+    <meta property="og:description" content="在GitHub上自动构建Go程序可以通过GitHub Actions完成。首先，在GitHub上创建一个新的仓库，并使用Git将代码推送到该仓库。然后，在该仓库的主页上，点击&#34;Actions&#34;选项卡，然后点击&#34;New Workflow&#34;按钮。选择要构建的Go版本，并创建一个包含构建和测试代码的Workflow文件。将Workflow文件提交到GitHub，并确保仓库中存在可构建的Go项目。打开仓库的Actions页面，可以看到一个新的构建正在运行。构建完成后，可以在构建日志中查看构建结果。注意事项包括使用正确的Go版本和命令，添加其他步骤和正确配置环境变量和GitHub Secrets。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2023-03-08 18:43:04">
+    <meta property="article:modified_time" content="2023-03-08 18:43:04">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="Go">
+    <meta property="article:tag" content="github">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=835">
+    <meta property="twitter:title" content="在github自动构建go程序">
+    <meta property="twitter:description" content="在GitHub上自动构建Go程序可以通过GitHub Actions完成。首先，在GitHub上创建一个新的仓库，并使用Git将代码推送到该仓库。然后，在该仓库的主页上，点击&#34;Actions&#34;选项卡，然后点击&#34;New Workflow&#34;按钮。选择要构建的Go版本，并创建一个包含构建和测试代码的Workflow文件。将Workflow文件提交到GitHub，并确保仓库中存在可构建的Go项目。打开仓库的Actions页面，可以看到一个新的构建正在运行。构建完成后，可以在构建日志中查看构建结果。注意事项包括使用正确的Go版本和命令，添加其他步骤和正确配置环境变量和GitHub Secrets。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>在github自动构建go程序 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "在github自动构建go程序",
+        "description": "在GitHub上自动构建Go程序可以通过GitHub Actions完成。首先，在GitHub上创建一个新的仓库，并使用Git将代码推送到该仓库。然后，在该仓库的主页上，点击\u0022Actions\u0022选项卡，然后点击\u0022New Workflow\u0022按钮。选择要构建的Go版本，并创建一个包含构建和测试代码的Workflow文件。将Workflow文件提交到GitHub，并确保仓库中存在可构建的Go项目。打开仓库的Actions页面，可以看到一个新的构建正在运行。构建完成后，可以在构建日志中查看构建结果。注意事项包括使用正确的Go版本和命令，添加其他步骤和正确配置环境变量和GitHub Secrets。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2023-03-08 18:43:04",
+        "dateModified": "2023-03-08 18:43:04",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=835"
+        },
+        "keywords": ["Go","github"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=835"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -64,16 +142,18 @@
                 <p><strong>摘要：</strong>在GitHub上自动构建Go程序可以通过GitHub Actions完成。首先，在GitHub上创建一个新的仓库，并使用Git将代码推送到该仓库。然后，在该仓库的主页上，点击&#34;Actions&#34;选项卡，然后点击&#34;New Workflow&#34;按钮。选择要构建的Go版本，并创建一个包含构建和测试代码的Workflow文件。将Workflow文件提交到GitHub，并确保仓库中存在可构建的Go项目。打开仓库的Actions页面，可以看到一个新的构建正在运行。构建完成后，可以在构建日志中查看构建结果。注意事项包括使用正确的Go版本和命令，添加其他步骤和正确配置环境变量和GitHub Secrets。</p>
             </section>
         </header>
-            <h1 id="在github上自动构建go程序可以通过github-actions完成">在GitHub上自动构建Go程序可以通过GitHub Actions完成</h1>
-
+            <h1 id="githubgogithub-actions">在GitHub上自动构建Go程序可以通过GitHub Actions完成</h1>
 <ol>
-<li><p>在GitHub上创建一个新的仓库，并使用Git将代码推送到该仓库。</p></li>
-
-<li><p>在该仓库的主页上，单击&rdquo;Actions&rdquo;选项卡，然后单击&rdquo;New Workflow&rdquo;按钮。</p></li>
-
-<li><p>选择要构建的Go版本，可以使用以下示例Workflow文件（.github/workflows/go.yml）：</p></li>
+<li>
+<p>在GitHub上创建一个新的仓库，并使用Git将代码推送到该仓库。</p>
+</li>
+<li>
+<p>在该仓库的主页上，单击&quot;Actions&quot;选项卡，然后单击&quot;New Workflow&quot;按钮。</p>
+</li>
+<li>
+<p>选择要构建的Go版本，可以使用以下示例Workflow文件（.github/workflows/go.yml）：</p>
+</li>
 </ol>
-
 <pre><code>name: Go
 
 on:
@@ -101,20 +181,19 @@ jobs:
       run: go test -v ./...
 
 </code></pre>
-
 <p><code>该文件定义了一个包含一个job的Workflow，该job用于构建和测试代码。</code></p>
-
-<ol>
-<li><p>将Workflow文件提交到GitHub，并确保该仓库的main分支中存在一个可构建的Go项目。</p></li>
-
-<li><p>打开仓库的Actions页面，可以看到一个新的构建正在运行。构建完成后，可以在构建日志中查看构建结果。</p></li>
+<ol start="4">
+<li>
+<p>将Workflow文件提交到GitHub，并确保该仓库的main分支中存在一个可构建的Go项目。</p>
+</li>
+<li>
+<p>打开仓库的Actions页面，可以看到一个新的构建正在运行。构建完成后，可以在构建日志中查看构建结果。</p>
+</li>
 </ol>
-
 <p>注意事项：</p>
-
 <ul>
 <li>在Workflow文件中，需要使用正确的Go版本，以便构建和测试过程可以成功完成。</li>
-<li>在构建和测试过程中，需要使用正确的命令，例如&rdquo;go build&rdquo;和&rdquo;go test&rdquo;。</li>
+<li>在构建和测试过程中，需要使用正确的命令，例如&quot;go build&quot;和&quot;go test&quot;。</li>
 <li>可以添加其他步骤，例如在构建过程中编译并打包二进制文件。</li>
 <li>如果您需要使用第三方依赖项，请确保在构建和测试过程中正确安装这些依赖项。</li>
 <li>如果您需要使用环境变量或其他GitHub Secrets，请确保在Workflow文件中正确配置这些变量。</li>
@@ -129,24 +208,14 @@ jobs:
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

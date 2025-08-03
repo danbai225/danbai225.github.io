@@ -3,21 +3,105 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="游戏加速器,自建,折腾,服务器,IPLC"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="游戏加速器,自建,折腾,服务器,IPLC,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="自建游戏加速器是因为之前使用的加速器不支持mac平台，所以作者使用了sing-box搭建了一个加速器的共享加速服务，并支持mac。作者购买了一个共享IPCL线路的服务器，价格为20元/月。作者使用了自己之前开源的项目[gpp](https://github.com/danbai225/gpp)，并添加了规则路由，让http流量不走加速器，减少流量开销。根据作者的网络环境（四川联通），自建加速器的延迟比之前使用的正经加速器低了几毫秒，从65ms降到60ms左右。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2024-01-27 19:13:00">
+    <meta name="article:modified_time" content="2024-01-27 19:20:00">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="游戏加速器">
+    <meta name="article:tag" content="自建">
+    <meta name="article:tag" content="折腾">
+    <meta name="article:tag" content="服务器">
+    <meta name="article:tag" content="IPLC">
+    <link rel="canonical" href="https://danbai225.github.io/?p=1001">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=1001">
+    <meta property="og:title" content="自建游戏加速器">
+    <meta property="og:description" content="自建游戏加速器是因为之前使用的加速器不支持mac平台，所以作者使用了sing-box搭建了一个加速器的共享加速服务，并支持mac。作者购买了一个共享IPCL线路的服务器，价格为20元/月。作者使用了自己之前开源的项目[gpp](https://github.com/danbai225/gpp)，并添加了规则路由，让http流量不走加速器，减少流量开销。根据作者的网络环境（四川联通），自建加速器的延迟比之前使用的正经加速器低了几毫秒，从65ms降到60ms左右。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2024-01-27 19:13:00">
+    <meta property="article:modified_time" content="2024-01-27 19:20:00">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="游戏加速器">
+    <meta property="article:tag" content="自建">
+    <meta property="article:tag" content="折腾">
+    <meta property="article:tag" content="服务器">
+    <meta property="article:tag" content="IPLC">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=1001">
+    <meta property="twitter:title" content="自建游戏加速器">
+    <meta property="twitter:description" content="自建游戏加速器是因为之前使用的加速器不支持mac平台，所以作者使用了sing-box搭建了一个加速器的共享加速服务，并支持mac。作者购买了一个共享IPCL线路的服务器，价格为20元/月。作者使用了自己之前开源的项目[gpp](https://github.com/danbai225/gpp)，并添加了规则路由，让http流量不走加速器，减少流量开销。根据作者的网络环境（四川联通），自建加速器的延迟比之前使用的正经加速器低了几毫秒，从65ms降到60ms左右。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>自建游戏加速器 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "自建游戏加速器",
+        "description": "自建游戏加速器是因为之前使用的加速器不支持mac平台，所以作者使用了sing-box搭建了一个加速器的共享加速服务，并支持mac。作者购买了一个共享IPCL线路的服务器，价格为20元\/月。作者使用了自己之前开源的项目[gpp](https:\/\/github.com\/danbai225\/gpp)，并添加了规则路由，让http流量不走加速器，减少流量开销。根据作者的网络环境（四川联通），自建加速器的延迟比之前使用的正经加速器低了几毫秒，从65ms降到60ms左右。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2024-01-27 19:13:00",
+        "dateModified": "2024-01-27 19:20:00",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=1001"
+        },
+        "keywords": ["游戏加速器","自建","折腾","服务器","IPLC"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=1001"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -70,39 +154,24 @@
                 <p><strong>摘要：</strong>自建游戏加速器是因为之前使用的加速器不支持mac平台，所以作者使用了sing-box搭建了一个加速器的共享加速服务，并支持mac。作者购买了一个共享IPCL线路的服务器，价格为20元/月。作者使用了自己之前开源的项目[gpp](https://github.com/danbai225/gpp)，并添加了规则路由，让http流量不走加速器，减少流量开销。根据作者的网络环境（四川联通），自建加速器的延迟比之前使用的正经加速器低了几毫秒，从65ms降到60ms左右。</p>
             </section>
         </header>
-            <h1 id="自建游戏加速器">自建游戏加速器</h1>
-
-<p>之前我一直在用某加速器昨年买了一年几百小时今年到期了。在使用加速器的时候，发现大部分加速器都是不太支持mac平台的。
-因为我主要玩的游戏是英雄联盟国际服，是支持mac的。但是加速器不支持mac，所以我就使用sing-box做了一个加速器的共享加速的服务并且支持mac &ndash; <a href="https://github.com/danbai225/gpp" target="_blank">gpp</a>。</p>
-
-<h2 id="服务器">服务器</h2>
-
+            <h1 id="heading">自建游戏加速器</h1>
+<p>之前我一直在用某加速器昨年买了一年几百小时今年到期了。在使用加速器的时候，发现大部分加速器都是不太支持mac平台的。<br />
+因为我主要玩的游戏是英雄联盟国际服，是支持mac的。但是加速器不支持mac，所以我就使用sing-box做了一个加速器的共享加速的服务并且支持mac -- <a href="https://github.com/danbai225/gpp">gpp</a>。</p>
+<h2 id="heading-1">服务器</h2>
 <p>之前的方案，限制是还是需要一个windows服务器，于是我想着自己去搞个服务器，然后自己搭建一个加速器服务。加速器主要是用了<code>IPLC</code>的线路，这个线路是专门用来加速游戏的线路，但是这个线路的价格是比较贵的。</p>
-
 <p>我大概的预算在500一年左右，这个预算想买到真的独享<code>IPCL</code>线路是不可能的，只能走共享路线。</p>
-
-<p>在MJJ论坛逛了一圈，发现有个网站提供了共享<code>IPCL</code>线路的服务器，价格是<code>20</code>一月，这个价格是非常好了，于是我就买了一个。
+<p>在MJJ论坛逛了一圈，发现有个网站提供了共享<code>IPCL</code>线路的服务器，价格是<code>20</code>一月，这个价格是非常好了，于是我就买了一个。<br />
 虽然只有20g流量一个月但是这对加速游戏来说已经够用了。</p>
-
 <p><img src="../res/img/1001-1.png" alt="img.png" /></p>
-
 <p>另外我也发现了一些其他厂商提供的服务</p>
-
 <p><img src="../res/img/1001-2.png" alt="img.png" /></p>
-
-<p><a href="https://iplc.best/" target="_blank">iplc.best</a>
-<a href="https://bigchick.xyz/aff.php?aff=206" target="_blank">鸡仔云</a></p>
-
-<h2 id="搭建">搭建</h2>
-
-<p>继续使用我之前的开源项目<a href="https://github.com/danbai225/gpp" target="_blank">gpp</a>, 不过这次因为有流量的限制我给它添加了规则路由，让http流量不走加速器， 走我之前的TW Nat VPS。</p>
-
+<p><a href="https://iplc.best/">iplc.best</a><br />
+<a href="https://bigchick.xyz/aff.php?aff=206">鸡仔云</a></p>
+<h2 id="heading-2">搭建</h2>
+<p>继续使用我之前的开源项目<a href="https://github.com/danbai225/gpp">gpp</a>, 不过这次因为有流量的限制我给它添加了规则路由，让http流量不走加速器， 走我之前的TW Nat VPS。</p>
 <p>这样减少流量的开销，更新游戏和下载完全没必要走ipcl线路。</p>
-
-<h2 id="加速效果">加速效果</h2>
-
+<h2 id="heading-3">加速效果</h2>
 <p>以我当前网络环境来讲（四川联通），比之前使用正经加速器延迟还低了几ms，之前65ms左右，现在60ms左右。</p>
-
 <p><img src="../res/img/1001-3.png" alt="img.png" /></p>
 
         <footer>
@@ -114,24 +183,14 @@
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

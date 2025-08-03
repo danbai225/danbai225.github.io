@@ -3,25 +3,115 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="Spring Cloud Alibaba,nacos,dubbo,Sentinel"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Spring Cloud Alibaba,nacos,dubbo,Sentinel,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="Sentinel是一个面向分布式服务架构的流量控制组件，可以帮助保障微服务的稳定性。它提供了流量控制、熔断降级、系统自适应保护等多个功能。安装Sentinel可以通过在GitHub下载相应版本的jar包，并将其放入一个新建的sentinel目录，然后通过运行启动文件run.sh来启动Sentinel。登录Sentinel控制台可以通过访问http://IP:8091，并使用默认的用户名和密码sentinel进行登录。
 
 接下来，可以将Sentinel整合到Dubbo服务中。首先，在一个新建的POM项目中添加相关依赖，包括spring-cloud-starter-alibaba-sentinel和sentinel-apache-dubbo-adapter。消费者和提供者都需要依赖sentinel项目。然后，在配置中心中添加相关配置，包括设置服务器端口号、是否饥饿加载以及Sentinel控制台地址。最后，访问http://127.0.0.1:8001/demo，并查看Sentinel控制台上的相关信息。
 
 整合Sentinel可以帮助保障微服务的稳定性，提供流量控制和熔断降级等功能，通过上述步骤可以完成Sentinel的安装和配置。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2020-06-08 15:35:07">
+    <meta name="article:modified_time" content="2020-07-04 20:20:29">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="Spring Cloud Alibaba">
+    <meta name="article:tag" content="nacos">
+    <meta name="article:tag" content="dubbo">
+    <meta name="article:tag" content="Sentinel">
+    <link rel="canonical" href="https://danbai225.github.io/?p=104">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=104">
+    <meta property="og:title" content="整合服务治理Alibaba Sentinel&#43;Dubbo">
+    <meta property="og:description" content="Sentinel是一个面向分布式服务架构的流量控制组件，可以帮助保障微服务的稳定性。它提供了流量控制、熔断降级、系统自适应保护等多个功能。安装Sentinel可以通过在GitHub下载相应版本的jar包，并将其放入一个新建的sentinel目录，然后通过运行启动文件run.sh来启动Sentinel。登录Sentinel控制台可以通过访问http://IP:8091，并使用默认的用户名和密码sentinel进行登录。
+
+接下来，可以将Sentinel整合到Dubbo服务中。首先，在一个新建的POM项目中添加相关依赖，包括spring-cloud-starter-alibaba-sentinel和sentinel-apache-dubbo-adapter。消费者和提供者都需要依赖sentinel项目。然后，在配置中心中添加相关配置，包括设置服务器端口号、是否饥饿加载以及Sentinel控制台地址。最后，访问http://127.0.0.1:8001/demo，并查看Sentinel控制台上的相关信息。
+
+整合Sentinel可以帮助保障微服务的稳定性，提供流量控制和熔断降级等功能，通过上述步骤可以完成Sentinel的安装和配置。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2020-06-08 15:35:07">
+    <meta property="article:modified_time" content="2020-07-04 20:20:29">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="Spring Cloud Alibaba">
+    <meta property="article:tag" content="nacos">
+    <meta property="article:tag" content="dubbo">
+    <meta property="article:tag" content="Sentinel">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=104">
+    <meta property="twitter:title" content="整合服务治理Alibaba Sentinel&#43;Dubbo">
+    <meta property="twitter:description" content="Sentinel是一个面向分布式服务架构的流量控制组件，可以帮助保障微服务的稳定性。它提供了流量控制、熔断降级、系统自适应保护等多个功能。安装Sentinel可以通过在GitHub下载相应版本的jar包，并将其放入一个新建的sentinel目录，然后通过运行启动文件run.sh来启动Sentinel。登录Sentinel控制台可以通过访问http://IP:8091，并使用默认的用户名和密码sentinel进行登录。
+
+接下来，可以将Sentinel整合到Dubbo服务中。首先，在一个新建的POM项目中添加相关依赖，包括spring-cloud-starter-alibaba-sentinel和sentinel-apache-dubbo-adapter。消费者和提供者都需要依赖sentinel项目。然后，在配置中心中添加相关配置，包括设置服务器端口号、是否饥饿加载以及Sentinel控制台地址。最后，访问http://127.0.0.1:8001/demo，并查看Sentinel控制台上的相关信息。
+
+整合Sentinel可以帮助保障微服务的稳定性，提供流量控制和熔断降级等功能，通过上述步骤可以完成Sentinel的安装和配置。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>整合服务治理Alibaba Sentinel&#43;Dubbo - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "整合服务治理Alibaba Sentinel\u002bDubbo",
+        "description": "Sentinel是一个面向分布式服务架构的流量控制组件，可以帮助保障微服务的稳定性。它提供了流量控制、熔断降级、系统自适应保护等多个功能。安装Sentinel可以通过在GitHub下载相应版本的jar包，并将其放入一个新建的sentinel目录，然后通过运行启动文件run.sh来启动Sentinel。登录Sentinel控制台可以通过访问http:\/\/IP:8091，并使用默认的用户名和密码sentinel进行登录。\n\n接下来，可以将Sentinel整合到Dubbo服务中。首先，在一个新建的POM项目中添加相关依赖，包括spring-cloud-starter-alibaba-sentinel和sentinel-apache-dubbo-adapter。消费者和提供者都需要依赖sentinel项目。然后，在配置中心中添加相关配置，包括设置服务器端口号、是否饥饿加载以及Sentinel控制台地址。最后，访问http:\/\/127.0.0.1:8001\/demo，并查看Sentinel控制台上的相关信息。\n\n整合Sentinel可以帮助保障微服务的稳定性，提供流量控制和熔断降级等功能，通过上述步骤可以完成Sentinel的安装和配置。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2020-06-08 15:35:07",
+        "dateModified": "2020-07-04 20:20:29",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=104"
+        },
+        "keywords": ["Spring Cloud Alibaba","nacos","dubbo","Sentinel"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=104"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -77,37 +167,24 @@
             </section>
         </header>
             <h1 id="sentinel">Sentinel</h1>
-
-<p>随着微服务的流行，服务和服务之间的稳定性变得越来越重要。Sentinel 是面向分布式服务架构的流量控制组件，主要以流量为切入点，从流量控制、熔断降级、系统自适应保护等多个维度来帮助您保障微服务的稳定性。
-<a href="https://sentinelguard.io" target="_blank">Sentinel 官网</a></p>
-
-<h1 id="安装sentinel">安装Sentinel</h1>
-
-<p><a href="https://github.com/alibaba/Sentinel/releases" target="_blank">Github下载</a>
+<p>随着微服务的流行，服务和服务之间的稳定性变得越来越重要。Sentinel 是面向分布式服务架构的流量控制组件，主要以流量为切入点，从流量控制、熔断降级、系统自适应保护等多个维度来帮助您保障微服务的稳定性。<br />
+<a href="https://sentinelguard.io">Sentinel 官网</a></p>
+<h1 id="sentinel-1">安装Sentinel</h1>
+<p><a href="https://github.com/alibaba/Sentinel/releases">Github下载</a><br />
 版本:sentinel-dashboard-1.7.2.jar</p>
-
-<p>新建一个sentinel目录 把jar放入
+<p>新建一个sentinel目录 把jar放入<br />
 新建启动文件 run.sh</p>
-
 <pre><code>nohup java -Dserver.port=8091 -Dproject.name=sentinel-dashboard -jar sentinel.jar
 </code></pre>
-
-<p>登录
-<a href="http://IP:8091" target="_blank">http://IP:8091</a>
+<p>登录<br />
+http://IP:8091<br />
 默认用户名密码:sentinel</p>
-
-<h1 id="整合dubbo">整合Dubbo</h1>
-
-<p>接着<a href="https://danbai225.github.io/archives/springcloudalibaba%E6%95%B4%E5%90%88nacos%E5%92%8Cdubbo" target="_blank">上一篇</a>的服务整合</p>
-
-<h2 id="新建一个pom项目">新建一个POM项目</h2>
-
+<h1 id="dubbo">整合Dubbo</h1>
+<p>接着<a href="https://danbai225.github.io/archives/springcloudalibaba%E6%95%B4%E5%90%88nacos%E5%92%8Cdubbo">上一篇</a>的服务整合</p>
+<h2 id="pom">新建一个POM项目</h2>
 <p>sentinel</p>
-
 <p><img src="../res/img/104-1.png" alt="image.png" /></p>
-
 <p>pom</p>
-
 <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
          xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
@@ -131,20 +208,15 @@
     &lt;/dependencies&gt;
 &lt;/project&gt;
 </code></pre>
-
-<h2 id="依赖和配置">依赖和配置</h2>
-
+<h2 id="heading">依赖和配置</h2>
 <p>消费者和提供者都依赖sentinel项目</p>
-
 <pre><code>        &lt;dependency&gt;
             &lt;groupId&gt;cn.p00q&lt;/groupId&gt;
             &lt;artifactId&gt;sentinel&lt;/artifactId&gt;
             &lt;version&gt;${parent.version}&lt;/version&gt;
         &lt;/dependency&gt;
 </code></pre>
-
 <p>在配置中心添加配置</p>
-
 <pre><code>server:
   port: 8001
 spring:
@@ -154,11 +226,9 @@ spring:
       transport:
         dashboard: 127.0.0.1:8091 # Sentinel 控制台地址
 </code></pre>
-
-<h2 id="控制台">控制台</h2>
-
-<p>访问<a href="http://127.0.0.1:8001/demo" target="_blank">http://127.0.0.1:8001/demo</a>
-然后看控制台
+<h2 id="heading-1">控制台</h2>
+<p>访问http://127.0.0.1:8001/demo<br />
+然后看控制台<br />
 <img src="../res/img/104-2.png" alt="image.png" /></p>
 
         <footer>
@@ -170,24 +240,14 @@ spring:
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

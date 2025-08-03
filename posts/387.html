@@ -3,21 +3,97 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="Go"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Go,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="这篇文章介绍了使用Go语言调用carbon的原理和代码。作者首先介绍了carbon的使用方法和制作代码截图的工具。然后作者通过使用谷歌无头浏览器来实现调用carbon生成代码截图的功能。作者使用了Go语言中的两个开源库，分别是chromedp和rod。最后，作者展示了使用Go代码调用carbon进行代码截图的示例代码，并详细解释了代码的运行原理。通过模拟输入方式输入代码，并通过获取dom的宽高来确定截图的大小。最终，作者成功生成了代码截图并返回了相关的图片数据。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2021-08-23 11:05:16">
+    <meta name="article:modified_time" content="2021-08-23 11:05:40">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="Go">
+    <link rel="canonical" href="https://danbai225.github.io/?p=387">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=387">
+    <meta property="og:title" content="制作生成漂亮的代码截图">
+    <meta property="og:description" content="这篇文章介绍了使用Go语言调用carbon的原理和代码。作者首先介绍了carbon的使用方法和制作代码截图的工具。然后作者通过使用谷歌无头浏览器来实现调用carbon生成代码截图的功能。作者使用了Go语言中的两个开源库，分别是chromedp和rod。最后，作者展示了使用Go代码调用carbon进行代码截图的示例代码，并详细解释了代码的运行原理。通过模拟输入方式输入代码，并通过获取dom的宽高来确定截图的大小。最终，作者成功生成了代码截图并返回了相关的图片数据。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2021-08-23 11:05:16">
+    <meta property="article:modified_time" content="2021-08-23 11:05:40">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="Go">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=387">
+    <meta property="twitter:title" content="制作生成漂亮的代码截图">
+    <meta property="twitter:description" content="这篇文章介绍了使用Go语言调用carbon的原理和代码。作者首先介绍了carbon的使用方法和制作代码截图的工具。然后作者通过使用谷歌无头浏览器来实现调用carbon生成代码截图的功能。作者使用了Go语言中的两个开源库，分别是chromedp和rod。最后，作者展示了使用Go代码调用carbon进行代码截图的示例代码，并详细解释了代码的运行原理。通过模拟输入方式输入代码，并通过获取dom的宽高来确定截图的大小。最终，作者成功生成了代码截图并返回了相关的图片数据。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>制作生成漂亮的代码截图 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "制作生成漂亮的代码截图",
+        "description": "这篇文章介绍了使用Go语言调用carbon的原理和代码。作者首先介绍了carbon的使用方法和制作代码截图的工具。然后作者通过使用谷歌无头浏览器来实现调用carbon生成代码截图的功能。作者使用了Go语言中的两个开源库，分别是chromedp和rod。最后，作者展示了使用Go代码调用carbon进行代码截图的示例代码，并详细解释了代码的运行原理。通过模拟输入方式输入代码，并通过获取dom的宽高来确定截图的大小。最终，作者成功生成了代码截图并返回了相关的图片数据。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2021-08-23 11:05:16",
+        "dateModified": "2021-08-23 11:05:40",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=387"
+        },
+        "keywords": ["Go"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=387"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -62,28 +138,22 @@
                 <p><strong>摘要：</strong>这篇文章介绍了使用Go语言调用carbon的原理和代码。作者首先介绍了carbon的使用方法和制作代码截图的工具。然后作者通过使用谷歌无头浏览器来实现调用carbon生成代码截图的功能。作者使用了Go语言中的两个开源库，分别是chromedp和rod。最后，作者展示了使用Go代码调用carbon进行代码截图的示例代码，并详细解释了代码的运行原理。通过模拟输入方式输入代码，并通过获取dom的宽高来确定截图的大小。最终，作者成功生成了代码截图并返回了相关的图片数据。</p>
             </section>
         </header>
-            <h1 id="使用-carbon-https-carbon-now-sh-制作">使用<a href="https://carbon.now.sh/" target="_blank">carbon</a>制作</h1>
-
+            <h1 id="carbonhttpscarbonnowsh">使用<a href="https://carbon.now.sh/">carbon</a>制作</h1>
 <p>这是一个nodejs开发的在线代码截图生成工具。</p>
-
 <p><img src="../res/img/387-1.jpeg" alt="image.png" /></p>
-
-<h1 id="使用go调用生成代码截图">使用Go调用生成代码截图</h1>
-
+<h1 id="go">使用Go调用生成代码截图</h1>
 <p>实现原理：由于carbon是需要运行再浏览器通过前端dom生成的图片。所以需要通过谷歌无头浏览器来实现。</p>
-
 <p>go有两个相关的开源库</p>
-
 <ul>
-<li><p><a href="https://github.com/chromedp/chromedp" target="_blank">https://github.com/chromedp/chromedp</a></p></li>
-
-<li><p><a href="https://github.com/go-rod/rod" target="_blank">https://github.com/go-rod/rod</a></p></li>
+<li>
+<p><a href="https://github.com/chromedp/chromedp">https://github.com/chromedp/chromedp</a></p>
+</li>
+<li>
+<p><a href="https://github.com/go-rod/rod">https://github.com/go-rod/rod</a></p>
+</li>
 </ul>
-
 <p>我先是使用了第一个开源库，但是觉得有些繁琐便尝试了第二个库。很棒有中文的文档，api使用起来简单了许多。</p>
-
 <p>carbon可以通过url传入参数但由于前端渲染只支持get请求所以无法传入过长的代码片段。所以我采用了模拟输入的方式来输入代码再通过获取dom的宽高获取截图大小实现长截图。</p>
-
 <pre><code class="language-Go">func code2Img(code string, Options ...map[string]string) ([]byte, error) {
   var carbonOptions = map[string]string{
     &quot;bg&quot;:     &quot;rgba(74,144,226,1)&quot;, // 背景颜色
@@ -201,24 +271,14 @@ var element=document.getElementById('export-container')
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

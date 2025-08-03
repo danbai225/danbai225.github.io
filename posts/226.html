@@ -3,21 +3,99 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="cc,nginx"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="cc,nginx,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="作者描述了自己的小服务器遭受了CC攻击，攻击者一直调用其项目中的搜索接口，导致服务器流量消耗完毕，项目无法访问。为了解决这个问题，作者租了一台性能更好的服务器，并安装了宝塔面板和Nginx防火墙插件，通过查看请求日志和写黑名单限制，成功减少了大部分攻击和流量。最终，项目恢复正常使用。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2020-10-08 18:10:55">
+    <meta name="article:modified_time" content="2020-10-17 00:14:02">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="cc">
+    <meta name="article:tag" content="nginx">
+    <link rel="canonical" href="https://danbai225.github.io/?p=226">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=226">
+    <meta property="og:title" content="小水管服务器被cc攻击">
+    <meta property="og:description" content="作者描述了自己的小服务器遭受了CC攻击，攻击者一直调用其项目中的搜索接口，导致服务器流量消耗完毕，项目无法访问。为了解决这个问题，作者租了一台性能更好的服务器，并安装了宝塔面板和Nginx防火墙插件，通过查看请求日志和写黑名单限制，成功减少了大部分攻击和流量。最终，项目恢复正常使用。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2020-10-08 18:10:55">
+    <meta property="article:modified_time" content="2020-10-17 00:14:02">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="cc">
+    <meta property="article:tag" content="nginx">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=226">
+    <meta property="twitter:title" content="小水管服务器被cc攻击">
+    <meta property="twitter:description" content="作者描述了自己的小服务器遭受了CC攻击，攻击者一直调用其项目中的搜索接口，导致服务器流量消耗完毕，项目无法访问。为了解决这个问题，作者租了一台性能更好的服务器，并安装了宝塔面板和Nginx防火墙插件，通过查看请求日志和写黑名单限制，成功减少了大部分攻击和流量。最终，项目恢复正常使用。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>小水管服务器被cc攻击 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "小水管服务器被cc攻击",
+        "description": "作者描述了自己的小服务器遭受了CC攻击，攻击者一直调用其项目中的搜索接口，导致服务器流量消耗完毕，项目无法访问。为了解决这个问题，作者租了一台性能更好的服务器，并安装了宝塔面板和Nginx防火墙插件，通过查看请求日志和写黑名单限制，成功减少了大部分攻击和流量。最终，项目恢复正常使用。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2020-10-08 18:10:55",
+        "dateModified": "2020-10-17 00:14:02",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=226"
+        },
+        "keywords": ["cc","nginx"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=226"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -64,27 +142,23 @@
                 <p><strong>摘要：</strong>作者描述了自己的小服务器遭受了CC攻击，攻击者一直调用其项目中的搜索接口，导致服务器流量消耗完毕，项目无法访问。为了解决这个问题，作者租了一台性能更好的服务器，并安装了宝塔面板和Nginx防火墙插件，通过查看请求日志和写黑名单限制，成功减少了大部分攻击和流量。最终，项目恢复正常使用。</p>
             </section>
         </header>
-            <h1 id="遭受攻击">遭受攻击</h1>
-
-<p>前两天我的小水管服务器被cc攻击,对方一直调我项目中的一个搜索接口,有时命中了关键词会返回很多数据,造成流量消耗。
-达到了每天几万IP的访问,每秒20+
-<img src="../res/img/226-1.jpeg" alt="image.png" />
-这是某一天的流量和请求数
-<img src="../res/img/226-2.jpeg" alt="image.png" />|<img src="../res/img/226-5.jpeg" alt="image.png" />|
-虽然不是很多,但是在我小水管服务器(2Mpbs)看来已经是难以承受。
+            <h1 id="heading">遭受攻击</h1>
+<p>前两天我的小水管服务器被cc攻击,对方一直调我项目中的一个搜索接口,有时命中了关键词会返回很多数据,造成流量消耗。<br />
+达到了每天几万IP的访问,每秒20+<br />
+<img src="../res/img/226-1.jpeg" alt="image.png" /><br />
+这是某一天的流量和请求数<br />
+<img src="../res/img/226-2.jpeg" alt="image.png" />|<img src="../res/img/226-5.jpeg" alt="image.png" />|<br />
+虽然不是很多,但是在我小水管服务器(2Mpbs)看来已经是难以承受。<br />
 导致我的服务器流量被消耗完毕,导致项目无法访问软件无法正常使用。</p>
-
-<h1 id="解决">解决</h1>
-
-<p>在我发现的时候流量已经被刷完了,导致服务器无法访问。
-还好我的服务并不部署在这台服务器上,而是部署在k8s集群上。这台服务器只是起个网关代理作用。
-于是我又租了一台服务器50M的服务器18一个月,虽然只有0.5g内存但是安装个Nginx没得问题。
-<img src="../res/img/226-3.jpeg" alt="image.png" />
-<a href="http://yun.0220.cn/page.aspx?c=referral&amp;u=8155" target="_blank">低价服务器</a></p>
-
-<p>购买后我先安装了宝塔面板和nginx。然后使用了一款里面的插件 Nginx防火墙
-然后通过查看日志请求URL然后写个正则对请求进行黑名单限制就减少了大部分攻击和流量。
-<img src="../res/img/226-4.jpeg" alt="image.png" />
+<h1 id="heading-1">解决</h1>
+<p>在我发现的时候流量已经被刷完了,导致服务器无法访问。<br />
+还好我的服务并不部署在这台服务器上,而是部署在k8s集群上。这台服务器只是起个网关代理作用。<br />
+于是我又租了一台服务器50M的服务器18一个月,虽然只有0.5g内存但是安装个Nginx没得问题。<br />
+<img src="../res/img/226-3.jpeg" alt="image.png" /><br />
+<a href="http://yun.0220.cn/page.aspx?c=referral&amp;u=8155">低价服务器</a></p>
+<p>购买后我先安装了宝塔面板和nginx。然后使用了一款里面的插件 Nginx防火墙<br />
+然后通过查看日志请求URL然后写个正则对请求进行黑名单限制就减少了大部分攻击和流量。<br />
+<img src="../res/img/226-4.jpeg" alt="image.png" /><br />
 至此APP又能正常使用</p>
 
         <footer>
@@ -96,24 +170,14 @@
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

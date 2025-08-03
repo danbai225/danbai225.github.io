@@ -3,21 +3,97 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="影视网站"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="影视网站,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="该项目是为了巩固学习Spring框架而创建的一个影视项目。在项目中使用了阿里代码检测插件检查代码规范并进行修改，实现了访问统计的功能，并使用Redis存储数据。同时也实现了从腾讯视频获取弹幕的功能，并通过视频播放器Dplayer展示弹幕。最后还实现了将弹幕保存到数据库的功能，并通过异步任务线程池和任务调度实现了定时任务。在项目中还遇到了时区问题，通过修改配置文件解决了该问题。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2019-10-13 16:39:44">
+    <meta name="article:modified_time" content="2022-03-29 21:31:54">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="影视网站">
+    <link rel="canonical" href="https://danbai225.github.io/?p=4">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=4">
+    <meta property="og:title" content="修改并完善淡白影视代码">
+    <meta property="og:description" content="该项目是为了巩固学习Spring框架而创建的一个影视项目。在项目中使用了阿里代码检测插件检查代码规范并进行修改，实现了访问统计的功能，并使用Redis存储数据。同时也实现了从腾讯视频获取弹幕的功能，并通过视频播放器Dplayer展示弹幕。最后还实现了将弹幕保存到数据库的功能，并通过异步任务线程池和任务调度实现了定时任务。在项目中还遇到了时区问题，通过修改配置文件解决了该问题。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2019-10-13 16:39:44">
+    <meta property="article:modified_time" content="2022-03-29 21:31:54">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="影视网站">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=4">
+    <meta property="twitter:title" content="修改并完善淡白影视代码">
+    <meta property="twitter:description" content="该项目是为了巩固学习Spring框架而创建的一个影视项目。在项目中使用了阿里代码检测插件检查代码规范并进行修改，实现了访问统计的功能，并使用Redis存储数据。同时也实现了从腾讯视频获取弹幕的功能，并通过视频播放器Dplayer展示弹幕。最后还实现了将弹幕保存到数据库的功能，并通过异步任务线程池和任务调度实现了定时任务。在项目中还遇到了时区问题，通过修改配置文件解决了该问题。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>修改并完善淡白影视代码 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "修改并完善淡白影视代码",
+        "description": "该项目是为了巩固学习Spring框架而创建的一个影视项目。在项目中使用了阿里代码检测插件检查代码规范并进行修改，实现了访问统计的功能，并使用Redis存储数据。同时也实现了从腾讯视频获取弹幕的功能，并通过视频播放器Dplayer展示弹幕。最后还实现了将弹幕保存到数据库的功能，并通过异步任务线程池和任务调度实现了定时任务。在项目中还遇到了时区问题，通过修改配置文件解决了该问题。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2019-10-13 16:39:44",
+        "dateModified": "2022-03-29 21:31:54",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=4"
+        },
+        "keywords": ["影视网站"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=4"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -63,31 +139,22 @@
             </section>
         </header>
             <p><img src="http://danbai.oss-cn-chengdu.aliyuncs.com/img/2020/04/02/05629e41303f3.jpg" alt="" /></p>
-
-<h1 id="学习了spring框架之后为了巩固下基础就写了淡白影视这样一个项目">学习了spring框架之后为了巩固下基础就写了淡白影视这样一个项目</h1>
-
-<p><a href="https://github.com/danbai225/dbys" target="_blank">Github直达</a></p>
-
-<h2 id="用阿里代码检测插件检测代码规范并修改">用阿里代码检测插件检测代码规范并修改</h2>
-
-<p><img src="http://danbai.oss-cn-chengdu.aliyuncs.com/img/2020/04/02/65c267de1748c.png" alt="TIM截图20191013192806.png" />
-使用未定义常量&rdquo;user&rdquo;
-<img src="http://danbai.oss-cn-chengdu.aliyuncs.com/img/2020/04/02/892e3c2ef8069.png" alt="TIM截图20191013192930.png" />
-给接口、方法、类添加注释
+<h1 id="spring">学习了spring框架之后为了巩固下基础就写了淡白影视这样一个项目</h1>
+<p><a href="https://github.com/danbai225/dbys">Github直达</a></p>
+<h2 id="heading">用阿里代码检测插件检测代码规范并修改</h2>
+<p><img src="http://danbai.oss-cn-chengdu.aliyuncs.com/img/2020/04/02/65c267de1748c.png" alt="TIM截图20191013192806.png" /><br />
+使用未定义常量&quot;user&quot;<br />
+<img src="http://danbai.oss-cn-chengdu.aliyuncs.com/img/2020/04/02/892e3c2ef8069.png" alt="TIM截图20191013192930.png" /><br />
+给接口、方法、类添加注释<br />
 <img src="http://danbai.oss-cn-chengdu.aliyuncs.com/img/2020/04/02/cb7e194b379b6.png" alt="TIM截图20191013202219.png" /></p>
-
-<h2 id="实现访问统计">实现访问统计</h2>
-
+<h2 id="heading-1">实现访问统计</h2>
 <p>使用redis存储数据所以先配置所需依赖</p>
-
 <pre><code>&lt;dependency&gt;
 	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
 	&lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;
 &lt;/dependency&gt;
 </code></pre>
-
 <p>Application</p>
-
 <pre><code>redis:
     database: 0
     host: 39.108.110.44
@@ -95,9 +162,7 @@
     port: 6379
     timeout: 0
 </code></pre>
-
 <p>配置redisConfig</p>
-
 <pre><code>package com.danbai.ys.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -166,9 +231,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     }
 }
 </code></pre>
-
 <p>测试类</p>
-
 <pre><code>@RunWith(SpringRunner.class)
 @SpringBootTest(classes = YsApplication.class)
 public class YsApplicationTests {
@@ -186,16 +249,12 @@ public class YsApplicationTests {
 }
 
 </code></pre>
-
 <p>然后在redis新建一个key为TotalAccess值为1的数据</p>
-
 <pre><code>redisTemplate.opsForValue().increment(&quot;TotalAccess&quot;);
 </code></pre>
-
-<p>就能增加访问统计了
-reids<a href="https://blog.csdn.net/u012129558/article/details/80521486" target="_blank">相关使用看了下这篇文章</a>
+<p>就能增加访问统计了<br />
+reids<a href="https://blog.csdn.net/u012129558/article/details/80521486">相关使用看了下这篇文章</a><br />
 接下来在Controller添加</p>
-
 <pre><code> @ModelAttribute
     void count(HttpServletRequest request) {
         String ip = IpUtils.getIpAddr(request);
@@ -205,9 +264,7 @@ reids<a href="https://blog.csdn.net/u012129558/article/details/80521486" target=
         }
     }
 </code></pre>
-
 <p>统计服务实现</p>
-
 <pre><code>@Service
 public class StatisticalImpl implements Statistical {
     @Autowired
@@ -241,46 +298,33 @@ public class StatisticalImpl implements Statistical {
     }
 }
 </code></pre>
-
-<h2 id="增加弹幕获取功能">增加弹幕获取功能</h2>
-
-<p>从腾讯视频获取弹幕
-实现方式
+<h2 id="heading-2">增加弹幕获取功能</h2>
+<p>从腾讯视频获取弹幕<br />
+实现方式<br />
 首先当用户请求影视页面时候通过请求id获取影视信息,然后再在腾讯视频搜索视频.获取腾讯视频的影视id再通过</p>
-
 <pre><code>http://s.video.qq.com/get_playsource?plat=2&amp;type=4&amp;range=1&amp;otype=json&amp;id=&quot; + id
 </code></pre>
-
-<p>获取影视的视频列表
-<img src="https://img.hacpai.com/file/2019/10/TIM截图20191015181854-72262a9a.png" alt="TIM截图20191015181854.png" />
-解析json获取其中视频id再通过接口
-<a href="http://bullet.video.qq.com/fcgi-bin/target/regist?otype=json&amp;vid=影视id" target="_blank">http://bullet.video.qq.com/fcgi-bin/target/regist?otype=json&amp;vid=影视id</a>
+<p>获取影视的视频列表<br />
+<img src="https://img.hacpai.com/file/2019/10/TIM%E6%88%AA%E5%9B%BE20191015181854-72262a9a.png" alt="TIM截图20191015181854.png" /><br />
+解析json获取其中视频id再通过接口<br />
+<a href="http://bullet.video.qq.com/fcgi-bin/target/regist?otype=json&amp;vid=">http://bullet.video.qq.com/fcgi-bin/target/regist?otype=json&amp;vid=</a>影视id<br />
 获取弹幕id   (targetid)</p>
-
 <pre><code>QZOutputJson={&quot;danmukey&quot;:&quot;bubble_flag=1&amp;targetid=4193003793&amp;vid=c0032vrylb9&amp;type=2&quot;,&quot;display&quot;:1,&quot;is_has_adv&quot;:0,&quot;is_has_bubble&quot;:1,&quot;open&quot;:1,&quot;returncode&quot;:0,&quot;returnmsg&quot;:&quot;OK&quot;,&quot;targetid&quot;:&quot;4193003793&quot;};
 </code></pre>
-
-<p>最后通过接口 targetid+时间获取弹幕列表添加到视频播放器
-<a href="https://mfm.video.qq.com/danmu?otype=json&amp;target_id=4193003793×tamp=360" target="_blank">https://mfm.video.qq.com/danmu?otype=json&amp;target_id=4193003793&amp;timestamp=360</a></p>
-
-<p><a href="http://dplayer.js.org/" target="_blank">视频播放器Dplayer</a></p>
-
-<p>最后实现结果
-<img src="https://img.hacpai.com/file/2019/10/TIM截图20191015182425-ffa17a81.png" alt="TIM截图20191015182425.png" />
-这次功能中遇到的困难不少,如跨域问题ip代理问题还有播放器如何添加弹幕等等.
+<p>最后通过接口 targetid+时间获取弹幕列表添加到视频播放器<br />
+<a href="https://mfm.video.qq.com/danmu?otype=json&amp;target_id=4193003793&amp;timestamp=360">https://mfm.video.qq.com/danmu?otype=json&amp;target_id=4193003793&amp;timestamp=360</a></p>
+<p><a href="http://dplayer.js.org/">视频播放器Dplayer</a></p>
+<p>最后实现结果<br />
+<img src="https://img.hacpai.com/file/2019/10/TIM%E6%88%AA%E5%9B%BE20191015182425-ffa17a81.png" alt="TIM截图20191015182425.png" /><br />
+这次功能中遇到的困难不少,如跨域问题ip代理问题还有播放器如何添加弹幕等等.<br />
 详情阅读源码</p>
-
-<h2 id="实现弹幕保存到数据库">实现弹幕保存到数据库</h2>
-
-<p>在向服务器请求弹幕id的时候判断服务器是否保存过该影视的弹幕.
-<img src="http://danbai.oss-cn-chengdu.aliyuncs.com/img/2020/04/02/81a9c2261b05c.png" alt="20191017145646.png" />
-存在: 返回null
+<h2 id="heading-3">实现弹幕保存到数据库</h2>
+<p>在向服务器请求弹幕id的时候判断服务器是否保存过该影视的弹幕.<br />
+<img src="http://danbai.oss-cn-chengdu.aliyuncs.com/img/2020/04/02/81a9c2261b05c.png" alt="20191017145646.png" /><br />
+存在: 返回null<br />
 不存在: 将请求信息存入redis</p>
-
-<h3 id="实现异步任务线程池">实现异步任务线程池</h3>
-
+<h3 id="heading-4">实现异步任务线程池</h3>
 <p>创建异步线程池配置类</p>
-
 <pre><code>@Configuration
 @EnableAsync
 public class AsyncConfig implements AsyncConfigurer {
@@ -299,17 +343,12 @@ public class AsyncConfig implements AsyncConfigurer {
 }
 
 </code></pre>
-
 <p>给Application添加异步和任务调度开启注解</p>
-
 <pre><code>@EnableScheduling
 @EnableAsync
 </code></pre>
-
-<h3 id="实现调度任务">实现调度任务</h3>
-
+<h3 id="heading-5">实现调度任务</h3>
 <p>创建Scheduler 任务调度类</p>
-
 <pre><code>@Component
 @Configurable
 public class Scheduler {
@@ -344,9 +383,7 @@ public class Scheduler {
     }
 }
 </code></pre>
-
 <p>异步任务类</p>
-
 <pre><code>package com.danbai.ys.async;
 
 import com.alibaba.fastjson.JSON;
@@ -394,34 +431,25 @@ public class Dmas {
 }
 
 </code></pre>
-
-<p>大概意思就是上次任务结束10秒钟后(启动应用执行一次,每次执行在上一次执行10后)执行一次.
-检查redis任务队列是否有任务
-有就执行任务并将弹幕数据存入mongodb
-执行的任务开启<code>@Async</code> 表示异步执行
-值得注意的是异步任务不能调用当前类中方法异步执行.
-获取到的弹幕数据
-<img src="https://img.hacpai.com/file/2019/10/TIM截图20191017152027-ca710590.png" alt="TIM截图20191017152027.png" /></p>
-
-<h1 id="时区问题">时区问题</h1>
-
-<p>在前端请求后台观看历史记录时发现时间数据相差8小时
-<img src="http://danbai.oss-cn-chengdu.aliyuncs.com/img/2020/04/02/58cfe26faffb5.png" alt="20191030152111.png" />
-数据库
+<p>大概意思就是上次任务结束10秒钟后(启动应用执行一次,每次执行在上一次执行10后)执行一次.<br />
+检查redis任务队列是否有任务<br />
+有就执行任务并将弹幕数据存入mongodb<br />
+执行的任务开启<code>@Async</code> 表示异步执行<br />
+值得注意的是异步任务不能调用当前类中方法异步执行.<br />
+获取到的弹幕数据<br />
+<img src="https://img.hacpai.com/file/2019/10/TIM%E6%88%AA%E5%9B%BE20191017152027-ca710590.png" alt="TIM截图20191017152027.png" /></p>
+<h1 id="heading-6">时区问题</h1>
+<p>在前端请求后台观看历史记录时发现时间数据相差8小时<br />
+<img src="http://danbai.oss-cn-chengdu.aliyuncs.com/img/2020/04/02/58cfe26faffb5.png" alt="20191030152111.png" /><br />
+数据库<br />
 <img src="http://danbai.oss-cn-chengdu.aliyuncs.com/img/2020/04/02/165072009484f.png" alt="20191030154017.png" /></p>
-
-<h1 id="原因">原因</h1>
-
-<p>spring中对于@RestController或者@Controller+@ResponseBody
+<h1 id="heading-7">原因</h1>
+<p>spring中对于@RestController或者@Controller+@ResponseBody<br />
 注解的接口方法的返回值默认是Json格式，</p>
-
-<p>所以当对于date类型的数据，在返回浏览器端是会被spring-boot
+<p>所以当对于date类型的数据，在返回浏览器端是会被spring-boot<br />
 默认的Jackson框架转换，而Jackson框架默认的时区GMT（相对于中国是少了8小时）。</p>
-
-<h2 id="解决方法">解决方法</h2>
-
+<h2 id="heading-8">解决方法</h2>
 <p>在配置下多增加一个配置 第二个用于转换格式(可不用)</p>
-
 <pre><code>  jackson:
     time: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
@@ -436,24 +464,14 @@ public class Dmas {
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

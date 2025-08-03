@@ -3,25 +3,113 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="直播,推流,百人直播"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="直播,推流,百人直播,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="本文介绍了在非公开直播平台进行线上直播的需求，并提出了使用WebRTC（Web Real-Time Communication）的方案。WebRTC是一个支持实时视频、音频和数据传输的开放式网络协议和技术标准，无需安装插件或其他软件即可在Web浏览器之间进行点对点通信。
 
 为了节省时间和减少费用开销，文章建议使用腾讯云提供的云直播服务支持WebRTC。首先需要准备一个域名和腾讯云账号，并登录腾讯云添加云直播域名。推流直播可以通过生成推流地址并使用Web推流工具进行直播，然后可以通过腾讯云提供的在线播放器或自己使用腾讯云提供的SDK编写播放页面进行观看。
 
 总的来说，使用WebRTC和腾讯云云直播服务可以快速搭建可用的线上直播平台，并实现低延迟的直播效果。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2023-04-10 10:46:04">
+    <meta name="article:modified_time" content="2023-04-10 11:22:43">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="直播">
+    <meta name="article:tag" content="推流">
+    <meta name="article:tag" content="百人直播">
+    <link rel="canonical" href="https://danbai225.github.io/?p=840">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=840">
+    <meta property="og:title" content="快速搭建百人低延迟直播">
+    <meta property="og:description" content="本文介绍了在非公开直播平台进行线上直播的需求，并提出了使用WebRTC（Web Real-Time Communication）的方案。WebRTC是一个支持实时视频、音频和数据传输的开放式网络协议和技术标准，无需安装插件或其他软件即可在Web浏览器之间进行点对点通信。
+
+为了节省时间和减少费用开销，文章建议使用腾讯云提供的云直播服务支持WebRTC。首先需要准备一个域名和腾讯云账号，并登录腾讯云添加云直播域名。推流直播可以通过生成推流地址并使用Web推流工具进行直播，然后可以通过腾讯云提供的在线播放器或自己使用腾讯云提供的SDK编写播放页面进行观看。
+
+总的来说，使用WebRTC和腾讯云云直播服务可以快速搭建可用的线上直播平台，并实现低延迟的直播效果。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2023-04-10 10:46:04">
+    <meta property="article:modified_time" content="2023-04-10 11:22:43">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="直播">
+    <meta property="article:tag" content="推流">
+    <meta property="article:tag" content="百人直播">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=840">
+    <meta property="twitter:title" content="快速搭建百人低延迟直播">
+    <meta property="twitter:description" content="本文介绍了在非公开直播平台进行线上直播的需求，并提出了使用WebRTC（Web Real-Time Communication）的方案。WebRTC是一个支持实时视频、音频和数据传输的开放式网络协议和技术标准，无需安装插件或其他软件即可在Web浏览器之间进行点对点通信。
+
+为了节省时间和减少费用开销，文章建议使用腾讯云提供的云直播服务支持WebRTC。首先需要准备一个域名和腾讯云账号，并登录腾讯云添加云直播域名。推流直播可以通过生成推流地址并使用Web推流工具进行直播，然后可以通过腾讯云提供的在线播放器或自己使用腾讯云提供的SDK编写播放页面进行观看。
+
+总的来说，使用WebRTC和腾讯云云直播服务可以快速搭建可用的线上直播平台，并实现低延迟的直播效果。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>快速搭建百人低延迟直播 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "快速搭建百人低延迟直播",
+        "description": "本文介绍了在非公开直播平台进行线上直播的需求，并提出了使用WebRTC（Web Real-Time Communication）的方案。WebRTC是一个支持实时视频、音频和数据传输的开放式网络协议和技术标准，无需安装插件或其他软件即可在Web浏览器之间进行点对点通信。\n\n为了节省时间和减少费用开销，文章建议使用腾讯云提供的云直播服务支持WebRTC。首先需要准备一个域名和腾讯云账号，并登录腾讯云添加云直播域名。推流直播可以通过生成推流地址并使用Web推流工具进行直播，然后可以通过腾讯云提供的在线播放器或自己使用腾讯云提供的SDK编写播放页面进行观看。\n\n总的来说，使用WebRTC和腾讯云云直播服务可以快速搭建可用的线上直播平台，并实现低延迟的直播效果。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2023-04-10 10:46:04",
+        "dateModified": "2023-04-10 11:22:43",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=840"
+        },
+        "keywords": ["直播","推流","百人直播"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=840"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -74,49 +162,36 @@
 总的来说，使用WebRTC和腾讯云云直播服务可以快速搭建可用的线上直播平台，并实现低延迟的直播效果。</p>
             </section>
         </header>
-            <h1 id="原始需求">原始需求</h1>
-
+            <h1 id="heading">原始需求</h1>
 <p>需要在非公开直播平台进行一场线上直播。如果用腾讯会议、飞书等软件不满足人数要求，大概会有300人左右在线观看。需要让直播延迟很低即时效果好延迟控制在1s以内。在这种需求下让我想到了webrtc，</p>
-
 <blockquote>
-<p>WebRTC (Web Real-Time Communication) 是一个支持实时视频、音频和数据传输的开放式网络协议和技术标准。它允许在Web浏览器之间进行点对点通信，而无需安装插件或其他软件。
-WebRTC是由Google发起并开发，并在W3C和IETF等标准组织中得到认可。它基于JavaScript API和HTML5技术构建，使用了标准的网络通信协议，如UDP、TCP和HTTP，并支持多媒体编解码器，如VP8、VP9、Opus等。
+<p>WebRTC (Web Real-Time Communication) 是一个支持实时视频、音频和数据传输的开放式网络协议和技术标准。它允许在Web浏览器之间进行点对点通信，而无需安装插件或其他软件。<br />
+WebRTC是由Google发起并开发，并在W3C和IETF等标准组织中得到认可。它基于JavaScript API和HTML5技术构建，使用了标准的网络通信协议，如UDP、TCP和HTTP，并支持多媒体编解码器，如VP8、VP9、Opus等。<br />
 WebRTC主要应用于视频会议、在线教育、在线客服、多人游戏、远程协作等实时通信场景。与传统的视频通信方案相比，WebRTC以其低延迟、高清晰度、易于使用和免费等优势，越来越受到开发者和企业的青睐。</p>
 </blockquote>
-
-<h1 id="基于腾讯云云直播服务推流">基于腾讯云云直播服务推流</h1>
-
+<h1 id="heading-1">基于腾讯云云直播服务推流</h1>
 <p>既然需要快速搭建可用服务，那么自己写webrtc服务肯定是来不及了，而且还需要大的带宽服务器这也是不小的花费。为了节省时间和减少费用开销，这里我采用腾讯云提供的云直播服务支持webrtc。</p>
-
 <p>需要准备一个域名以及一个腾讯云账号</p>
-
-<h2 id="登录腾讯云添加云直播域名">登录腾讯云添加云直播域名</h2>
-
-<p><a href="https://console.cloud.tencent.com/live/domainmanage" target="_blank">云直播域名管理</a>
-默认会有一个推流域名，需要自己添加一个播放域名并完成认证。
+<h2 id="heading-2">登录腾讯云添加云直播域名</h2>
+<p><a href="https://console.cloud.tencent.com/live/domainmanage">云直播域名管理</a><br />
+默认会有一个推流域名，需要自己添加一个播放域名并完成认证。<br />
 <img src="../res/img/840-1.jpeg" alt="image-1681094724419" /></p>
-
-<h2 id="开始推流直播">开始推流直播</h2>
-
-<p>没错就这么快连直播工具都无需下载直接开始直播。先在地址是生成器中生成一个推流地址
-会生成很多种推流方式地址，这里我们为了实现低延迟采用webrtc的推流方式。
-<a href="https://console.cloud.tencent.com/live/addrgenerator/addrgenerator" target="_blank">推流地址生成</a>
-在这里粘贴我们复制的webrtc直播推流地址。
-<a href="https://console.cloud.tencent.com/live/tools/webpush" target="_blank">web推流直播</a>
-通过web推流进行直播，可以选着窗口或屏幕进行分享。
-推流后就可以看到我们的播放地址：
+<h2 id="heading-3">开始推流直播</h2>
+<p>没错就这么快连直播工具都无需下载直接开始直播。先在地址是生成器中生成一个推流地址<br />
+会生成很多种推流方式地址，这里我们为了实现低延迟采用webrtc的推流方式。<br />
+<a href="https://console.cloud.tencent.com/live/addrgenerator/addrgenerator">推流地址生成</a><br />
+在这里粘贴我们复制的webrtc直播推流地址。<br />
+<a href="https://console.cloud.tencent.com/live/tools/webpush">web推流直播</a><br />
+通过web推流进行直播，可以选着窗口或屏幕进行分享。<br />
+推流后就可以看到我们的播放地址：<br />
 <img src="../res/img/840-2.jpeg" alt="image-1681095205409" /></p>
-
-<h2 id="播放直播">播放直播</h2>
-
-<p>实测在推流端和播放端不在同一网络情况下（wifi与手机流量）
+<h2 id="heading-4">播放直播</h2>
+<p>实测在推流端和播放端不在同一网络情况下（wifi与手机流量）<br />
 推流端以1080p60fps的情况进行推流，播放延迟任然保持在1s以内。</p>
-
-<p>因为使用了webrtc所以在播放时也需要专门的播放器：
-可以使用腾讯云提供的在线demo播放
-<a href="https://tcplayer.vcube.tencent.com/" target="_blank">播放器demo</a>
+<p>因为使用了webrtc所以在播放时也需要专门的播放器：<br />
+可以使用腾讯云提供的在线demo播放<br />
+<a href="https://tcplayer.vcube.tencent.com/">播放器demo</a><br />
 或者自己根据腾讯云提供的sdk写一个简单的播放页面下面这是一个例子:</p>
-
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
 
@@ -180,9 +255,8 @@ WebRTC主要应用于视频会议、在线教育、在线客服、多人游戏�
 &lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
-
-<p>把这个html部署到服务器或者本地打开使用都行。
-注意的是浏览器最好都使用最新的谷歌浏览器。
+<p>把这个html部署到服务器或者本地打开使用都行。<br />
+注意的是浏览器最好都使用最新的谷歌浏览器。<br />
 如有遇到实在播放不了的情况可以使用flv地址进行播放。延迟会增加1-2s</p>
 
         <footer>
@@ -194,24 +268,14 @@ WebRTC主要应用于视频会议、在线教育、在线客服、多人游戏�
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

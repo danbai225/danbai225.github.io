@@ -3,21 +3,101 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="Spring Cloud Alibaba,nacos,dubbo"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Spring Cloud Alibaba,nacos,dubbo,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="Spring Cloud Alibaba是一个提供微服务开发解决方案的项目，包含了分布式应用微服务开发所需要的组件。它基于Spring Cloud编程模型，通过添加一些注解和配置，可以将Spring Cloud应用接入阿里微服务解决方案，快速搭建分布式应用系统。其中，Nacos是一种服务发现、配置和管理的工具，而Apache Dubbo是一款高性能的Java RPC框架。在搭建项目时，需要创建多个模块，包括API模块、服务提供者模块和消费者模块。具体的配置包括根POM.xml配置、Nacos依赖配置、Dubbo依赖配置、起始依赖（spring-cloud-alibaba-starter）配置，以及各个模块的POM.xml和配置文件的配置。使用Nacos作为配置中心，可以在Nacos的配置列表中上传配置文件，并在消费者和提供者模块中添加bootstrap.yaml文件进行配置。可以通过访问http://localhost:8002/demo来测试项目的功能。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2020-06-04 16:18:25">
+    <meta name="article:modified_time" content="2021-06-10 15:19:58">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="Spring Cloud Alibaba">
+    <meta name="article:tag" content="nacos">
+    <meta name="article:tag" content="dubbo">
+    <link rel="canonical" href="https://danbai225.github.io/?p=103">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=103">
+    <meta property="og:title" content="Spring Cloud Alibaba 整合Nacos和Dubbo">
+    <meta property="og:description" content="Spring Cloud Alibaba是一个提供微服务开发解决方案的项目，包含了分布式应用微服务开发所需要的组件。它基于Spring Cloud编程模型，通过添加一些注解和配置，可以将Spring Cloud应用接入阿里微服务解决方案，快速搭建分布式应用系统。其中，Nacos是一种服务发现、配置和管理的工具，而Apache Dubbo是一款高性能的Java RPC框架。在搭建项目时，需要创建多个模块，包括API模块、服务提供者模块和消费者模块。具体的配置包括根POM.xml配置、Nacos依赖配置、Dubbo依赖配置、起始依赖（spring-cloud-alibaba-starter）配置，以及各个模块的POM.xml和配置文件的配置。使用Nacos作为配置中心，可以在Nacos的配置列表中上传配置文件，并在消费者和提供者模块中添加bootstrap.yaml文件进行配置。可以通过访问http://localhost:8002/demo来测试项目的功能。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2020-06-04 16:18:25">
+    <meta property="article:modified_time" content="2021-06-10 15:19:58">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="Spring Cloud Alibaba">
+    <meta property="article:tag" content="nacos">
+    <meta property="article:tag" content="dubbo">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=103">
+    <meta property="twitter:title" content="Spring Cloud Alibaba 整合Nacos和Dubbo">
+    <meta property="twitter:description" content="Spring Cloud Alibaba是一个提供微服务开发解决方案的项目，包含了分布式应用微服务开发所需要的组件。它基于Spring Cloud编程模型，通过添加一些注解和配置，可以将Spring Cloud应用接入阿里微服务解决方案，快速搭建分布式应用系统。其中，Nacos是一种服务发现、配置和管理的工具，而Apache Dubbo是一款高性能的Java RPC框架。在搭建项目时，需要创建多个模块，包括API模块、服务提供者模块和消费者模块。具体的配置包括根POM.xml配置、Nacos依赖配置、Dubbo依赖配置、起始依赖（spring-cloud-alibaba-starter）配置，以及各个模块的POM.xml和配置文件的配置。使用Nacos作为配置中心，可以在Nacos的配置列表中上传配置文件，并在消费者和提供者模块中添加bootstrap.yaml文件进行配置。可以通过访问http://localhost:8002/demo来测试项目的功能。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>Spring Cloud Alibaba 整合Nacos和Dubbo - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Spring Cloud Alibaba 整合Nacos和Dubbo",
+        "description": "Spring Cloud Alibaba是一个提供微服务开发解决方案的项目，包含了分布式应用微服务开发所需要的组件。它基于Spring Cloud编程模型，通过添加一些注解和配置，可以将Spring Cloud应用接入阿里微服务解决方案，快速搭建分布式应用系统。其中，Nacos是一种服务发现、配置和管理的工具，而Apache Dubbo是一款高性能的Java RPC框架。在搭建项目时，需要创建多个模块，包括API模块、服务提供者模块和消费者模块。具体的配置包括根POM.xml配置、Nacos依赖配置、Dubbo依赖配置、起始依赖（spring-cloud-alibaba-starter）配置，以及各个模块的POM.xml和配置文件的配置。使用Nacos作为配置中心，可以在Nacos的配置列表中上传配置文件，并在消费者和提供者模块中添加bootstrap.yaml文件进行配置。可以通过访问http:\/\/localhost:8002\/demo来测试项目的功能。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2020-06-04 16:18:25",
+        "dateModified": "2021-06-10 15:19:58",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=103"
+        },
+        "keywords": ["Spring Cloud Alibaba","nacos","dubbo"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=103"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -67,28 +147,18 @@
             </section>
         </header>
             <h1 id="spring-cloud-alibaba">Spring Cloud Alibaba</h1>
-
 <p>Spring Cloud Alibaba 致力于提供微服务开发的一站式解决方案。此项目包含开发分布式应用微服务的必需组件，方便开发者通过 Spring Cloud 编程模型轻松使用这些组件来开发分布式应用服务。</p>
-
 <p>依托 Spring Cloud Alibaba，您只需要添加一些注解和少量配置，就可以将 Spring Cloud 应用接入阿里微服务解决方案，通过阿里中间件来迅速搭建分布式应用系统。</p>
-
-<p><a href="https://github.com/alibaba/spring-cloud-alibaba" target="_blank">Spring Cloud Alibaba Github</a></p>
-
+<p><a href="https://github.com/alibaba/spring-cloud-alibaba">Spring Cloud Alibaba Github</a></p>
 <h1 id="nacos">Nacos</h1>
-
-<p>什么是 Nacos？
-服务（Service）是 Nacos 世界的一等公民。Nacos 支持几乎所有主流类型的“服务”的发现、配置和管理。
-<a href="https://nacos.io/" target="_blank">Nacos官网</a></p>
-
+<p>什么是 Nacos？<br />
+服务（Service）是 Nacos 世界的一等公民。Nacos 支持几乎所有主流类型的“服务”的发现、配置和管理。<br />
+<a href="https://nacos.io/">Nacos官网</a></p>
 <h1 id="apache-dubbo">Apache Dubbo</h1>
-
-<p>Apache Dubbo™ 是一款高性能Java RPC框架。
-<a href="https://dubbo.apache.org" target="_blank">Apache Dubbo</a></p>
-
-<h1 id="搭建项目">搭建项目</h1>
-
+<p>Apache Dubbo™ 是一款高性能Java RPC框架。<br />
+<a href="https://dubbo.apache.org">Apache Dubbo</a></p>
+<h1 id="heading">搭建项目</h1>
 <p>项目结构</p>
-
 <pre><code>├─ demo
 │   ├─ demo-api #api
 │   ├─ demo-consumer #消费者
@@ -102,11 +172,8 @@
 │   └─ pom.xml
 └─ pom.xml
 </code></pre>
-
-<h2 id="根pom-xml">根POM.xml</h2>
-
+<h2 id="pomxml">根POM.xml</h2>
 <p>基于spring-boot 2.3.0RELEASE﹑spring-cloud-alibaba2.2.1.RELEASE</p>
-
 <pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
          xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
@@ -142,11 +209,8 @@
     &lt;/dependencyManagement&gt;
 &lt;/project&gt;
 </code></pre>
-
-<h2 id="nacos依赖">Nacos依赖</h2>
-
+<h2 id="nacos-1">Nacos依赖</h2>
 <p>以根项目创建Nacos的POM项目</p>
-
 <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
          xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
@@ -166,9 +230,7 @@
     &lt;/dependencies&gt;
 &lt;/project&gt;
 </code></pre>
-
-<h2 id="dubbo依赖">Dubbo依赖</h2>
-
+<h2 id="dubbo">Dubbo依赖</h2>
 <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
          xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
@@ -189,9 +251,7 @@
     &lt;/dependencies&gt;
 &lt;/project&gt;
 </code></pre>
-
-<h2 id="起始依赖-spring-cloud-alibaba-starter">起始依赖（spring-cloud-alibaba-starter）</h2>
-
+<h2 id="spring-cloud-alibaba-starter">起始依赖（spring-cloud-alibaba-starter）</h2>
 <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
          xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
@@ -235,11 +295,8 @@
     &lt;/dependencies&gt;
 &lt;/project&gt;
 </code></pre>
-
-<h2 id="正式demo项目开始">正式Demo项目开始</h2>
-
+<h2 id="demo">正式Demo项目开始</h2>
 <h3 id="api">Api</h3>
-
 <pre><code>package cn.p00q.cloud.demo.api;
 
 /**
@@ -259,11 +316,8 @@ public interface DemoService {
 }
 
 </code></pre>
-
-<h3 id="服务提供者">服务提供者</h3>
-
-<h3 id="pom-xml">pom.xml</h3>
-
+<h3 id="heading-1">服务提供者</h3>
+<h3 id="pomxml-1">pom.xml</h3>
 <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
          xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
@@ -289,11 +343,8 @@ public interface DemoService {
     &lt;/dependencies&gt;
 &lt;/project&gt;
 </code></pre>
-
-<h4 id="实现接口">实现接口</h4>
-
+<h4 id="heading-2">实现接口</h4>
 <p>Service接口是org.apache.dubbo.config.annotation.Service包下的</p>
-
 <pre><code>package cn.p00q.cloud.demo.service.impl;
 
 import cn.p00q.cloud.demo.api.DemoService;
@@ -321,9 +372,7 @@ public class DemoServiceImpl implements DemoService {
 }
 
 </code></pre>
-
-<h4 id="启动类">启动类</h4>
-
+<h4 id="heading-3">启动类</h4>
 <pre><code>package cn.p00q.cloud.demo;
 
 import org.springframework.boot.SpringApplication;
@@ -344,9 +393,7 @@ public class DemoProviderApplication {
     }
 }
 </code></pre>
-
-<h4 id="配置">配置</h4>
-
+<h4 id="heading-4">配置</h4>
 <pre><code class="language-yaml">dubbo:
   protocol:
     name: dubbo #通信协议 
@@ -365,11 +412,8 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848 #nacos服务器地址
 </code></pre>
-
-<h3 id="消费者">消费者</h3>
-
-<h4 id="pom-xml-1">pom.xml</h4>
-
+<h3 id="heading-5">消费者</h3>
+<h4 id="pomxml-2">pom.xml</h4>
 <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
          xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
@@ -395,9 +439,7 @@ spring:
     &lt;/dependencies&gt;
 &lt;/project&gt;
 </code></pre>
-
-<h4 id="调用服务">调用服务</h4>
-
+<h4 id="heading-6">调用服务</h4>
 <pre><code>package cn.p00q.cloud.demo.controller;
 
 import cn.p00q.cloud.demo.api.DemoService;
@@ -423,9 +465,7 @@ public class DemoController {
 }
 
 </code></pre>
-
-<h4 id="启动类-1">启动类</h4>
-
+<h4 id="heading-7">启动类</h4>
 <pre><code>package cn.p00q.cloud.demo;
 
 import org.springframework.boot.SpringApplication;
@@ -447,9 +487,7 @@ public class DemoConsumerApplication {
 }
 
 </code></pre>
-
-<h4 id="配置-1">配置</h4>
-
+<h4 id="heading-8">配置</h4>
 <pre><code>dubbo:
   cloud:
     subscribed-services: demo-provider
@@ -469,42 +507,28 @@ spring:
         server-addr: 127.0.0.1:8848
 
 </code></pre>
-
-<h3 id="启动两个提供者-一个消费者">启动两个提供者 一个消费者</h3>
-
-<p>访问<a href="http://localhost:8002/demo" target="_blank">http://localhost:8002/demo</a></p>
-
+<h3 id="-">启动两个提供者 一个消费者</h3>
+<p>访问http://localhost:8002/demo</p>
 <pre><code>Service [name :demo , port : 20880] echo(&quot;danbai&quot;) : Hello,danbai
 </code></pre>
-
 <p>刷新</p>
-
 <pre><code>Service [name :demo , port : 20881] echo(&quot;danbai&quot;) : Hello,danbai
 </code></pre>
-
 <p>dubbo均衡负载</p>
-
-<h3 id="nacos配置中心">Nacos配置中心</h3>
-
-<h4 id="在nacos项目下的pom-xml增加依赖">在Nacos项目下的pom.xml增加依赖</h4>
-
+<h3 id="nacos-2">Nacos配置中心</h3>
+<h4 id="nacospomxml">在Nacos项目下的pom.xml增加依赖</h4>
 <pre><code>        &lt;dependency&gt;
             &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
             &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-config&lt;/artifactId&gt;
         &lt;/dependency&gt;
 </code></pre>
-
-<h4 id="上传配置">上传配置</h4>
-
-<p>登录nacos后台，进入配置列表在public命名空间下添加配置。
-Data ID分别为demo-provider-dev.yaml和demo-consumer-dev.yaml。
-组默认DEFAULT_GROUP
+<h4 id="heading-9">上传配置</h4>
+<p>登录nacos后台，进入配置列表在public命名空间下添加配置。<br />
+Data ID分别为demo-provider-dev.yaml和demo-consumer-dev.yaml。<br />
+组默认DEFAULT_GROUP<br />
 把各自的application.yaml添加进去</p>
-
-<h4 id="配置修改">配置修改</h4>
-
+<h4 id="heading-10">配置修改</h4>
 <p>在消费者和提供者resources目录下添加bootstrap.yaml文件</p>
-
 <pre><code>spring:
   application:
     name: demo-provider #消费者为demo-consumer
@@ -516,14 +540,10 @@ Data ID分别为demo-provider-dev.yaml和demo-consumer-dev.yaml。
   profiles:
     active: dev
 </code></pre>
-
 <p>完成配置</p>
-
-<p><a href="https://github.com/danbai225/AlibabaCloud" target="_blank">本项目地址</a></p>
-
-<h1 id="工具">工具</h1>
-
-<p><a href="https://toyaml.com/index.html" target="_blank">在线yaml转properties-在线properties转yaml-ToYaml.com</a></p>
+<p><a href="https://github.com/danbai225/AlibabaCloud">本项目地址</a></p>
+<h1 id="heading-11">工具</h1>
+<p><a href="https://toyaml.com/index.html">在线yaml转properties-在线properties转yaml-ToYaml.com</a></p>
 
         <footer>
             <p class="pull-right text-muted">最后编辑于：2021-06-10 15:19:58</p>
@@ -534,24 +554,14 @@ Data ID分别为demo-provider-dev.yaml和demo-consumer-dev.yaml。
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

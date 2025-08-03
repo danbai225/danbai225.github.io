@@ -3,21 +3,99 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="apt,ubuntu"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="apt,ubuntu,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="这篇文章介绍了如何制作Ubuntu的离线软件包源。首先创建一个文件夹，并下载所需的依赖软件包。然后建立依赖关系并进行打包。在使用时，将打包的文件解压到/opt目录，并将其写入本地源列表中。最后更新源并开始使用离线软件包源。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2022-07-26 13:53:43">
+    <meta name="article:modified_time" content="2022-07-27 12:19:09">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="apt">
+    <meta name="article:tag" content="ubuntu">
+    <link rel="canonical" href="https://danbai225.github.io/?p=708">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=708">
+    <meta property="og:title" content="ubuntu apt离线源制作 安装桌面环境">
+    <meta property="og:description" content="这篇文章介绍了如何制作Ubuntu的离线软件包源。首先创建一个文件夹，并下载所需的依赖软件包。然后建立依赖关系并进行打包。在使用时，将打包的文件解压到/opt目录，并将其写入本地源列表中。最后更新源并开始使用离线软件包源。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2022-07-26 13:53:43">
+    <meta property="article:modified_time" content="2022-07-27 12:19:09">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="apt">
+    <meta property="article:tag" content="ubuntu">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=708">
+    <meta property="twitter:title" content="ubuntu apt离线源制作 安装桌面环境">
+    <meta property="twitter:description" content="这篇文章介绍了如何制作Ubuntu的离线软件包源。首先创建一个文件夹，并下载所需的依赖软件包。然后建立依赖关系并进行打包。在使用时，将打包的文件解压到/opt目录，并将其写入本地源列表中。最后更新源并开始使用离线软件包源。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>ubuntu apt离线源制作 安装桌面环境 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "ubuntu apt离线源制作 安装桌面环境",
+        "description": "这篇文章介绍了如何制作Ubuntu的离线软件包源。首先创建一个文件夹，并下载所需的依赖软件包。然后建立依赖关系并进行打包。在使用时，将打包的文件解压到\/opt目录，并将其写入本地源列表中。最后更新源并开始使用离线软件包源。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2022-07-26 13:53:43",
+        "dateModified": "2022-07-27 12:19:09",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=708"
+        },
+        "keywords": ["apt","ubuntu"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=708"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -64,8 +142,7 @@
                 <p><strong>摘要：</strong>这篇文章介绍了如何制作Ubuntu的离线软件包源。首先创建一个文件夹，并下载所需的依赖软件包。然后建立依赖关系并进行打包。在使用时，将打包的文件解压到/opt目录，并将其写入本地源列表中。最后更新源并开始使用离线软件包源。</p>
             </section>
         </header>
-            <h1 id="制作">制作</h1>
-
+            <h1 id="heading">制作</h1>
 <pre><code>#创建文件夹
 mkdir -p /opt/offline-packages/archives
 cd /opt/offline-packages/archives
@@ -79,16 +156,13 @@ sudo dpkg-scanpackages -m . &gt; ./archives/Packages
 cd ../
 tar -zcvf offline-packages.tar.gz offline-packages
 </code></pre>
-
-<h1 id="使用">使用</h1>
-
+<h1 id="heading-1">使用</h1>
 <pre><code>sudo tar -zxvf offline-packages.tar.gz -C /opt
 # 写入本地源，如有需要，提取备份原有源
 echo &quot;deb file:///opt/offline-packages  archives/&quot;| sudo tee /etc/apt/sources.list 
 sudo apt-get update --allow-insecure-repositories
 </code></pre>
-
-<p>原文：<a href="https://blog.csdn.net/HYESC/article/details/123551830" target="_blank">ubuntu apt-get离线源制作</a></p>
+<p>原文：<a href="https://blog.csdn.net/HYESC/article/details/123551830">ubuntu apt-get离线源制作</a></p>
 
         <footer>
             <p class="pull-right text-muted">最后编辑于：2022-07-27 12:19:09</p>
@@ -99,24 +173,14 @@ sudo apt-get update --allow-insecure-repositories
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

@@ -3,21 +3,101 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="ctf,反汇编,二进制"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="ctf,反汇编,二进制,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="这是作者第一次参加CTF比赛，参加了Hackergame 2022赛事，并分享了自己解决的一道二进制题目。题目是一个自动点击的程序，但按钮位置在鼠标移动过程中会随机改变位置。作者通过分析程序代码，找到了代码中使用的Win32API函数SetWindowPos，并修改了其中的参数，使按钮位置不再随机变动。接着，作者继续查找相关代码，找到了弹出消息框的部分，并在汇编代码中修改了跳转条件，以实现反转跳转的效果。最终，作者成功得到了Flag。在解题过程中，作者借助了静态分析工具Ghidra以及自己对Windows编程的一些基础知识。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2022-11-02 16:00:21">
+    <meta name="article:modified_time" content="2022-11-02 16:18:20">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="ctf">
+    <meta name="article:tag" content="反汇编">
+    <meta name="article:tag" content="二进制">
+    <link rel="canonical" href="https://danbai225.github.io/?p=806">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=806">
+    <meta property="og:title" content="解密第一道二进制程序题">
+    <meta property="og:description" content="这是作者第一次参加CTF比赛，参加了Hackergame 2022赛事，并分享了自己解决的一道二进制题目。题目是一个自动点击的程序，但按钮位置在鼠标移动过程中会随机改变位置。作者通过分析程序代码，找到了代码中使用的Win32API函数SetWindowPos，并修改了其中的参数，使按钮位置不再随机变动。接着，作者继续查找相关代码，找到了弹出消息框的部分，并在汇编代码中修改了跳转条件，以实现反转跳转的效果。最终，作者成功得到了Flag。在解题过程中，作者借助了静态分析工具Ghidra以及自己对Windows编程的一些基础知识。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2022-11-02 16:00:21">
+    <meta property="article:modified_time" content="2022-11-02 16:18:20">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="ctf">
+    <meta property="article:tag" content="反汇编">
+    <meta property="article:tag" content="二进制">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=806">
+    <meta property="twitter:title" content="解密第一道二进制程序题">
+    <meta property="twitter:description" content="这是作者第一次参加CTF比赛，参加了Hackergame 2022赛事，并分享了自己解决的一道二进制题目。题目是一个自动点击的程序，但按钮位置在鼠标移动过程中会随机改变位置。作者通过分析程序代码，找到了代码中使用的Win32API函数SetWindowPos，并修改了其中的参数，使按钮位置不再随机变动。接着，作者继续查找相关代码，找到了弹出消息框的部分，并在汇编代码中修改了跳转条件，以实现反转跳转的效果。最终，作者成功得到了Flag。在解题过程中，作者借助了静态分析工具Ghidra以及自己对Windows编程的一些基础知识。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>解密第一道二进制程序题 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "解密第一道二进制程序题",
+        "description": "这是作者第一次参加CTF比赛，参加了Hackergame 2022赛事，并分享了自己解决的一道二进制题目。题目是一个自动点击的程序，但按钮位置在鼠标移动过程中会随机改变位置。作者通过分析程序代码，找到了代码中使用的Win32API函数SetWindowPos，并修改了其中的参数，使按钮位置不再随机变动。接着，作者继续查找相关代码，找到了弹出消息框的部分，并在汇编代码中修改了跳转条件，以实现反转跳转的效果。最终，作者成功得到了Flag。在解题过程中，作者借助了静态分析工具Ghidra以及自己对Windows编程的一些基础知识。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2022-11-02 16:00:21",
+        "dateModified": "2022-11-02 16:18:20",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=806"
+        },
+        "keywords": ["ctf","反汇编","二进制"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=806"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -66,28 +146,19 @@
                 <p><strong>摘要：</strong>这是作者第一次参加CTF比赛，参加了Hackergame 2022赛事，并分享了自己解决的一道二进制题目。题目是一个自动点击的程序，但按钮位置在鼠标移动过程中会随机改变位置。作者通过分析程序代码，找到了代码中使用的Win32API函数SetWindowPos，并修改了其中的参数，使按钮位置不再随机变动。接着，作者继续查找相关代码，找到了弹出消息框的部分，并在汇编代码中修改了跳转条件，以实现反转跳转的效果。最终，作者成功得到了Flag。在解题过程中，作者借助了静态分析工具Ghidra以及自己对Windows编程的一些基础知识。</p>
             </section>
         </header>
-            <h1 id="第一次参加ctf">第一次参加ctf</h1>
-
-<p>在摸鱼之余发现了<a href="https://hack.lug.ustc.edu.cn/" target="_blank">Hackergame 2022</a>
-抽空玩了一下只做出来一道二进制题目和一些web题目以及0道数学题。
-<img src="../res/img/806-1.png" alt="image-1667375212202" />
+            <h1 id="ctf">第一次参加ctf</h1>
+<p>在摸鱼之余发现了<a href="https://hack.lug.ustc.edu.cn/">Hackergame 2022</a><br />
+抽空玩了一下只做出来一道二进制题目和一些web题目以及0道数学题。<br />
+<img src="../res/img/806-1.png" alt="image-1667375212202" /><br />
 还是挺有意思的。</p>
-
-<h1 id="flag-自动机">Flag 自动机</h1>
-
+<h1 id="flag-">Flag 自动机</h1>
 <p>下载题目解压得到 <code>flag_machine.exe</code> 之前我使用od调试，由于对od不是很熟就没解出来。</p>
-
 <p>后面我用静态分析工具 <code>ghidra</code> 做出来的。</p>
-
 <p>运行<code>flag_machine.exe</code>出现如下窗口应该是要点击按钮<code>狠心夺取</code>，但是在鼠标移动到按钮边缘就会随机移动一个位置。</p>
-
-<p><img src="../res/img/806-2.png" alt="image-1667375500666" />
+<p><img src="../res/img/806-2.png" alt="image-1667375500666" /><br />
 <img src="../res/img/806-3.png" alt="image-1667375596764" /></p>
-
 <p>这随机移动位置应该是调用了win32api中的<code>SetWindowPos</code>通过查找引用找到相关代码如下：<img src="../res/img/806-4.png" alt="image-1667375780292" /></p>
-
 <p>查询了下这个api的参数:</p>
-
 <pre><code>//声明:
 SetWindowPos(
   hWnd: HWND;            {窗口句柄}
@@ -121,19 +192,15 @@ SWP_DEFERERASE     = $2000;            {防止产生 WM_SYNCPAINT 消息}
 SWP_ASYNCWINDOWPOS = $4000;            {若调用进程不拥有窗口, 系统会向拥有窗口的线程发出需求}
 
 </code></pre>
-
-<p>发现 <code>uFlags</code> 有个值可以忽略xy，
+<p>发现 <code>uFlags</code> 有个值可以忽略xy，<br />
 现在程序中 <code>SetWindowPos(DAT_0040b020,(HWND)0x2,iVar1 % 0x96,iVar2 % 0x96,0x50,0x19,0);</code>  <code>uFlags</code>是0只需要把它改成2就好了</p>
-
 <p>在汇编中找到代码位置</p>
-
-<p><img src="../res/img/806-5.png" alt="image-1667376108153" />
-修改为<code>0x2</code> 后导出运行程序。
-<img src="../res/img/806-6.png" alt="image-1667376366593" />
-虽然成功点击了按钮但是确弹出了一个新的消息框。
-消息框的api是<code>MessageBoxW</code>继续查找相关引用
+<p><img src="../res/img/806-5.png" alt="image-1667376108153" /><br />
+修改为<code>0x2</code> 后导出运行程序。<br />
+<img src="../res/img/806-6.png" alt="image-1667376366593" /><br />
+虽然成功点击了按钮但是确弹出了一个新的消息框。<br />
+消息框的api是<code>MessageBoxW</code>继续查找相关引用<br />
 找到如下相关代码：</p>
-
 <pre><code>void UndefinedFunction_00401510(HWND param_1,UINT param_2,WPARAM param_3,int param_4)
 
 {
@@ -194,23 +261,17 @@ SWP_ASYNCWINDOWPOS = $4000;            {若调用进程不拥有窗口, 系统�
 }
 
 </code></pre>
-
-<p>看来目前是进到了 <code>if ((short)param_3 == 3)</code>的if中但是<code>(param_4 != 0x1bf52)</code>所以弹出了这个消息框。
+<p>看来目前是进到了 <code>if ((short)param_3 == 3)</code>的if中但是<code>(param_4 != 0x1bf52)</code>所以弹出了这个消息框。<br />
 找到相关汇编判断代码：</p>
-
 <pre><code>        0040180a 81 7d 14        CMP        dword ptr [EBP + 0x14],0x1bf52
                  52 bf 01 00
         00401811 74 2d           JZ         LAB_00401840
 </code></pre>
-
-<p><a href="https://blog.csdn.net/zmmycsdn/article/details/78511948" target="_blank">汇编跳转相关代码介绍</a></p>
-
-<p>这里用的跳转是 <code>JZ</code> 为零则跳转 那么可以改为 <code>JNZ</code> 不为零则跳转。实现了取反的效果。</p>
-
-<p>再次导出运行：
-<img src="../res/img/806-7.png" alt="image-1667376843978" />
+<p><a href="https://blog.csdn.net/zmmycsdn/article/details/78511948">汇编跳转相关代码介绍</a></p>
+<p>这里用的跳转是 <code>JZ</code> 为零则跳转 那么可以改为 <code>JNZ </code> 不为零则跳转。实现了取反的效果。</p>
+<p>再次导出运行：<br />
+<img src="../res/img/806-7.png" alt="image-1667376843978" /><br />
 成功得到flag</p>
-
 <p>之前对汇编不是很熟所以做的过程中也不是很顺利。借助了<code>ghidra</code> 这款好用的静态分析工具才完成。还好之前写过一些windows程序对win32还有点印象。</p>
 
         <footer>
@@ -222,24 +283,14 @@ SWP_ASYNCWINDOWPOS = $4000;            {若调用进程不拥有窗口, 系统�
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

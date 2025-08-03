@@ -3,21 +3,97 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="k8s"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="k8s,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="本文介绍了在进行安装之前的准备工作，包括修改主机名、关闭防火墙、关闭swap分区和关闭SELinux。然后，文中提供了安装k8s的详细教程，并包括了初始化master节点和worker节点的步骤。最后，介绍了安装Ingress Controller的步骤。文章给出了一些参考链接供读者参考。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2020-07-09 08:09:29">
+    <meta name="article:modified_time" content="2020-07-09 09:21:17">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="k8s">
+    <link rel="canonical" href="https://danbai225.github.io/?p=107">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=107">
+    <meta property="og:title" content="K8s安装以及使用">
+    <meta property="og:description" content="本文介绍了在进行安装之前的准备工作，包括修改主机名、关闭防火墙、关闭swap分区和关闭SELinux。然后，文中提供了安装k8s的详细教程，并包括了初始化master节点和worker节点的步骤。最后，介绍了安装Ingress Controller的步骤。文章给出了一些参考链接供读者参考。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2020-07-09 08:09:29">
+    <meta property="article:modified_time" content="2020-07-09 09:21:17">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="k8s">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=107">
+    <meta property="twitter:title" content="K8s安装以及使用">
+    <meta property="twitter:description" content="本文介绍了在进行安装之前的准备工作，包括修改主机名、关闭防火墙、关闭swap分区和关闭SELinux。然后，文中提供了安装k8s的详细教程，并包括了初始化master节点和worker节点的步骤。最后，介绍了安装Ingress Controller的步骤。文章给出了一些参考链接供读者参考。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>K8s安装以及使用 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "K8s安装以及使用",
+        "description": "本文介绍了在进行安装之前的准备工作，包括修改主机名、关闭防火墙、关闭swap分区和关闭SELinux。然后，文中提供了安装k8s的详细教程，并包括了初始化master节点和worker节点的步骤。最后，介绍了安装Ingress Controller的步骤。文章给出了一些参考链接供读者参考。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2020-07-09 08:09:29",
+        "dateModified": "2020-07-09 09:21:17",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=107"
+        },
+        "keywords": ["k8s"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=107"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -62,12 +138,9 @@
                 <p><strong>摘要：</strong>本文介绍了在进行安装之前的准备工作，包括修改主机名、关闭防火墙、关闭swap分区和关闭SELinux。然后，文中提供了安装k8s的详细教程，并包括了初始化master节点和worker节点的步骤。最后，介绍了安装Ingress Controller的步骤。文章给出了一些参考链接供读者参考。</p>
             </section>
         </header>
-            <h1 id="安装">安装</h1>
-
+            <h1 id="heading">安装</h1>
 <p>其实在本次安装前，我已经完成了一次安装。然后我在 master 节点上安装宝塔控制面板导致服务器网络不可用了，服务器重启也没有恢复.今天把系统重装了重新安装。</p>
-
-<h2 id="目前配置">目前配置</h2>
-
+<h2 id="heading-1">目前配置</h2>
 <ul>
 <li>服务器4台</li>
 <li>都有外内网IP</li>
@@ -75,24 +148,16 @@
 <li>在一个内网</li>
 <li>内网ip分别为10.0.91.46(bt)、10.0.155.241(k8s1)、10.0.164.210(k8s2)、10.0.129.69(k8s3)</li>
 </ul>
-
-<h2 id="安装分配">安装分配</h2>
-
+<h2 id="heading-2">安装分配</h2>
 <p>k8s为一主两从,另外一台安装宝塔以及 MySQL、Redis。</p>
-
-<p>宝塔安装：10.0.91.46(bt)
-master：10.0.155.241(k8s1)
+<p>宝塔安装：10.0.91.46(bt)<br />
+master：10.0.155.241(k8s1)<br />
 从节点：10.0.164.210(k8s2)、10.0.129.69(k8s3)</p>
-
-<h2 id="开始前的准备">开始前的准备</h2>
-
-<h3 id="修改主机名">修改主机名：</h3>
-
+<h2 id="heading-3">开始前的准备</h2>
+<h3 id="heading-4">修改主机名：</h3>
 <pre><code>hostnamectl set-hostname danbai-bt # 将 danbai-bt 替换为当前主机名
 </code></pre>
-
 <p>加入到host</p>
-
 <pre><code>cat &gt;&gt; /etc/hosts &lt;&lt;EOF
 10.0.91.46 danbai-bt
 10.0.155.241 danbai-k8s1
@@ -100,50 +165,35 @@ master：10.0.155.241(k8s1)
 10.0.129.69 danbai-k8s2
 EOF
 </code></pre>
-
-<h3 id="关闭防火墙">关闭防火墙</h3>
-
+<h3 id="heading-5">关闭防火墙</h3>
 <p>关闭防火墙，清理防火墙规则，设置默认转发策略：</p>
-
 <pre><code>systemctl stop firewalld
 systemctl disable firewalld
 iptables -F &amp;&amp; iptables -X &amp;&amp; iptables -F -t nat &amp;&amp; iptables -X -t nat
 iptables -P FORWARD ACCEPT
 </code></pre>
-
-<h3 id="关闭-swap-分区">关闭 swap 分区</h3>
-
-<p>关闭 swap 分区，否则kubelet 会启动失败(可以设置 kubelet 启动参数 &ndash;fail-swap-on 为 false 关闭 swap 检查)：</p>
-
+<h3 id="-swap-">关闭 swap 分区</h3>
+<p>关闭 swap 分区，否则kubelet 会启动失败(可以设置 kubelet 启动参数 --fail-swap-on 为 false 关闭 swap 检查)：</p>
 <pre><code>swapoff -a
 sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 </code></pre>
-
-<h3 id="关闭-selinux">关闭 SELinux</h3>
-
+<h3 id="-selinux">关闭 SELinux</h3>
 <p>关闭 SELinux，否则 kubelet 挂载目录时可能报错 Permission denied：</p>
-
 <pre><code>setenforce 0
 sed -i 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
 </code></pre>
-
-<h1 id="开始安装-k8s">开始安装（k8s）</h1>
-
-<p><a href="https://kuboard.cn/install/install-k8s.html" target="_blank">详细教程</a>
+<h1 id="k8s">开始安装（k8s）</h1>
+<p><a href="https://kuboard.cn/install/install-k8s.html">详细教程</a><br />
 安装以下软件：</p>
-
 <ul>
 <li>docker</li>
 <li>nfs-utils</li>
 <li>kubectl / kubeadm / kubelet</li>
 </ul>
-
 <pre><code>export REGISTRY_MIRROR=https://mirror.ccs.tencentyun.com
 curl -sSL https://kuboard.cn/install-script/v1.18.x/install_kubelet.sh | sh -s 1.18.4
 </code></pre>
-
-<h2 id="初始化master">初始化master</h2>
-
+<h2 id="master">初始化master</h2>
 <pre><code># 只在 master 节点执行
 # 替换 x.x.x.x 为 master 节点实际 IP（请使用内网 IP）
 # export 命令只在当前 shell 会话中有效，开启新的 shell 窗口后，如果要继续安装过程，请重新执行此处的 export 命令
@@ -155,9 +205,7 @@ export POD_SUBNET=10.100.0.1/16
 echo &quot;${MASTER_IP}    ${APISERVER_NAME}&quot; &gt;&gt; /etc/hosts
 curl -sSL https://kuboard.cn/install-script/v1.18.x/init_master.sh | sh -s 1.18.3
 </code></pre>
-
-<h3 id="检查">检查</h3>
-
+<h3 id="heading-6">检查</h3>
 <pre><code># 只在 master 节点执行
 
 # 执行如下命令，等待 3-10 分钟，直到所有的容器组处于 Running 状态
@@ -166,17 +214,12 @@ watch kubectl get pod -n kube-system -o wide
 # 查看 master 节点初始化结果
 kubectl get nodes -o wide
 </code></pre>
-
-<h2 id="初始化worker节点">初始化worker节点</h2>
-
+<h2 id="worker">初始化worker节点</h2>
 <p>获得 join命令参数</p>
-
 <pre><code># 只在 master 节点执行
 kubeadm token create --print-join-command
 </code></pre>
-
 <p>针对所有的 worker 节点执行</p>
-
 <pre><code># 只在 worker 节点执行
 # 替换 x.x.x.x 为 master 节点的内网 IP
 export MASTER_IP=x.x.x.x
@@ -187,41 +230,30 @@ echo &quot;${MASTER_IP}    ${APISERVER_NAME}&quot; &gt;&gt; /etc/hosts
 # 替换为 master 节点上 kubeadm token create 命令的输出
 kubeadm join apiserver.demo:6443 --token mpfjma.4vjjg8flqihor4vt     --discovery-token-ca-cert-hash sha256:6f7a8e40a810323672de5eee6f4d19aa2dbdb38411845a1bf5dd63485c43d303
 </code></pre>
-
-<h3 id="检查-1">检查</h3>
-
+<h3 id="heading-7">检查</h3>
 <pre><code># 只在 master 节点执行
 kubectl get nodes -o wide
 
 </code></pre>
-
 <p>输出结果如下所示：</p>
-
 <pre><code>[root@demo-master-a-1 ~]# kubectl get nodes
 NAME     STATUS   ROLES    AGE     VERSION
 demo-master-a-1   Ready    master   5m3s    v1.18.x
 demo-worker-a-1   Ready    &lt;none&gt;   2m26s   v1.18.x
 demo-worker-a-2   Ready    &lt;none&gt;   3m56s   v1.18.x
 </code></pre>
-
-<h2 id="安装-ingress-controller">安装 Ingress Controller</h2>
-
+<h2 id="-ingress-controller">安装 Ingress Controller</h2>
 <p>这里我就没有安装我通过bt服务器内nginx对外服务</p>
-
 <pre><code># 只在 master 节点执行
 kubectl apply -f https://kuboard.cn/install-script/v1.18.x/nginx-ingress.yaml
 
 </code></pre>
-
-<h2 id="安装完成">安装完成</h2>
-
+<h2 id="heading-8">安装完成</h2>
 <p><img src="../res/img/107.jpeg" alt="image.png" /></p>
-
-<h1 id="参照引用">参照引用</h1>
-
+<h1 id="heading-9">参照引用</h1>
 <ul>
-<li><a href="https://k8s-install.opsnull.com/01.%E5%88%9D%E5%A7%8B%E5%8C%96%E7%B3%BB%E7%BB%9F%E5%92%8C%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F.html" target="_blank">https://k8s-install.opsnull.com/01.%E5%88%9D%E5%A7%8B%E5%8C%96%E7%B3%BB%E7%BB%9F%E5%92%8C%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F.html</a></li>
-<li><a href="https://kuboard.cn/install/install-k8s.html" target="_blank">https://kuboard.cn/install/install-k8s.html</a></li>
+<li><a href="https://k8s-install.opsnull.com/01.%E5%88%9D%E5%A7%8B%E5%8C%96%E7%B3%BB%E7%BB%9F%E5%92%8C%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F.html">https://k8s-install.opsnull.com/01.%E5%88%9D%E5%A7%8B%E5%8C%96%E7%B3%BB%E7%BB%9F%E5%92%8C%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F.html</a></li>
+<li><a href="https://kuboard.cn/install/install-k8s.html">https://kuboard.cn/install/install-k8s.html</a></li>
 </ul>
 
         <footer>
@@ -233,24 +265,14 @@ kubectl apply -f https://kuboard.cn/install-script/v1.18.x/nginx-ingress.yaml
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

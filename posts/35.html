@@ -3,21 +3,97 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="java"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="java,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="本文介绍了如何给影视app添加一个投屏功能。首先需要在项目中添加依赖，然后在Activity中实现投屏功能。具体实现包括搜索设备、添加设备到下拉框、设置投屏信息以及实现投屏按钮的点击事件。最后给出了参考地址和项目地址供参考。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2020-03-30 13:52:54">
+    <meta name="article:modified_time" content="2022-03-29 21:35:58">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="java">
+    <link rel="canonical" href="https://danbai225.github.io/?p=35">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=35">
+    <meta property="og:title" content="实现一个简单的投屏影视功能">
+    <meta property="og:description" content="本文介绍了如何给影视app添加一个投屏功能。首先需要在项目中添加依赖，然后在Activity中实现投屏功能。具体实现包括搜索设备、添加设备到下拉框、设置投屏信息以及实现投屏按钮的点击事件。最后给出了参考地址和项目地址供参考。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2020-03-30 13:52:54">
+    <meta property="article:modified_time" content="2022-03-29 21:35:58">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="java">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=35">
+    <meta property="twitter:title" content="实现一个简单的投屏影视功能">
+    <meta property="twitter:description" content="本文介绍了如何给影视app添加一个投屏功能。首先需要在项目中添加依赖，然后在Activity中实现投屏功能。具体实现包括搜索设备、添加设备到下拉框、设置投屏信息以及实现投屏按钮的点击事件。最后给出了参考地址和项目地址供参考。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>实现一个简单的投屏影视功能 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "实现一个简单的投屏影视功能",
+        "description": "本文介绍了如何给影视app添加一个投屏功能。首先需要在项目中添加依赖，然后在Activity中实现投屏功能。具体实现包括搜索设备、添加设备到下拉框、设置投屏信息以及实现投屏按钮的点击事件。最后给出了参考地址和项目地址供参考。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2020-03-30 13:52:54",
+        "dateModified": "2022-03-29 21:35:58",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=35"
+        },
+        "keywords": ["java"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=35"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -62,13 +138,10 @@
                 <p><strong>摘要：</strong>本文介绍了如何给影视app添加一个投屏功能。首先需要在项目中添加依赖，然后在Activity中实现投屏功能。具体实现包括搜索设备、添加设备到下拉框、设置投屏信息以及实现投屏按钮的点击事件。最后给出了参考地址和项目地址供参考。</p>
             </section>
         </header>
-            <h1 id="给影视app添加个投屏功能">给影视app添加个投屏功能</h1>
-
-<p>手机app上选中影视投屏给电视.
-<a href="https://cdn.p00q.cn/ys/app/dbys.apk" target="_blank">app地址</a></p>
-
-<h1 id="添加依赖">添加依赖</h1>
-
+            <h1 id="app">给影视app添加个投屏功能</h1>
+<p>手机app上选中影视投屏给电视.<br />
+<a href="https://cdn.p00q.cn/ys/app/dbys.apk">app地址</a></p>
+<h1 id="heading">添加依赖</h1>
 <pre><code class="language-language">allprojects {
 	repositories {
 		...
@@ -79,7 +152,6 @@
 }
 
 </code></pre>
-
 <pre><code>android  {
 	//必须添加，不加会报错
  packagingOptions {
@@ -93,14 +165,10 @@ dependencies {
        implementation 'com.github.yanbo469:VideoDlnaScreen:v1.0'
 }
 </code></pre>
-
-<h1 id="在activity中实现">在Activity中实现</h1>
-
-<p><a href="https://github.com/danbai225/dbysapp/blob/master/app/src/main/java/com/danbai/dbysapp/activity/YsActivity.java" target="_blank">代码地址</a>
+<h1 id="activity">在Activity中实现</h1>
+<p><a href="https://github.com/danbai225/dbysapp/blob/master/app/src/main/java/com/danbai/dbysapp/activity/YsActivity.java">代码地址</a><br />
 我在Activity布局xml中添加了一个下拉框和一个按钮</p>
-
 <p>在onCreate中注册服务和获得组件</p>
-
 <pre><code class="language-java">@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,9 +180,7 @@ dependencies {
         tp();
     }
 </code></pre>
-
 <p>投屏初始化和实现</p>
-
 <pre><code class="language-java">private void tp(){
         //搜索设备
         clingDevices = DeviceManager.getInstance().getClingDeviceList();
@@ -187,9 +253,8 @@ dependencies {
         });
     }
 </code></pre>
-
-<p><a href="https://github.com/yanbo469/VideoDlnaScreen" target="_blank">参考地址</a>
-<a href="https://github.com/danbai225/dbysapp" target="_blank">项目地址</a></p>
+<p><a href="https://github.com/yanbo469/VideoDlnaScreen">参考地址</a><br />
+<a href="https://github.com/danbai225/dbysapp">项目地址</a></p>
 
         <footer>
             <p class="pull-right text-muted">最后编辑于：2022-03-29 21:35:58</p>
@@ -200,24 +265,14 @@ dependencies {
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

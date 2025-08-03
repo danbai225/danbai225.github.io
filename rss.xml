@@ -5,10 +5,17 @@
     <link>https://danbai225.github.io</link>
     <description>这是 淡白的记忆 的 RSS 订阅</description>
     <item>
+      <title>深入理解TLS指纹：原理、计算与模拟</title>
+      <link>https://danbai225.github.io?p=1007</link>
+      <description>TLS（Transport Layer Security）指纹是一种通过分析客户端TLS握手中发送的特定参数（如TLS版本、加密套件、扩展、椭圆曲线等）组合来唯一识别客户端的软件类型和版本的网络识别技术。其核心在于客户端Hello消息中的重要字段，例如TLS版本、加密套件列表、扩展及椭圆曲线相关参数。&#xA;&#xA;目前流行的TLS指纹计算方法是由Salesforce开发的JA3算法，它将上述五个字段按顺序拼接后计算MD5哈希，得到唯一的JA3指纹。相应地，服务器端指纹通过JA3S算法计算。&#xA;&#xA;不同浏览器（Chrome、Firefox、Safari）及移动端浏览器具有各自典型的TLS指纹特征，反映了它们支持的加密套件、扩展等的差异。&#xA;&#xA;为绕过检测与模拟真实客户端，开发者可以在Go、Python等语言中通过自定义TLS配置，精准控制TLS握手参数，实现TLS指纹伪造。同时，也存在专门的库（如utls）用于更逼真地模拟浏览器TLS行为。&#xA;&#xA;TLS指纹技术在网络安全分析（恶意软件检测）、反爬虫、自动化工具识别等领域有重要应用。服务器端可以实时分析和比对JA3指纹以识别可疑客户端，客户端可通过随机化TLS参数来降低被识别概率。&#xA;&#xA;总之，TLS指纹作为识别客户端的重要手段，助力网络安全防护和流量分析。但未来随着诸如ECH（Encrypted Client Hello）等新TLS技术的推广，TLS指纹的检测方式和效用可能面临新的挑战和变化。</description>
+      <pubDate>Sun, 03 Aug 2025 19:35:50 +0800</pubDate>
+      <guid>https://danbai225.github.io?p=1007</guid>
+    </item>
+    <item>
       <title>使用debian搭建软路由</title>
       <link>https://danbai225.github.io/?p=1006</link>
       <description>本文介绍了如何将一台基于x86架构的j4125多网卡机器配置为Debian 12网关，并安装名为daed的基于eBPF的代理程序。首先，作者开启了IP转发功能并使用systemd-network配置网络接口，将`enp1s0`设置为WAN口，其余网口作为LAN口。接着，配置了NAT和过滤规则的nftables，以便LAN设备能够通过WAN口访问外网。最后，安装了daed并开启其网页控制界面，用户可通过设置密码访问控制页面。</description>
-      <pubDate>Sat, 15 Mar 2025 11:34:00 +0800</pubDate>
+      <pubDate>Sat, 15 Mar 2025 10:00:00 +0000</pubDate>
       <guid>https://danbai225.github.io/?p=1006</guid>
     </item>
     <item>

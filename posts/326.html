@@ -3,21 +3,101 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="ICMP,协议,IP"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="ICMP,协议,IP,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="本文主要介绍了关于网络知识中的ping命令和其中的ICMP协议。ping命令使用ICMP协议来进行网络连接测试，在ping命令中，发送的数据包中包含了校验和字段。校验和的计算过程是将每两个字节相加，直到最后得出结果，并与前面的结果相加，然后取结果的反码作为最终的校验和。文章还给出了一个Go语言代码示例，展示了如何计算校验和。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2021-06-10 14:19:34">
+    <meta name="article:modified_time" content="2021-06-10 15:06:06">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="ICMP">
+    <meta name="article:tag" content="协议">
+    <meta name="article:tag" content="IP">
+    <link rel="canonical" href="https://danbai225.github.io/?p=326">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=326">
+    <meta property="og:title" content="网际校验和算法ICMP校验位计算">
+    <meta property="og:description" content="本文主要介绍了关于网络知识中的ping命令和其中的ICMP协议。ping命令使用ICMP协议来进行网络连接测试，在ping命令中，发送的数据包中包含了校验和字段。校验和的计算过程是将每两个字节相加，直到最后得出结果，并与前面的结果相加，然后取结果的反码作为最终的校验和。文章还给出了一个Go语言代码示例，展示了如何计算校验和。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2021-06-10 14:19:34">
+    <meta property="article:modified_time" content="2021-06-10 15:06:06">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="ICMP">
+    <meta property="article:tag" content="协议">
+    <meta property="article:tag" content="IP">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=326">
+    <meta property="twitter:title" content="网际校验和算法ICMP校验位计算">
+    <meta property="twitter:description" content="本文主要介绍了关于网络知识中的ping命令和其中的ICMP协议。ping命令使用ICMP协议来进行网络连接测试，在ping命令中，发送的数据包中包含了校验和字段。校验和的计算过程是将每两个字节相加，直到最后得出结果，并与前面的结果相加，然后取结果的反码作为最终的校验和。文章还给出了一个Go语言代码示例，展示了如何计算校验和。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>网际校验和算法ICMP校验位计算 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "网际校验和算法ICMP校验位计算",
+        "description": "本文主要介绍了关于网络知识中的ping命令和其中的ICMP协议。ping命令使用ICMP协议来进行网络连接测试，在ping命令中，发送的数据包中包含了校验和字段。校验和的计算过程是将每两个字节相加，直到最后得出结果，并与前面的结果相加，然后取结果的反码作为最终的校验和。文章还给出了一个Go语言代码示例，展示了如何计算校验和。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2021-06-10 14:19:34",
+        "dateModified": "2021-06-10 15:06:06",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=326"
+        },
+        "keywords": ["ICMP","协议","IP"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=326"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -66,17 +146,15 @@
                 <p><strong>摘要：</strong>本文主要介绍了关于网络知识中的ping命令和其中的ICMP协议。ping命令使用ICMP协议来进行网络连接测试，在ping命令中，发送的数据包中包含了校验和字段。校验和的计算过程是将每两个字节相加，直到最后得出结果，并与前面的结果相加，然后取结果的反码作为最终的校验和。文章还给出了一个Go语言代码示例，展示了如何计算校验和。</p>
             </section>
         </header>
-            <p>面试时聊到了一些网络知识。其中ping这个东西，是我经常用到的但似乎对它又不是很了解，于是去看了下相关协议的介绍。它使用了一种协议叫<a href="https://baike.baidu.com/item/ICMP" target="_blank">ICMP（Internet Control Message Protocol）Internet控制报文协议</a>。
-报文结构：<img src="../res/img/326-1.png" alt="image.png" />
+            <p>面试时聊到了一些网络知识。其中ping这个东西，是我经常用到的但似乎对它又不是很了解，于是去看了下相关协议的介绍。它使用了一种协议叫<a href="https://baike.baidu.com/item/ICMP">ICMP（Internet Control Message Protocol）Internet控制报文协议</a>。<br />
+报文结构：<img src="../res/img/326-1.png" alt="image.png" /><br />
 其中校验和计算：</p>
-
 <ol>
 <li>将校验和字段置为0。</li>
-<li>将每两个字节（16位）相加（二进制求和）直到最后得出结果，若出现最后还剩一个字节继续与前面结果相加。
+<li>将每两个字节（16位）相加（二进制求和）直到最后得出结果，若出现最后还剩一个字节继续与前面结果相加。<br />
 (溢出)将高16位与低16位相加，直到高16位为0为止。</li>
 <li>将最后的结果（二进制）取反。</li>
 </ol>
-
 <pre><code class="language-Go">func CheckSum(data []byte) uint16 {
 	var sum uint32 //uint32符合校验位站2字节
 	var length = len(data)
@@ -95,9 +173,8 @@
 	return uint16(^sum)
 }
 </code></pre>
-
-<p>参考：
-<a href="https://blog.csdn.net/zhj082/article/details/80518322" target="_blank">https://blog.csdn.net/zhj082/article/details/80518322</a></p>
+<p>参考：<br />
+<a href="https://blog.csdn.net/zhj082/article/details/80518322">https://blog.csdn.net/zhj082/article/details/80518322</a></p>
 
         <footer>
             <p class="pull-right text-muted">最后编辑于：2021-06-10 15:06:06</p>
@@ -108,24 +185,14 @@
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

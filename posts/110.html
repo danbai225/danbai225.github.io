@@ -3,23 +3,103 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="MySQL"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="MySQL,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="问题描述：在MySQL数据库中，遇到了字段`gktime`不能为null的问题。该字段的表结构如下图所示。为了解决这个问题，可以设置字段`gktime`有默认值。
 
 解决方法：在MySQL 5.6版本中，引入了`explicit_defaults_for_timestamp`参数来控制对timestamp NULL值的处理。如果该参数不开启，插入NULL值到timestamp NOT NULL字段时，不会报错，也不会有警告，插入后的值会被设置为当前时间。如果在my.cnf配置文件中设置`explicit_defaults_for_timestamp=1`，则在插入该字段时会报错，提示该列不可以为null。可以通过执行以下命令来设置该参数为0：`set global explicit_defaults_for_timestamp=0;`，或者在`my.cnf`配置文件中添加`explicit_defaults_for_timestamp = 0`来修改该参数的值。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2020-07-10 14:24:17">
+    <meta name="article:modified_time" content="2021-06-10 15:22:45">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="MySQL">
+    <link rel="canonical" href="https://danbai225.github.io/?p=110">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=110">
+    <meta property="og:title" content="MySQL timestamp NOT NULL插入NULL的问题">
+    <meta property="og:description" content="问题描述：在MySQL数据库中，遇到了字段`gktime`不能为null的问题。该字段的表结构如下图所示。为了解决这个问题，可以设置字段`gktime`有默认值。
+
+解决方法：在MySQL 5.6版本中，引入了`explicit_defaults_for_timestamp`参数来控制对timestamp NULL值的处理。如果该参数不开启，插入NULL值到timestamp NOT NULL字段时，不会报错，也不会有警告，插入后的值会被设置为当前时间。如果在my.cnf配置文件中设置`explicit_defaults_for_timestamp=1`，则在插入该字段时会报错，提示该列不可以为null。可以通过执行以下命令来设置该参数为0：`set global explicit_defaults_for_timestamp=0;`，或者在`my.cnf`配置文件中添加`explicit_defaults_for_timestamp = 0`来修改该参数的值。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2020-07-10 14:24:17">
+    <meta property="article:modified_time" content="2021-06-10 15:22:45">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="MySQL">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=110">
+    <meta property="twitter:title" content="MySQL timestamp NOT NULL插入NULL的问题">
+    <meta property="twitter:description" content="问题描述：在MySQL数据库中，遇到了字段`gktime`不能为null的问题。该字段的表结构如下图所示。为了解决这个问题，可以设置字段`gktime`有默认值。
+
+解决方法：在MySQL 5.6版本中，引入了`explicit_defaults_for_timestamp`参数来控制对timestamp NULL值的处理。如果该参数不开启，插入NULL值到timestamp NOT NULL字段时，不会报错，也不会有警告，插入后的值会被设置为当前时间。如果在my.cnf配置文件中设置`explicit_defaults_for_timestamp=1`，则在插入该字段时会报错，提示该列不可以为null。可以通过执行以下命令来设置该参数为0：`set global explicit_defaults_for_timestamp=0;`，或者在`my.cnf`配置文件中添加`explicit_defaults_for_timestamp = 0`来修改该参数的值。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>MySQL timestamp NOT NULL插入NULL的问题 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "MySQL timestamp NOT NULL插入NULL的问题",
+        "description": "问题描述：在MySQL数据库中，遇到了字段\u0060gktime\u0060不能为null的问题。该字段的表结构如下图所示。为了解决这个问题，可以设置字段\u0060gktime\u0060有默认值。\n\n解决方法：在MySQL 5.6版本中，引入了\u0060explicit_defaults_for_timestamp\u0060参数来控制对timestamp NULL值的处理。如果该参数不开启，插入NULL值到timestamp NOT NULL字段时，不会报错，也不会有警告，插入后的值会被设置为当前时间。如果在my.cnf配置文件中设置\u0060explicit_defaults_for_timestamp=1\u0060，则在插入该字段时会报错，提示该列不可以为null。可以通过执行以下命令来设置该参数为0：\u0060set global explicit_defaults_for_timestamp=0;\u0060，或者在\u0060my.cnf\u0060配置文件中添加\u0060explicit_defaults_for_timestamp = 0\u0060来修改该参数的值。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2020-07-10 14:24:17",
+        "dateModified": "2021-06-10 15:22:45",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=110"
+        },
+        "keywords": ["MySQL"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=110"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -66,36 +146,23 @@
 解决方法：在MySQL 5.6版本中，引入了`explicit_defaults_for_timestamp`参数来控制对timestamp NULL值的处理。如果该参数不开启，插入NULL值到timestamp NOT NULL字段时，不会报错，也不会有警告，插入后的值会被设置为当前时间。如果在my.cnf配置文件中设置`explicit_defaults_for_timestamp=1`，则在插入该字段时会报错，提示该列不可以为null。可以通过执行以下命令来设置该参数为0：`set global explicit_defaults_for_timestamp=0;`，或者在`my.cnf`配置文件中添加`explicit_defaults_for_timestamp = 0`来修改该参数的值。</p>
             </section>
         </header>
-            <h1 id="遇到如下问题">遇到如下问题</h1>
-
+            <h1 id="heading">遇到如下问题</h1>
 <p><img src="../res/img/110-1.jpeg" alt="image.png" /></p>
-
-<p>字段<code>gktime</code>不能为null
-这是表结构：
-<img src="../res/img/110-2.jpeg" alt="image.png" />
+<p>字段<code>gktime</code>不能为null<br />
+这是表结构：<br />
+<img src="../res/img/110-2.jpeg" alt="image.png" /><br />
 设置字段<code>gktime</code>有默认值</p>
-
-<h1 id="解决">解决</h1>
-
+<h1 id="heading-1">解决</h1>
 <p>MySQL 5.6版本引入</p>
-
 <p>explicit_defaults_for_timestamp</p>
-
 <p>来控制对timestamp NULL值的处理</p>
-
 <p>如果该参数不开启，则对timestamp NOT NULL插入NULL值，不报错，无warning，插入后的值为当前时间</p>
-
 <p>如果在my.cnf中explicit_defaults_for_timestamp=1</p>
-
 <p>那么插入该值的时候会报错提示该列can not be null</p>
-
 <p>设置该值</p>
-
 <pre><code>set global explicit_defaults_for_timestamp=0;
 </code></pre>
-
 <p>或者修改<code>my.cnf</code></p>
-
 <pre><code>explicit_defaults_for_timestamp = 0
 </code></pre>
 
@@ -108,24 +175,14 @@
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

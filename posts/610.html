@@ -3,21 +3,103 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="Go,MySQL,sql,antlr"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Go,MySQL,sql,antlr,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="ANTLR是一个用Java语言编写的识别器工具，可以自动生成解析器。它支持生成Java、Go、C等语言的解析器客户端。可以通过下载ANTLR的jar包和mysql的语法规则文件，使用ANTLR来生成解析器。通过覆盖`BaseMySqlParserListener`的`EnterTableName`接口，可以收集解析过程中的表名。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2022-04-24 20:34:12">
+    <meta name="article:modified_time" content="2022-04-24 20:37:30">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="Go">
+    <meta name="article:tag" content="MySQL">
+    <meta name="article:tag" content="sql">
+    <meta name="article:tag" content="antlr">
+    <link rel="canonical" href="https://danbai225.github.io/?p=610">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=610">
+    <meta property="og:title" content="golang解析sql从中获取表名">
+    <meta property="og:description" content="ANTLR是一个用Java语言编写的识别器工具，可以自动生成解析器。它支持生成Java、Go、C等语言的解析器客户端。可以通过下载ANTLR的jar包和mysql的语法规则文件，使用ANTLR来生成解析器。通过覆盖`BaseMySqlParserListener`的`EnterTableName`接口，可以收集解析过程中的表名。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2022-04-24 20:34:12">
+    <meta property="article:modified_time" content="2022-04-24 20:37:30">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="Go">
+    <meta property="article:tag" content="MySQL">
+    <meta property="article:tag" content="sql">
+    <meta property="article:tag" content="antlr">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=610">
+    <meta property="twitter:title" content="golang解析sql从中获取表名">
+    <meta property="twitter:description" content="ANTLR是一个用Java语言编写的识别器工具，可以自动生成解析器。它支持生成Java、Go、C等语言的解析器客户端。可以通过下载ANTLR的jar包和mysql的语法规则文件，使用ANTLR来生成解析器。通过覆盖`BaseMySqlParserListener`的`EnterTableName`接口，可以收集解析过程中的表名。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>golang解析sql从中获取表名 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "golang解析sql从中获取表名",
+        "description": "ANTLR是一个用Java语言编写的识别器工具，可以自动生成解析器。它支持生成Java、Go、C等语言的解析器客户端。可以通过下载ANTLR的jar包和mysql的语法规则文件，使用ANTLR来生成解析器。通过覆盖\u0060BaseMySqlParserListener\u0060的\u0060EnterTableName\u0060接口，可以收集解析过程中的表名。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2022-04-24 20:34:12",
+        "dateModified": "2022-04-24 20:37:30",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=610"
+        },
+        "keywords": ["Go","MySQL","sql","antlr"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=610"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -69,22 +151,15 @@
             </section>
         </header>
             <h1 id="antlr">antlr</h1>
-
-<p>ANTLR是Another Tool for Language Recognition的简写，是一个用Java语言编写的识别器工具。它能够自动生成解析器，并将用户编写的ANTLR语法规则直接生成目标语言的解析器，它能够生成Java、Go、C等语言的解析器客户端。
-作者还维护了很多语法规则其中就有<a href="https://github.com/antlr/grammars-v4/tree/master/sql/mysql" target="_blank">mysql规则</a></p>
-
-<h1 id="使用">使用</h1>
-
-<p>下载最新的jar包<a href="https://www.antlr.org/download/antlr-4.10.1-complete.jar" target="_blank">https://www.antlr.org/download/antlr-4.10.1-complete.jar</a>
+<p>ANTLR是Another Tool for Language Recognition的简写，是一个用Java语言编写的识别器工具。它能够自动生成解析器，并将用户编写的ANTLR语法规则直接生成目标语言的解析器，它能够生成Java、Go、C等语言的解析器客户端。<br />
+作者还维护了很多语法规则其中就有<a href="https://github.com/antlr/grammars-v4/tree/master/sql/mysql">mysql规则</a></p>
+<h1 id="heading">使用</h1>
+<p>下载最新的jar包<a href="https://www.antlr.org/download/antlr-4.10.1-complete.jar">https://www.antlr.org/download/antlr-4.10.1-complete.jar</a><br />
 从github中下载<code>MySqlLexer.g4</code>和<code>MySqlParser.g4</code></p>
-
-<p>执行命令生成go文件 (需要java环境)
+<p>执行命令生成go文件 (需要java环境)<br />
 <code>java -jar antlr-4.10.1-complete.jar -visitor -Dlanguage=Go -o parser MySqlLexer.g4</code></p>
-
 <p><code>java -jar antlr-4.10.1-complete.jar -visitor -Dlanguage=Go -o parser MySqlParser.g4</code></p>
-
 <p>目录结构如下：</p>
-
 <pre><code>├── MySqlLexer.g4
 ├── MySqlParser.g4
 ├── antlr-4.10.1-complete.jar
@@ -100,9 +175,7 @@
     └── mysqlparser_listener.go
 
 </code></pre>
-
 <p><code>antlr.go</code>:</p>
-
 <pre><code>package antlr
 
 import (
@@ -150,8 +223,7 @@ func Antlr() {
 	logs.Info(GetTableNames(sql, &quot;dml&quot;))
 }
 </code></pre>
-
-<p>通过覆盖实现<code>BaseMySqlParserListener</code>的<code>EnterTableName</code>接口
+<p>通过覆盖实现<code>BaseMySqlParserListener</code>的<code>EnterTableName</code>接口<br />
 再解析的过程中每个表名节点都将调用这个方法收集表名。</p>
 
         <footer>
@@ -163,24 +235,14 @@ func Antlr() {
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

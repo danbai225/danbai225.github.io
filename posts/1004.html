@@ -3,25 +3,113 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="游戏加速器,sing-box,golang"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="游戏加速器,sing-box,golang,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="本文是关于如何搭建和使用GPP加速器的教程。GPP是一款基于sing-box开发的加速器，通过tun模式接管应用程序的网络流量，并将其转发到服务端出口，从而实现加速的效果。需要注意的是，GPP本身并不提供加速线路，需要自行选择具有良好线路质量的服务端。
 
 在搭建服务端方面，作者提供了一些服务器选择的建议，并且给出了一些用过的商家的服务端推荐。然后，文章介绍了如何使用GPP的安装脚本来进行服务端的安装。安装的过程包括输入安装路径、监听地址和端口等信息，以及选择加速协议。安装完成后，可以使用`/usr/local/gpp/run.sh start`命令来启动服务端。
 
 在客户端方面，需要从GPP的发布页面下载对应系统的客户端，并以管理员身份运行。然后，在客户端页面上点击`Game`或`Http`字样，弹出节点列表窗口，并粘贴服务端的链接以导入节点。之后，在节点列表中选择加速节点，就可以开始使用加速功能。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2024-07-06 10:36:00">
+    <meta name="article:modified_time" content="2024-04-28 10:45:00">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="游戏加速器">
+    <meta name="article:tag" content="sing-box">
+    <meta name="article:tag" content="golang">
+    <link rel="canonical" href="https://danbai225.github.io/?p=1004">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=1004">
+    <meta property="og:title" content="自建GPP游戏加速器">
+    <meta property="og:description" content="本文是关于如何搭建和使用GPP加速器的教程。GPP是一款基于sing-box开发的加速器，通过tun模式接管应用程序的网络流量，并将其转发到服务端出口，从而实现加速的效果。需要注意的是，GPP本身并不提供加速线路，需要自行选择具有良好线路质量的服务端。
+
+在搭建服务端方面，作者提供了一些服务器选择的建议，并且给出了一些用过的商家的服务端推荐。然后，文章介绍了如何使用GPP的安装脚本来进行服务端的安装。安装的过程包括输入安装路径、监听地址和端口等信息，以及选择加速协议。安装完成后，可以使用`/usr/local/gpp/run.sh start`命令来启动服务端。
+
+在客户端方面，需要从GPP的发布页面下载对应系统的客户端，并以管理员身份运行。然后，在客户端页面上点击`Game`或`Http`字样，弹出节点列表窗口，并粘贴服务端的链接以导入节点。之后，在节点列表中选择加速节点，就可以开始使用加速功能。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2024-07-06 10:36:00">
+    <meta property="article:modified_time" content="2024-04-28 10:45:00">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="游戏加速器">
+    <meta property="article:tag" content="sing-box">
+    <meta property="article:tag" content="golang">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=1004">
+    <meta property="twitter:title" content="自建GPP游戏加速器">
+    <meta property="twitter:description" content="本文是关于如何搭建和使用GPP加速器的教程。GPP是一款基于sing-box开发的加速器，通过tun模式接管应用程序的网络流量，并将其转发到服务端出口，从而实现加速的效果。需要注意的是，GPP本身并不提供加速线路，需要自行选择具有良好线路质量的服务端。
+
+在搭建服务端方面，作者提供了一些服务器选择的建议，并且给出了一些用过的商家的服务端推荐。然后，文章介绍了如何使用GPP的安装脚本来进行服务端的安装。安装的过程包括输入安装路径、监听地址和端口等信息，以及选择加速协议。安装完成后，可以使用`/usr/local/gpp/run.sh start`命令来启动服务端。
+
+在客户端方面，需要从GPP的发布页面下载对应系统的客户端，并以管理员身份运行。然后，在客户端页面上点击`Game`或`Http`字样，弹出节点列表窗口，并粘贴服务端的链接以导入节点。之后，在节点列表中选择加速节点，就可以开始使用加速功能。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>自建GPP游戏加速器 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "自建GPP游戏加速器",
+        "description": "本文是关于如何搭建和使用GPP加速器的教程。GPP是一款基于sing-box开发的加速器，通过tun模式接管应用程序的网络流量，并将其转发到服务端出口，从而实现加速的效果。需要注意的是，GPP本身并不提供加速线路，需要自行选择具有良好线路质量的服务端。\n\n在搭建服务端方面，作者提供了一些服务器选择的建议，并且给出了一些用过的商家的服务端推荐。然后，文章介绍了如何使用GPP的安装脚本来进行服务端的安装。安装的过程包括输入安装路径、监听地址和端口等信息，以及选择加速协议。安装完成后，可以使用\u0060\/usr\/local\/gpp\/run.sh start\u0060命令来启动服务端。\n\n在客户端方面，需要从GPP的发布页面下载对应系统的客户端，并以管理员身份运行。然后，在客户端页面上点击\u0060Game\u0060或\u0060Http\u0060字样，弹出节点列表窗口，并粘贴服务端的链接以导入节点。之后，在节点列表中选择加速节点，就可以开始使用加速功能。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2024-07-06 10:36:00",
+        "dateModified": "2024-04-28 10:45:00",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=1004"
+        },
+        "keywords": ["游戏加速器","sing-box","golang"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=1004"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -75,35 +163,23 @@
             </section>
         </header>
             <h1 id="gpp">GPP</h1>
-
-<p>本文是从0到1搭建使用<a href="https://github.com/danbai225/gpp" target="_blank">GPP</a>加速器的教程</p>
-
+<p>本文是从0到1搭建使用<a href="https://github.com/danbai225/gpp">GPP</a>加速器的教程</p>
 <p>该加速基于sing-box开发的套gui程序，加速原理是通过tun模式接管应用程序网络流量转发到服务端出口,只是提供了一个快捷使用的方式，本身不提供加速线路。</p>
-
-<h1 id="服务端搭建">服务端搭建</h1>
-
-<h2 id="服务器选择">服务器选择</h2>
-
+<h1 id="heading">服务端搭建</h1>
+<h2 id="heading-1">服务器选择</h2>
 <p>因为要加速游戏所以服务器的线路质量要好，简单一点可以直接购买阿里云香港的轻量云应该勉强能用。</p>
-
 <p>下面有我用过的其他商家的服务端</p>
-
 <ul>
-<li><a href="https://ocent.net/shop/server?type=traffic&amp;areaId=12&amp;nodeId=108&amp;planId=653&amp;aff_code=febe317e-92fa-408e-9c2f-7d923a582c3d" target="_blank">SZHK-200G/月-¥25.88/月</a></li>
-<li><a href="https://bigchick.xyz/aff.php?aff=206" target="_blank">GZHK-20G/月-¥120/年优惠码114514</a></li>
-<li><a href="https://ocent.net/shop/turbox?aff_code=febe317e-92fa-408e-9c2f-7d923a582c3d" target="_blank">IPLE转发-100G/季-20/季</a></li>
-<li><a href="https://iplc.best/" target="_blank">其他参考</a></li>
+<li><a href="https://ocent.net/shop/server?type=traffic&amp;areaId=12&amp;nodeId=108&amp;planId=653&amp;aff_code=febe317e-92fa-408e-9c2f-7d923a582c3d">SZHK-200G/月-¥25.88/月</a></li>
+<li><a href="https://bigchick.xyz/aff.php?aff=206">GZHK-20G/月-¥120/年优惠码114514</a></li>
+<li><a href="https://ocent.net/shop/turbox?aff_code=febe317e-92fa-408e-9c2f-7d923a582c3d">IPLE转发-100G/季-20/季</a></li>
+<li><a href="https://iplc.best/">其他参考</a></li>
 </ul>
-
-<h2 id="服务端安装">服务端安装</h2>
-
+<h2 id="heading-2">服务端安装</h2>
 <p>进入正题使用仓库中提到的安装脚本linux适用</p>
-
 <pre><code class="language-bash">bash &lt;(curl -sL https://raw.githubusercontent.com/danbai225/gpp/main/server/install.sh)
 </code></pre>
-
 <p>安装流程如下:</p>
-
 <pre><code class="language-bash">root@hkg7-20240515005653f71f78:~# bash &lt;(curl -sL https://raw.githubusercontent.com/danbai225/gpp/main/server/install.sh)
 欢迎使用 gpp 服务端安装脚本
 输入安装路径 (默认是 /usr/local/gpp): 
@@ -137,16 +213,12 @@ Extraction complete
 入口地址是: hk.p00q.cn:12334
 导入链接：Z3BwOi8vdmxlc3NAaGsucDAwcS5jbjoxMjMzNC9mMDQ0NzZiYi00NWY3LTQzZDgtOTU1OC0yNDFiNWYwYjNhZTM=#hk
 </code></pre>
-
 <p>其中需要注意的是<code>客户端入口地址</code>如果你是要走中转那么这个就填你中转的地址</p>
-
 <p>然后执行<code>/usr/local/gpp/run.sh start</code>启动服务端</p>
-
-<h1 id="客户端">客户端</h1>
-
-<p>从<a href="https://github.com/danbai225/gpp/releases" target="_blank">releases</a>下载对应系统的客户端
-安装后以管理员身份运行,点击页面上的<code>Game</code>或<code>Http</code>字样弹出节点列表窗口，在下方粘贴服务端的链接完成节点导入。
-在节点列表选择你的加速节点，如何开始加速。
+<h1 id="heading-3">客户端</h1>
+<p>从<a href="https://github.com/danbai225/gpp/releases">releases</a>下载对应系统的客户端<br />
+安装后以管理员身份运行,点击页面上的<code>Game</code>或<code>Http</code>字样弹出节点列表窗口，在下方粘贴服务端的链接完成节点导入。<br />
+在节点列表选择你的加速节点，如何开始加速。<br />
 <img src="../res/img/1004-1.png" alt="img_1.png" /></p>
 
         <footer>
@@ -158,24 +230,14 @@ Extraction complete
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

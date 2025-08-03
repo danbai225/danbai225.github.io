@@ -3,21 +3,97 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="插件开发"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="插件开发,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="PWL(摸鱼派)是一个聚集了一群热爱工作和生活，富有学习干劲的新时代工作者的社区。PWL开发了一款插件，让工作者能够在工作中摸鱼同时学习。该插件包含了多种功能特性，例如命令控制、发送红包、撤回与防撤回、输入框粘贴图片、在线列表双击@、上下切换发送历史等等。插件提供了动静分明的Web界面和悄悄摸鱼的文字界面。用户可以自由拖动窗口位置，插件以左下角小巧文字的形式存在，轻松实现摸鱼于无形的效果。插件还支持使用命令来获取帮助、发送红包、撤回消息、退出登录等功能。插件的地址包括GitHub和未来可能审核通过的JB插件仓库地址。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2021-11-29 20:31:46">
+    <meta name="article:modified_time" content="2021-11-29 20:37:37">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="插件开发">
+    <link rel="canonical" href="https://danbai225.github.io/?p=517">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=517">
+    <meta property="og:title" content="IDEA插件 pwl-chat">
+    <meta property="og:description" content="PWL(摸鱼派)是一个聚集了一群热爱工作和生活，富有学习干劲的新时代工作者的社区。PWL开发了一款插件，让工作者能够在工作中摸鱼同时学习。该插件包含了多种功能特性，例如命令控制、发送红包、撤回与防撤回、输入框粘贴图片、在线列表双击@、上下切换发送历史等等。插件提供了动静分明的Web界面和悄悄摸鱼的文字界面。用户可以自由拖动窗口位置，插件以左下角小巧文字的形式存在，轻松实现摸鱼于无形的效果。插件还支持使用命令来获取帮助、发送红包、撤回消息、退出登录等功能。插件的地址包括GitHub和未来可能审核通过的JB插件仓库地址。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2021-11-29 20:31:46">
+    <meta property="article:modified_time" content="2021-11-29 20:37:37">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="插件开发">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=517">
+    <meta property="twitter:title" content="IDEA插件 pwl-chat">
+    <meta property="twitter:description" content="PWL(摸鱼派)是一个聚集了一群热爱工作和生活，富有学习干劲的新时代工作者的社区。PWL开发了一款插件，让工作者能够在工作中摸鱼同时学习。该插件包含了多种功能特性，例如命令控制、发送红包、撤回与防撤回、输入框粘贴图片、在线列表双击@、上下切换发送历史等等。插件提供了动静分明的Web界面和悄悄摸鱼的文字界面。用户可以自由拖动窗口位置，插件以左下角小巧文字的形式存在，轻松实现摸鱼于无形的效果。插件还支持使用命令来获取帮助、发送红包、撤回消息、退出登录等功能。插件的地址包括GitHub和未来可能审核通过的JB插件仓库地址。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>IDEA插件 pwl-chat - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "IDEA插件 pwl-chat",
+        "description": "PWL(摸鱼派)是一个聚集了一群热爱工作和生活，富有学习干劲的新时代工作者的社区。PWL开发了一款插件，让工作者能够在工作中摸鱼同时学习。该插件包含了多种功能特性，例如命令控制、发送红包、撤回与防撤回、输入框粘贴图片、在线列表双击@、上下切换发送历史等等。插件提供了动静分明的Web界面和悄悄摸鱼的文字界面。用户可以自由拖动窗口位置，插件以左下角小巧文字的形式存在，轻松实现摸鱼于无形的效果。插件还支持使用命令来获取帮助、发送红包、撤回消息、退出登录等功能。插件的地址包括GitHub和未来可能审核通过的JB插件仓库地址。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2021-11-29 20:31:46",
+        "dateModified": "2021-11-29 20:37:37",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=517"
+        },
+        "keywords": ["插件开发"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=517"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -62,66 +138,41 @@
                 <p><strong>摘要：</strong>PWL(摸鱼派)是一个聚集了一群热爱工作和生活，富有学习干劲的新时代工作者的社区。PWL开发了一款插件，让工作者能够在工作中摸鱼同时学习。该插件包含了多种功能特性，例如命令控制、发送红包、撤回与防撤回、输入框粘贴图片、在线列表双击@、上下切换发送历史等等。插件提供了动静分明的Web界面和悄悄摸鱼的文字界面。用户可以自由拖动窗口位置，插件以左下角小巧文字的形式存在，轻松实现摸鱼于无形的效果。插件还支持使用命令来获取帮助、发送红包、撤回消息、退出登录等功能。插件的地址包括GitHub和未来可能审核通过的JB插件仓库地址。</p>
             </section>
         </header>
-            <h1 id="介绍">介绍</h1>
-
-<p><a href="https://pwl.icu" target="_blank">PWL(摸鱼派)</a>这里聚集着一群，热爱工作生活。富有学习干劲的新时代工作者。为了更进一步深入学习，加快交流和进步。从而推出了这一款插件，让你在工作中摸鱼摸鱼中学习。</p>
-
-<h2 id="功能特性">功能特性</h2>
-
+            <h1 id="heading">介绍</h1>
+<p><a href="https://pwl.icu">PWL(摸鱼派)</a>这里聚集着一群，热爱工作生活。富有学习干劲的新时代工作者。为了更进一步深入学习，加快交流和进步。从而推出了这一款插件，让你在工作中摸鱼摸鱼中学习。</p>
+<h2 id="heading-1">功能特性</h2>
 <ul>
-<li><p>命令控制</p></li>
-
-<li><p>发送红包，记录最近100个红包只需一句话帮你抢完</p></li>
-
-<li><p>撤回与防撤回（因为我根本没去处理撤回哈哈☺）</p></li>
-
-<li><p>输入框粘贴图片</p></li>
-
-<li><p>在线列表双击@</p></li>
-
-<li><p>上下切换发送历史更符合终端用户</p></li>
-
-<li><p>等等&hellip;</p>
-
-<h2 id="界面介绍">界面介绍</h2></li>
+<li>命令控制</li>
+<li>发送红包，记录最近100个红包只需一句话帮你抢完</li>
+<li>撤回与防撤回（因为我根本没去处理撤回哈哈☺）</li>
+<li>输入框粘贴图片</li>
+<li>在线列表双击@</li>
+<li>上下切换发送历史更符合终端用户</li>
+<li>等等...</li>
 </ul>
-
+<h2 id="heading-2">界面介绍</h2>
 <p>有动静分明的web加持版</p>
-
 <p><img src="../res/img/517-1.jpeg" alt="image.png" /></p>
-
-<p>也有悄悄摸鱼的文字版
-<img src="../res/img/517-2.jpeg" alt="image.png" />
-窗口位置随意拖动
-<img src="../res/img/517-3.jpeg" alt="image.png" />
-左下角小巧文字，摸鱼于无形
-<img src="../res/img/517-4.jpeg" alt="image.png" />
-tab切换带来无限可能
+<p>也有悄悄摸鱼的文字版<br />
+<img src="../res/img/517-2.jpeg" alt="image.png" /><br />
+窗口位置随意拖动<br />
+<img src="../res/img/517-3.jpeg" alt="image.png" /><br />
+左下角小巧文字，摸鱼于无形<br />
+<img src="../res/img/517-4.jpeg" alt="image.png" /><br />
+tab切换带来无限可能<br />
 <img src="../res/img/517-5.jpeg" alt="image.png" /></p>
-
-<h1 id="命令帮助">命令帮助</h1>
-
+<h1 id="heading-3">命令帮助</h1>
 <p>输入<code>#help</code>获取帮助</p>
-
 <p>帮助命令：命令都是以<code>#</code>开头 参数用空格分割</p>
-
 <p><code>#help</code> - 输出本帮助命令</p>
-
 <p><code>#packet</code> - 发送红包，参数1(个数) 参数2(总额) 参数3(消息)</p>
-
 <p><code>#revoke</code> - 撤回最后一条发送的消息</p>
-
 <p><code>#exit</code> - 退出登陆</p>
-
 <p><code>#eventLog</code> - 在事件中输出聊天 参数1(是否开启1 or 0)</p>
-
 <p><code>#web</code> - 切换输出模式 参数1(开启) 0 or 1</p>
-
-<h1 id="地址">地址</h1>
-
-<p><a href="https://github.com/danbai225/pwl-chat" target="_blank">github</a></p>
-
-<p><a href="https://plugins.jetbrains.com/plugin/com.github.danbai225.pwlchat" target="_blank">未来可能审核通过的JB插件仓库地址</a></p>
+<h1 id="heading-4">地址</h1>
+<p><a href="https://github.com/danbai225/pwl-chat">github</a></p>
+<p><a href="https://plugins.jetbrains.com/plugin/com.github.danbai225.pwlchat">未来可能审核通过的JB插件仓库地址</a></p>
 
         <footer>
             <p class="pull-right text-muted">最后编辑于：2021-11-29 20:37:37</p>
@@ -132,24 +183,14 @@ tab切换带来无限可能
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>

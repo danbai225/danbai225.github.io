@@ -3,21 +3,99 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="Beego,Go"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Beego,Go,danbai,淡白,技术博客,编程,开发"/>
     <meta name="description" content="本文介绍了在GoLang中使用beego框架进行ORM（对象关系映射）操作的基本知识。首先，文章介绍了如何连接数据库，然后说明了如何创建模型。在查询方面，文章展示了使用原始SQL查询和根据主键查询的例子。在插入和更新方面，文章展示了插入新数据和更新已有数据的例子。最后，文章总结了学习beego框架的一些感受，并提供了相关中文文档和参考链接。" />
+    <meta name="author" content="淡白">
+    <meta name="theme-color" content="#667eea">
+    <meta name="robots" content="index, follow">
+    <meta name="article:published_time" content="2019-12-12 16:08:54">
+    <meta name="article:modified_time" content="2022-03-29 21:34:16">
+    <meta name="article:author" content="淡白">
+    <meta name="article:section" content="Technology">
+    <meta name="article:tag" content="Beego">
+    <meta name="article:tag" content="Go">
+    <link rel="canonical" href="https://danbai225.github.io/?p=11">
     
-    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/css/zui.min.css">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danbai225.github.io/?p=11">
+    <meta property="og:title" content="golang beego框架orm操作mysql数据库">
+    <meta property="og:description" content="本文介绍了在GoLang中使用beego框架进行ORM（对象关系映射）操作的基本知识。首先，文章介绍了如何连接数据库，然后说明了如何创建模型。在查询方面，文章展示了使用原始SQL查询和根据主键查询的例子。在插入和更新方面，文章展示了插入新数据和更新已有数据的例子。最后，文章总结了学习beego框架的一些感受，并提供了相关中文文档和参考链接。">
+    <meta property="og:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="og:site_name" content="淡白的记忆">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2019-12-12 16:08:54">
+    <meta property="article:modified_time" content="2022-03-29 21:34:16">
+    <meta property="article:author" content="淡白">
+    <meta property="article:section" content="Technology">
+    <meta property="article:tag" content="Beego">
+    <meta property="article:tag" content="Go">
+    
+    
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://danbai225.github.io/?p=11">
+    <meta property="twitter:title" content="golang beego框架orm操作mysql数据库">
+    <meta property="twitter:description" content="本文介绍了在GoLang中使用beego框架进行ORM（对象关系映射）操作的基本知识。首先，文章介绍了如何连接数据库，然后说明了如何创建模型。在查询方面，文章展示了使用原始SQL查询和根据主键查询的例子。在插入和更新方面，文章展示了插入新数据和更新已有数据的例子。最后，文章总结了学习beego框架的一些感受，并提供了相关中文文档和参考链接。">
+    <meta property="twitter:image" content="https://danbai225.github.io/res/favicon.ico">
+    <meta property="twitter:creator" content="@danbai225">
+    
+    
+    <meta name="generator" content="Custom Go Static Site Generator">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/css/zui.min.css">
     
     <link rel="stylesheet" type="text/css" href="/res/css/style.css">
     
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/lib/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/lib/jquery/jquery-3.4.1.min.js"></script>
     
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/zui/1.9.2/js/zui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zui@1.9.2/dist/js/zui.js"></script>
     
     <script src="/res/js/index.js"></script>
     <link rel="shortcut icon" type="images/x-icon" href="/res/favicon.ico">
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <link rel="alternate" type="application/rss+xml" title="淡白的记忆 - RSS订阅" href="/rss.xml">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
     <title>golang beego框架orm操作mysql数据库 - 淡白的记忆</title>
+    
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "golang beego框架orm操作mysql数据库",
+        "description": "本文介绍了在GoLang中使用beego框架进行ORM（对象关系映射）操作的基本知识。首先，文章介绍了如何连接数据库，然后说明了如何创建模型。在查询方面，文章展示了使用原始SQL查询和根据主键查询的例子。在插入和更新方面，文章展示了插入新数据和更新已有数据的例子。最后，文章总结了学习beego框架的一些感受，并提供了相关中文文档和参考链接。",
+        "image": "https:\/\/danbai225.github.io/res/favicon.ico",
+        "author": {
+            "@type": "Person",
+            "name": "淡白",
+            "url": "https:\/\/danbai225.github.io"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "淡白的记忆",
+            "url": "https:\/\/danbai225.github.io",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/danbai225.github.io/res/favicon.ico"
+            }
+        },
+        "datePublished": "2019-12-12 16:08:54",
+        "dateModified": "2022-03-29 21:34:16",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/danbai225.github.io\/?p=11"
+        },
+        "keywords": ["Beego","Go"],
+        "articleSection": "Technology",
+        "inLanguage": "zh-CN",
+        "url": "https:\/\/danbai225.github.io\/?p=11"
+    }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -64,13 +142,10 @@
                 <p><strong>摘要：</strong>本文介绍了在GoLang中使用beego框架进行ORM（对象关系映射）操作的基本知识。首先，文章介绍了如何连接数据库，然后说明了如何创建模型。在查询方面，文章展示了使用原始SQL查询和根据主键查询的例子。在插入和更新方面，文章展示了插入新数据和更新已有数据的例子。最后，文章总结了学习beego框架的一些感受，并提供了相关中文文档和参考链接。</p>
             </section>
         </header>
-            <p>上周学完了GoLang基础部分知识,这周学习下beego框架.
+            <p>上周学完了GoLang基础部分知识,这周学习下beego框架.<br />
 这篇文章记录了ORM部分知识</p>
-
-<h1 id="连接数据库">连接数据库</h1>
-
+<h1 id="heading">连接数据库</h1>
 <p>在包名dao下创建mysql.go</p>
-
 <pre><code>package dao
 
 import (
@@ -88,9 +163,7 @@ func Getcon() orm.Ormer {
 	return orm.NewOrm()
 }
 </code></pre>
-
 <h1 id="model">model</h1>
-
 <pre><code>type User struct {
 	Username string `orm:&quot;pk&quot;`
 	Password string
@@ -98,15 +171,11 @@ func Getcon() orm.Ormer {
 	Headurl string
 }
 </code></pre>
-
-<p>如果表的主键不是id，那么需要加上pk注释，显式的说这个字段是主键
-属性名首字母大写
+<p>如果表的主键不是id，那么需要加上pk注释，显式的说这个字段是主键<br />
+属性名首字母大写<br />
 第二个单词首字母不能大写,如要大写将对应 如HeadUrl  对应表字段 Head_url</p>
-
-<p><a href="https://beego.me/docs/mvc/model/models.md" target="_blank">更多使用</a></p>
-
-<h1 id="查询">查询</h1>
-
+<p><a href="https://beego.me/docs/mvc/model/models.md">更多使用</a></p>
+<h1 id="heading-1">查询</h1>
 <pre><code>func Ut()  {
 	var o=dao.Getcon()
 	var users []models.User
@@ -128,9 +197,7 @@ func Getcon() orm.Ormer {
 	}
 }
 </code></pre>
-
-<h1 id="插入更新">插入更新</h1>
-
+<h1 id="heading-2">插入更新</h1>
 <pre><code>func Ut1()  {
 	var o=dao.Getcon()
 	var user = models.User{&quot;test&quot;,&quot;123&quot;,&quot;225@qq.com&quot;,&quot;https://www.123.com&quot;}
@@ -147,14 +214,11 @@ func Getcon() orm.Ormer {
 	}
 }
 </code></pre>
-
-<h1 id="总结">总结</h1>
-
-<p>今天大概看了遍文档 和spring框架还是有点区别,但是内容都差不多路由、控制、服务、视图、过滤器等.
-简单练习了下,发现启动速度也很快.占用内存比java少了不少.
+<h1 id="heading-3">总结</h1>
+<p>今天大概看了遍文档 和spring框架还是有点区别,但是内容都差不多路由、控制、服务、视图、过滤器等.<br />
+简单练习了下,发现启动速度也很快.占用内存比java少了不少.<br />
 接下来就开始边做边学了,加油!</p>
-
-<p><a href="https://beego.me/docs/intro/" target="_blank">beego中文文档</a></p>
+<p><a href="https://beego.me/docs/intro/">beego中文文档</a></p>
 
         <footer>
             <p class="pull-right text-muted">最后编辑于：2022-03-29 21:34:16</p>
@@ -165,24 +229,14 @@ func Getcon() orm.Ormer {
 <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/styles/default.min.css" rel="stylesheet">
 <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script>
-
-</script>
-<script type="text/javascript">
-
-</script>
-
 </body>
 <footer>
     <hr>
     <div class="container text-center">
         Copyright &copy; 2025<a href="https://danbai225.github.io">淡白的记忆</a><br/>
-
         <br/>
         Source by <a target="_blank" href="https://github.com/danbai225/danbai225.github.io" data-pjax-state="">Github</a>
         <br/>
-        
-
         <p>本站运行：<span id="span_dt_dt"></span></p>
     </div>
 </footer>
