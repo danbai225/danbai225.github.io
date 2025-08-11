@@ -407,8 +407,65 @@ pre code {
     margin-top: 10px;
 }
 
-/* 移动端优化 */
-@media (max-width: 768px) {
+/* 移动端优化 - 重新设计响应式断点 */
+@media (max-width: 480px) {
+    .container {
+        width: 95%;
+        padding: 10px;
+    }
+    
+    .item {
+        margin: 10px 0;
+        padding: 15px;
+        border-radius: 12px;
+    }
+    
+    .navbar {
+        border-radius: 0 0 12px 12px;
+        padding: 10px;
+    }
+    
+    .navbar-header {
+        font-size: 1.2em;
+    }
+    
+    .search-input {
+        height: 40px;
+        font-size: 14px;
+        margin: 5px 0;
+    }
+    
+    .item h4 {
+        font-size: 1.1em;
+        line-height: 1.4;
+    }
+    
+    .text-muted {
+        font-size: 0.8em;
+        padding: 3px 8px;
+    }
+    
+    .theme-toggle, .back-to-top {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .theme-toggle {
+        right: 10px;
+    }
+    
+    .back-to-top {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .post-list-text {
+        font-size: 0.9em;
+        line-height: 1.5;
+    }
+}
+
+@media (max-width: 768px) and (min-width: 481px) {
     .container {
         width: 95%;
         padding: 15px;
@@ -436,32 +493,92 @@ pre code {
     .navbar {
         border-radius: 0 0 15px 15px;
     }
+    
+    .search-input {
+        height: 45px;
+        font-size: 16px;
+    }
 }
 
+/* 改进的移动端专用样式 - 优化字体大小 */
 .device-mobile .container {
     width: 98%;
     max-width: 98%;
-    font-size: 3rem;
+    padding: 8px;
 }
 
-.device-mobile a {
-    max-width: 98%;
-    font-size: 3rem;
-}
-
-.device-mobile .search-input {
-    height: 5rem;
-    font-size: 3rem;
+.device-mobile {
+    font-size: 16px;
 }
 
 .device-mobile h1 {
-    font-size: 5rem;
+    font-size: 2em;
+    margin-bottom: 15px;
 }
 
-.device-mobile .nav li a {
-    line-height: 3rem;
+.device-mobile h4 {
+    font-size: 1.3em;
+    line-height: 1.4;
 }
 
-.device-mobile * {
-    font-size: 3rem;
+.device-mobile .search-input {
+    height: 44px;
+    font-size: 16px;
+    padding: 8px 15px;
+}
+
+.device-mobile .navbar-nav li a {
+    padding: 12px 16px;
+    font-size: 16px;
+    line-height: 1.4;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+}
+
+.device-mobile .item {
+    padding: 16px;
+    margin: 12px 0;
+}
+
+.device-mobile .text-muted {
+    font-size: 14px;
+    padding: 4px 10px;
+}
+
+.device-mobile .post-list-text {
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* 触摸友好的交互元素 */
+@media (max-width: 768px) {
+    .navbar-nav li a, 
+    .item h4 a,
+    .theme-toggle,
+    .back-to-top {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .label-success {
+        padding: 10px 16px;
+        margin: 5px;
+        font-size: 14px;
+    }
+}
+
+/* 横屏模式优化 */
+@media (max-width: 768px) and (orientation: landscape) {
+    .container {
+        padding: 10px 20px;
+    }
+    
+    .item {
+        padding: 15px 20px;
+    }
+    
+    .navbar {
+        padding: 8px 15px;
+    }
 }
